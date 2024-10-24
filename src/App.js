@@ -1,7 +1,29 @@
+import { Link, Outlet } from 'react-router-dom';
+
+function Links() {
+  return (
+    <ul className="inline-flex gap-3 border p-1">
+      <li>
+        <Link to="/">Home</Link>
+      </li>
+      <li>
+        <Link to="/list">List</Link>
+      </li>
+      <li>
+        <Link to="/post/1">Post</Link>
+      </li>
+      <li>
+        <Link to="/post/1/answer">Answer</Link>
+      </li>
+    </ul>
+  );
+}
+
 export default function App() {
   return (
-    <div>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-    </div>
+    <main>
+      <Links />
+      <Outlet />
+    </main>
   );
 }
