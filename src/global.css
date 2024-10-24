@@ -1,0 +1,50 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+:root {
+  --base-font: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
+    Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic',
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+  /* color and more */
+}
+
+@layer base {
+  html {
+    font-family: var(--base-font);
+    font-size: 16px;
+  }
+  body {
+    background-color: #fcfcfc;
+  }
+  input,
+  button,
+  select {
+    font-family: var(--base-font);
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply leading-tight;
+  }
+}
+
+@layer components {
+  /* 공용 컴포넌트 속성 정의 */
+}
+
+@layer utilities {
+  /* 유틸 성격의 클래스 정의 */
+  .h1 {
+    font-size: 40px;
+  }
+  .h2 {
+    font-size: 32px;
+  }
+  .h3 {
+    font-size: 24px;
+  }
+}
