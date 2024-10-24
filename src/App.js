@@ -10,10 +10,10 @@ function Links() {
         <Link to="/list">List</Link>
       </li>
       <li>
-        <Link to="/post">Post</Link>
+        <Link to="/post/1">Post</Link>
       </li>
       <li>
-        <Link to="/answer">Answer</Link>
+        <Link to="/post/1/answer">Answer</Link>
       </li>
     </ul>
   );

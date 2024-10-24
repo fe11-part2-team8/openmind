@@ -11,9 +11,13 @@ function Main() {
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<HomePage />} />
-          <Route path="/list" element={<ListPage />} />
-          <Route path="/post" element={<PostPage />} />
-          <Route path="/answer" element={<AnswerPage />} />
+          <Route path="list" element={<ListPage />} />
+          <Route path="post">
+            <Route path=":id">
+              <Route index element={<PostPage />} />
+              <Route path="answer" element={<AnswerPage />} />
+            </Route>
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
