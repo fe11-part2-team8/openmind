@@ -10,6 +10,5 @@ npm i
 
 ### 2. 에디터 포메터 설정
 
-1. Prettier 확장 프로그램 설치
-2. `setting -> Default formatter -> prettier`
-3. `setting -> Format On Save -> 체크`
+1. `setting -> Default formatter -> prettier`
+2. `setting -> Format On Save -> 체크`
