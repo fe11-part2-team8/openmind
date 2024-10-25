@@ -20,7 +20,6 @@ function postSubject(name) {
     name,
     team: TEAM,
   };
-
   return instance
     .post(`${SUBJECTQUERY}`, data)
     .then((response) => {

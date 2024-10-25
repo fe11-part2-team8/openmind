@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { postSubject } from '../../api';
+import { postSubject, getAllSubject } from '../../api';
 
 function FeedForm() {
   const [inputValue, setInputValue] = useState(''); // 입력된 이름 저장
@@ -32,26 +32,44 @@ function FeedForm() {
     setInputValue(e.target.value);
   };
 
+  // 이름으로 기존 피드 조회
+  const findSubjectByName = async (name) => {
+    try {
+      const subjects = await getAllSubject(); // 모든 피드를 가져옴
+
+      // subjects.results 배열에 접근
+      const existingSubject = subjects.results.find((subject) => subject.name === name);
+      return existingSubject ? existingSubject.id : null; // 이미 존재하면 해당 ID 반환
+    } catch (error) {
+      console.error('피드를 조회하는 중 오류가 발생했습니다:', error);
+      throw error;
+    }
+  };
+
   // 피드 생성, 페이지 이동
   const handleCreateFeed = async () => {
     try {
-      //랜덤 프로필 이미지
-      const RandomProfileImage = getRandomProfileImage();
+      setError(null);
 
-      // postSubject API 호출로 피드 생성 요청
-      const subjectId = await postSubject(inputValue, RandomProfileImage);
+      // 이름으로 피드가 존재하는지 확인
+      let subjectId = await findSubjectByName(inputValue);
 
-      // 피드 생성에 성공하면 localStorage에 피드 ID 저장
+      if (subjectId) {
+        console.log(`이미 존재하는 피드 ID: ${subjectId}`);
+      } else {
+        // 피드가 없으면 랜덤 프로필 이미지와 함께 새 피드 생성
+        const randomProfileImage = getRandomProfileImage();
+        subjectId = await postSubject(inputValue, randomProfileImage);
+
+        //확인용
+        console.log(`새로 생성된 피드 ID: ${subjectId}`);
+        console.log(`지정된 프로필 이미지:`, randomProfileImage);
+      }
+
+      // 피드 ID를 localStorage에 저장하고 경로 변경
       localStorage.setItem('feedId', subjectId);
-
-      // 피드 생성에 성공하면 /post/{subjectId}/answer 페이지로 이동
       navigate(`/post/${subjectId}/answer`);
-
-      //확인용
-      console.log(`생성된 피드 ID: ${subjectId}`);
-      console.log(`이미지 경로: `, RandomProfileImage);
     } catch (error) {
-      // 오류가 발생하면 에러 메시지 출력
       setError('피드를 생성하는 데 실패했습니다.');
       console.error('피드 생성 중 오류가 발생했습니다:', error);
     }
