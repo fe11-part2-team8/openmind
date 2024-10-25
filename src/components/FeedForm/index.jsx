@@ -2,18 +2,30 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postSubject, getAllSubject } from '../../api';
 
-//프로필 이미지 리스트
+// 프로필 이미지 리스트
+import profile_bear_smile from '../../assets/images/profile/bear-smile.png';
+import profile_cat_bee from '../../assets/images/profile/cat-bee.png';
+import profile_cat_smile from '../../assets/images/profile/cat-smile.png';
+import profile_dog_hone from '../../assets/images/profile/dog-hone.png';
+import profile_dog_smile from '../../assets/images/profile/dog-smile.png';
+import profile_hamster from '../../assets/images/profile/hamster.png';
+import profile_music_band_bass from '../../assets/images/profile/music-band-bass.png';
+import profile_music_band_guitar from '../../assets/images/profile/music-band-guitar.png';
+import profile_pig from '../../assets/images/profile/pig.png';
+import profile_rabbit_smile from '../../assets/images/profile/rabbit-smile.png';
+
+// 프로필 이미지 리스트
 const profileImages = [
-  '../../assets/images/profile/bear-smile.png',
-  '../../assets/images/profile/cat-bee.png',
-  '../../assets/images/profile/cat-smile.png',
-  '../../assets/images/profile/dog-hone.png',
-  '../../assets/images/profile/dog-smile.png',
-  '../../assets/images/profile/hamster.png',
-  '../../assets/images/profile/music-band-bass.png',
-  '../../assets/images/profile/music-band-guitar.png',
-  '../../assets/images/profile/pig.png',
-  '../../assets/images/profile/rabbit-smile.png',
+  profile_bear_smile,
+  profile_cat_bee,
+  profile_cat_smile,
+  profile_dog_hone,
+  profile_dog_smile,
+  profile_hamster,
+  profile_music_band_bass,
+  profile_music_band_guitar,
+  profile_pig,
+  profile_rabbit_smile,
 ];
 
 function FeedForm() {
@@ -21,13 +33,13 @@ function FeedForm() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  //랜덤 프로필 함수
+  // 랜덤 프로필 함수
   const getRandomProfileImage = () => {
     const randomIndex = Math.floor(Math.random() * profileImages.length);
     return profileImages[randomIndex];
   };
 
-  // input값 유효성 검사
+  // input 값 유효성 검사
   const handleInputChange = (e) => {
     setInputValue(e.target.value.trim());
   };
@@ -47,7 +59,9 @@ function FeedForm() {
   };
 
   // 피드 생성, 페이지 이동
-  const handleCreateFeed = async () => {
+  const handleCreateFeed = async (event) => {
+    event.preventDefault(); // 폼 제출 시 페이지 새로고침 방지
+
     try {
       setError(null);
 
@@ -61,7 +75,7 @@ function FeedForm() {
         const randomProfileImage = getRandomProfileImage();
         subjectId = await postSubject(inputValue, randomProfileImage);
 
-        //확인용
+        // 확인용
         console.log(`새로 생성된 피드 ID: ${subjectId}`);
         console.log(`지정된 프로필 이미지:`, randomProfileImage);
       }
