@@ -6,7 +6,28 @@
   --base-font: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
     Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic',
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
-  /* color and more */
+  /* color */
+  --gray-10: #fff;
+  --gray-20: #f9f9f9;
+  --gray-30: #cfcfcf;
+  --gray-40: #818181;
+  --gray-50: #515151;
+  --gray-60: #000;
+
+  --brown-10: #f5f1ee;
+  --brown-20: #e4d5c9;
+  --brown-30: #c7bbb5;
+  --brown-40: #542f1a;
+  --brown-50: #341909;
+
+  --blue: #1877f2;
+  --yellow: #fee500;
+  --red: #b93333;
+
+  /* shadow */
+  --shadow-1pt: 0px 4px 4px 0px #8c8c8c40;
+  --shadow-2pt: 0px 4px 4px 0px #00000040;
+  --shadow-3pt: 0px 16px 20px 0px #3030309e;
 }
 
 @layer base {
@@ -38,6 +59,8 @@
 
 @layer utilities {
   /* 유틸 성격의 클래스 정의 */
+
+  /* 제목 */
   .h1 {
     font-size: 40px;
   }
@@ -46,5 +69,59 @@
   }
   .h3 {
     font-size: 24px;
+  }
+
+  /* 본문 텍스트 */
+  .body1 {
+    font-size: 20px;
+  }
+
+  .body2 {
+    font-size: 18px;
+  }
+
+  .body3 {
+    font-size: 16px;
+  }
+
+  /* 캡션 */
+  .caption-regular,
+  .caption-medium {
+    font-size: 14px;
+  }
+
+  .caption-regular {
+    font-weight: 400;
+  }
+
+  .caption-medium {
+    font-weight: 500;
+  }
+
+  /* 배경 색상 */
+  .bg-brown-10 {
+    background-color: var(--brown-10);
+  }
+  .bg-brown-20 {
+    background-color: var(--brown-20);
+  }
+  .bg-brown-30 {
+    background-color: var(--brown-30);
+  }
+  .bg-brown-40 {
+    background-color: var(--brown-40);
+  }
+  .bg-brown-50 {
+    background-color: var(--brown-50);
+  }
+
+  .bg-blue {
+    background-color: var(--blue);
+  }
+  .bg-yellow {
+    background-color: var(--yellow);
+  }
+  .bg-red {
+    background-color: var(--red);
   }
 }
