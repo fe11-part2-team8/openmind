@@ -29,7 +29,7 @@ function FeedForm() {
 
   // input값 유효성 검사
   const handleInputChange = (e) => {
-    setInputValue(e.target.value);
+    setInputValue(e.target.value.trim());
   };
 
   // 이름으로 기존 피드 조회
@@ -76,17 +76,17 @@ function FeedForm() {
   };
 
   return (
-    <div>
+    <form onSubmit={handleCreateFeed}>
       <input
         type="text"
         value={inputValue}
         onChange={handleInputChange}
         placeholder="이름을 입력하세요"
       />
-      <button onClick={handleCreateFeed} disabled={!inputValue}>
+      <button type="submit" disabled={!inputValue}>
         질문 받기
       </button>
-    </div>
+    </form>
   );
 }
 
