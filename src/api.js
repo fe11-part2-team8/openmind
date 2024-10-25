@@ -1,11 +1,11 @@
-// keeping
-
 import axios from 'axios';
 
 const TEAM = '11-8';
-const SUBJECTQUERY = '/subjects/';
-const QUESTIONQUERY = '/questions/';
-const ANSWERQUERY = '/answers/';
+const PATH = {
+  SUBJECT: '/subjects/',
+  QUESTION: '/questions/',
+  ANSWER: '/answers/',
+};
 
 const instance = axios.create({
   baseURL: `https://openmind-api.vercel.app/${TEAM}`,
@@ -22,53 +22,49 @@ function postSubject(name) {
   };
 
   return instance
-    .post(`${SUBJECTQUERY}`, data)
+    .post(`${PATH.SUBJECT}`, data)
     .then((response) => {
       const subjectId = response.data.id;
       return subjectId;
     })
     .catch((error) => {
-      console.error('패칭 중 오류가 발생했습니다', error.response?.data || error.message);
-      throw new Error('피드를 보내는데 실패했습니다.');
+      console.error('피드를 보내는데 실패했습니다 : ', error.message);
     });
 }
 
 // 모든 사람 피드 불러오는 함수
-function getAllSubject() {
+function getSubjectList() {
   return instance
-    .get(`${SUBJECTQUERY}`)
+    .get(`${PATH.SUBJECT}`)
     .then((response) => response.data)
     .catch((error) => {
-      console.error('패칭 중 오류가 발생했습니다', error.response?.data || error.message);
-      throw new Error('전체 피드를 불러오는데 실패했습니다.');
+      console.error('전체 피드를 불러오는데 실패했습니다 : ', error.message);
     });
 }
 
 // ID에 해당하는 피드만 불러오는 함수 : postSubject 후 반환된 아이디 값을 id에 넣어야 함
 function getSubject(subjectId) {
   return instance
-    .get(`${SUBJECTQUERY}${subjectId}/`)
+    .get(`${PATH.SUBJECT}${subjectId}/`)
     .then((response) => response.data)
     .catch((error) => {
-      console.error('패칭 중 오류가 발생했습니다', error.response?.data || error.message);
-      throw new Error('피드를 불러오는데 실패했습니다.');
+      console.error('피드를 불러오는데 실패했습니다 : ', error.message);
     });
 }
 
 // ID에 해당하는 피드만 삭제하는 함수 : subjectId 넣어주세요
 function deleteSubject(subjectId) {
   return instance
-    .delete(`${SUBJECTQUERY}${subjectId}/`)
+    .delete(`${PATH.SUBJECT}${subjectId}/`)
     .then((response) => response.data)
     .catch((error) => {
-      console.error('패칭 중 오류가 발생했습니다', error.response?.data || error.message);
-      throw new Error('피드를 삭제하는데 실패했습니다.');
+      console.error('피드를 삭제하는데 실패했습니다 : ', error.message);
     });
 }
 
 // 질문 보내는 함수 : content엔 질문 내용 넣어주세요, subjectId 넣어주세요
-function postQuestions(content, subjectId) {
-  const query = `${SUBJECTQUERY}${subjectId}${QUESTIONQUERY}`;
+function postQuestion(content, subjectId) {
+  const query = `${PATH.SUBJECT}${subjectId}${PATH.QUESTION}`;
 
   const data = {
     subjectId,
@@ -83,53 +79,49 @@ function postQuestions(content, subjectId) {
       return questionId;
     })
     .catch((error) => {
-      console.error('패칭 중 오류가 발생했습니다', error.response?.data || error.message);
-      throw new Error('질문을 보내는데 실패했습니다.');
+      console.error('질문을 보내는데 실패했습니다 : ', error.message);
     });
 }
 
 // 질문 전부 다 (목록으로) 받아오는 함수 : subjectId 넣어주세요, subjectId 기준으로 리스트 나와요
-function getAllQuestions(subjectId) {
-  const query = `${SUBJECTQUERY}${subjectId}${QUESTIONQUERY}`;
+function getQuestionList(subjectId) {
+  const query = `${PATH.SUBJECT}${subjectId}${PATH.QUESTION}`;
 
   return instance
     .get(`${query}`)
     .then((response) => response.data)
     .catch((error) => {
-      console.error('패칭 중 오류가 발생했습니다', error.response?.data || error.message);
-      throw new Error('전체 피드를 불러오는데 실패했습니다.');
+      console.error('전체 질문을 불러오는데 실패했습니다 : ', error.message);
     });
 }
 
 // 질문 하나 씩 받아오는 함수 : postQuestions 후 반환된 아이디 값을 넣어야 함 (postSubject 후 반환된 아이디랑은 다름), like, dislike 수 여기서 확인 가능
-function getQuestions(questionId) {
-  const query = `${QUESTIONQUERY}${questionId}/`;
+function getQuestion(questionId) {
+  const query = `${PATH.QUESTION}${questionId}/`;
 
   return instance
     .get(`${query}`)
     .then((response) => response.data)
     .catch((error) => {
-      console.error('패칭 중 오류가 발생했습니다', error.response?.data || error.message);
-      throw new Error('질문을 불러오는데 실패했습니다.');
+      console.error('질문을 불러오는데 실패했습니다 : ', error.message);
     });
 }
 
 // 질문 삭제하는 함수 : questionId 넣어주세요
-function deleteQuestions(questionId) {
-  const query = `${QUESTIONQUERY}${questionId}`;
+function deleteQuestion(questionId) {
+  const query = `${PATH.QUESTION}${questionId}/`;
 
   return instance
     .delete(`${query}`)
     .then((response) => response.data)
     .catch((error) => {
-      console.error('패칭 중 오류가 발생했습니다', error.response?.data || error.message);
-      throw new Error('질문을 삭제하는데 실패했습니다.');
+      console.error('질문을 삭제하는데 실패했습니다 : ', error.message);
     });
 }
 
 // 좋아요/싫어요 보내는 함수 : questionId 넣어주세요, type엔 like랑 dislike 지정 가능, 함수 실행 시 좋아요나 싫어요 1 씩 올라감
 function postReaction(questionId, type = 'like') {
-  const query = `${QUESTIONQUERY}${questionId}/reaction/`;
+  const query = `${PATH.QUESTION}${questionId}/reaction/`;
   const data = {
     type,
   };
@@ -138,14 +130,13 @@ function postReaction(questionId, type = 'like') {
     .post(`${query}`, data)
     .then((response) => response.data)
     .catch((error) => {
-      console.error('패칭 중 오류가 발생했습니다', error.response?.data || error.message);
-      throw new Error('좋아요를 보내는데 실패했습니다.');
+      console.error('좋아요/싫어요를 보내는데 실패했습니다 : ', error.message);
     });
 }
 
 // 답변 보내는 함수 : content에 답변 내용 넣어주세요, questionId 넣어주세요, isRejected = true는 답변 거절, 답변은 한 번 밖에 등록 못 함
-function postAnswers(content, questionId, isRejected = false) {
-  const query = `${QUESTIONQUERY}${questionId}${ANSWERQUERY}`;
+function postAnswer(content, questionId, isRejected = false) {
+  const query = `${PATH.QUESTION}${questionId}${PATH.ANSWER}`;
   const data = {
     questionId,
     content,
@@ -160,27 +151,25 @@ function postAnswers(content, questionId, isRejected = false) {
       return answerId;
     })
     .catch((error) => {
-      console.error('패칭 중 오류가 발생했습니다', error.response?.data || error.message);
-      throw new Error('답변을 보내는데 실패했습니다.');
+      console.error('답변을 보내는데 실패했습니다 : ', error.message);
     });
 }
 
 // 답변 받아오는 함수 : postAnswers 후 반환된 아이디 값을 넣어야 함 (postQuestion 후 반환된 아이디랑은 다름)
-function getAnswers(answerId) {
-  const query = `${ANSWERQUERY}${answerId}/`;
+function getAnswer(answerId) {
+  const query = `${PATH.ANSWER}${answerId}/`;
 
   return instance
     .get(`${query}`)
     .then((response) => response.data)
     .catch((error) => {
-      console.error('패칭 중 오류가 발생했습니다', error.response?.data || error.message);
-      throw new Error('답변을 불러오는데 실패했습니다.');
+      console.error('답변을 불러오는데 실패했습니다 : ', error.message);
     });
 }
 
 // 답변 수정하는 함수 (PUT) : content에 수정 할 내용 넣어주세요, answerId 넣어주세요, isRejected = true면 답변 거절
-function putAnswers(content, answerId, isRejected = false) {
-  const query = `${ANSWERQUERY}${answerId}/`;
+function putAnswer(content, answerId, isRejected = false) {
+  const query = `${PATH.ANSWER}${answerId}/`;
   const data = {
     content,
     isRejected,
@@ -190,14 +179,13 @@ function putAnswers(content, answerId, isRejected = false) {
     .put(`${query}`, data)
     .then((response) => response.data)
     .catch((error) => {
-      console.error('패칭 중 오류가 발생했습니다', error.response?.data || error.message);
-      throw new Error('답변을 수정하는데 실패했습니다.(put)');
+      console.error('답변을 수정하는데 실패했습니다 (put) : ', error.message);
     });
 }
 
 // 답변 수정하는 함수 (PATCH) : content에 수정 할 내용 넣어주세요, answerId 넣어주세요, isRejected = true면 답변 거절
-function patchAnswers(content, answerId, isRejected = false) {
-  const query = `${ANSWERQUERY}${answerId}/`;
+function patchAnswer(content, answerId, isRejected = false) {
+  const query = `${PATH.ANSWER}${answerId}/`;
   const data = {
     content,
     isRejected,
@@ -207,37 +195,35 @@ function patchAnswers(content, answerId, isRejected = false) {
     .patch(`${query}`, data)
     .then((response) => response.data)
     .catch((error) => {
-      console.error('패칭 중 오류가 발생했습니다', error.response?.data || error.message);
-      throw new Error('답변을 수정하는데 실패했습니다.(patch)');
+      console.error('답변을 수정하는데 실패했습니다 (patch) : ', error.message);
     });
 }
 
 // 답변 삭제하는 함수 : answerId 넣어주세요
-function deleteAnswers(answerId) {
-  const query = `${ANSWERQUERY}${answerId}/`;
+function deleteAnswer(answerId) {
+  const query = `${PATH.ANSWER}${answerId}/`;
 
   return instance
     .delete(`${query}`)
     .then((response) => response.data)
     .catch((error) => {
-      console.error('패칭 중 오류가 발생했습니다', error.response?.data || error.message);
-      throw new Error('답변을 삭제하는데 실패했습니다.');
+      console.error('답변을 삭제하는데 실패했습니다 : ', error.message);
     });
 }
 
 export {
   postSubject,
-  getAllSubject,
+  getSubjectList,
   getSubject,
   deleteSubject,
-  postQuestions,
-  getAllQuestions,
-  getQuestions,
-  deleteQuestions,
+  postQuestion,
+  getQuestionList,
+  getQuestion,
+  deleteQuestion,
   postReaction,
-  postAnswers,
-  getAnswers,
-  putAnswers,
-  patchAnswers,
-  deleteAnswers,
+  postAnswer,
+  getAnswer,
+  putAnswer,
+  patchAnswer,
+  deleteAnswer,
 };
