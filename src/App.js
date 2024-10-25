@@ -17,6 +17,7 @@ import {
   putAnswers,
   patchAnswers,
 } from './api';
+import FeedFrom from './components/FeedForm';
 
 function Links() {
   return (
@@ -146,6 +147,7 @@ export default function App() {
         <button onClick={handlePatchAnswers}>ANSWER PATCH</button>
         <br />
         <button onClick={handleDeleteAnswers}>ANSWER DELETE</button>
+        <FeedFrom></FeedFrom>
       </div>
     </main>
   );
