@@ -1,6 +1,20 @@
 import ic_message from '../../assets/images/ic_message.png';
 import ic_close from '../../assets/images/ic_close.png';
-import styles from './QuestionCreateForm.module.css';
+import styles from './QuestionCreateModal.module.css';
+
+function QuestionCreateModal() {
+  const handleClickModalOutside = (e) => {
+    if (e.target.classList.contains(styles.modalBackground)) {
+      // 모달 강조
+    }
+  };
+
+  return (
+    <div className={styles.modalBackground} onClick={handleClickModalOutside}>
+      <QuestionCreateForm />
+    </div>
+  );
+}
 
 function QuestionCreateForm() {
   return (
@@ -19,10 +33,12 @@ function QuestionCreateForm() {
       </div>
       <form>
         <textarea name="content" type="text" placeholder="질문을 입력하세요" required />
-        <button type="submit">질문 보내기</button>
+        <button type="submit" disabled>
+          질문 보내기
+        </button>
       </form>
     </div>
   );
 }
 
-export default QuestionCreateForm;
+export default QuestionCreateModal;

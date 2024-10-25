@@ -1,3 +1,15 @@
+.modalBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.56);
+}
+
 .modal {
   width: fit-content;
   padding: 40px;
@@ -29,17 +41,13 @@
 
 .destination {
   display: flex;
-  .text {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    margin-bottom: 8px;
-    color: var(--gray-60);
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 4px;
 
-    .to {
-      /* font-family: actor; <- 추가 해야함*/
-      font-size: 18px;
-    }
+  .to {
+    /* font-family: actor; <- 추가 해야함*/
+    font-size: 18px;
   }
 }
 
@@ -59,6 +67,10 @@ form {
 
     &::placeholder {
       color: var(--gray-40);
+    }
+
+    &:focus-visible {
+      outline: 1px solid var(--brown-40);
     }
   }
 

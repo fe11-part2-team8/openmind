@@ -4,7 +4,7 @@ import HomePage from './pages/HomePage';
 import ListPage from './pages/ListPage';
 import PostPage from './pages/PostPage';
 import AnswerPage from './pages/AnswerPage';
-import QuestionCreateForm from './components/QuestionCreateFrom';
+import QuestionCreateModal from './components/QuestionCreateModal';
 
 function Main() {
   return (
@@ -13,7 +13,7 @@ function Main() {
         <Route path="/" element={<App />}>
           <Route index element={<HomePage />} />
           <Route path="list" element={<ListPage />} />
-          <Route path="modal" element={<QuestionCreateForm />} />
+          <Route path="modal" element={<QuestionCreateModal />} />
           <Route path="post">
             <Route path=":id">
               <Route index element={<PostPage />} />
