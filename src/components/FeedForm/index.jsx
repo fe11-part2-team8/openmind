@@ -2,24 +2,24 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postSubject, getAllSubject } from '../../api';
 
+//프로필 이미지 리스트
+const profileImages = [
+  '../../assets/images/profile/bear-smile.png',
+  '../../assets/images/profile/cat-bee.png',
+  '../../assets/images/profile/cat-smile.png',
+  '../../assets/images/profile/dog-hone.png',
+  '../../assets/images/profile/dog-smile.png',
+  '../../assets/images/profile/hamster.png',
+  '../../assets/images/profile/music-band-bass.png',
+  '../../assets/images/profile/music-band-guitar.png',
+  '../../assets/images/profile/pig.png',
+  '../../assets/images/profile/rabbit-smile.png',
+];
+
 function FeedForm() {
   const [inputValue, setInputValue] = useState(''); // 입력된 이름 저장
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-
-  //프로필 이미지 리스트
-  const profileImages = [
-    '../../assets/images/profile/bear-smile.png',
-    '../../assets/images/profile/cat-bee.png',
-    '../../assets/images/profile/cat-smile.png',
-    '../../assets/images/profile/dog-hone.png',
-    '../../assets/images/profile/dog-smile.png',
-    '../../assets/images/profile/hamster.png',
-    '../../assets/images/profile/music-band-bass.png',
-    '../../assets/images/profile/music-band-guitar.png',
-    '../../assets/images/profile/pig.png',
-    '../../assets/images/profile/rabbit-smile.png',
-  ];
 
   //랜덤 프로필 함수
   const getRandomProfileImage = () => {
