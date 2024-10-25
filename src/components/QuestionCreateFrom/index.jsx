@@ -1,24 +1,26 @@
 import ic_message from '../../assets/images/ic_message.png';
 import ic_close from '../../assets/images/ic_close.png';
+import styles from './QuestionCreateForm.module.css';
 
 function QuestionCreateForm() {
   return (
-    <div id="modal">
-      <div id="modal-header">
-        <img src={ic_message} alt="메세지 아이콘" />
-        <span>질문을 작성해 주세요</span>
-        <img src={ic_close} alt="닫기 버튼" />
-      </div>
-      <div id="modal-main">
-        <div>
-          <span>To.</span>
-          <img src={undefined} alt="피드 프로필" />
+    <div className={styles.modal}>
+      <div className={styles.header}>
+        <div className={styles.text}>
+          <img src={ic_message} alt="메세지 아이콘" />
+          <span>질문을 작성해 주세요</span>
         </div>
-        <form>
-          <textarea name="content" placeholder="질문을 입력하세요" required />
-          <button type="submit">질문 보내기</button>
-        </form>
+        <img className={styles.btnClose} src={ic_close} alt="닫기 버튼" />
       </div>
+      <div className={styles.destination}>
+        <span className="to">To.</span>
+        <img src={undefined} alt="피드 프로필" />
+        <span>아초는 고양이</span>
+      </div>
+      <form>
+        <textarea name="content" type="text" placeholder="질문을 입력하세요" required />
+        <button type="submit">질문 보내기</button>
+      </form>
     </div>
   );
 }
