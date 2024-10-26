@@ -43,9 +43,10 @@ function Subject({ id, name, imageSource, questionCount }) {
       <figure className={styles.thumbnail}>
         <img src={imageSource} alt={`${name} 썸네일`} />
       </figure>
-      <a href={`/post/${id}`} className="stretched-link">
+      {/* a 태그를 Link로 변경 */}
+      <Link to={`/post/${id}`} className="stretched-link">
         {name}
-      </a>
+      </Link>
       <div className="flex justify-between">
         <span>받은 질문</span>
         <span>{questionCount}개</span>
