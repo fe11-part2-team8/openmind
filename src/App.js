@@ -47,8 +47,8 @@ export default function App() {
 
   const handlePostSubject = async () => {
     const result = await postSubject('테스트씨');
-    console.log(`피드 ID : ${result}`);
-    setSubjectId(result);
+    console.log(`피드 ID : ${result.id}`);
+    setSubjectId(result.id);
   };
 
   const handleGetSubjectList = async () => {
@@ -65,8 +65,8 @@ export default function App() {
 
   const handlePostQuestion = async () => {
     const result = await postQuestion('테스트 질문입니다.', subjectId);
-    console.log(`질문한 ID : ${result}`);
-    setQuestionId(result);
+    console.log(`질문한 ID : ${result.id}`);
+    setQuestionId(result.id);
   };
 
   const handleGetQuestionList = async () => {
@@ -87,8 +87,8 @@ export default function App() {
 
   const handlePostAnswer = async () => {
     const result = await postAnswer('테스트 답변입니다.', questionId);
-    console.log(`답변한 ID : ${result}`);
-    setAnswerId(result);
+    console.log(`답변한 ID : ${result.id}`);
+    setAnswerId(result.id);
   };
 
   const handleGetAnswer = async () => {

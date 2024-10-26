@@ -14,7 +14,6 @@ import { useState } from 'react';
 function useAsync(asyncFunction) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [data, setData] = useState(null);
 
   /**
    * 비동기 함수를 호출하는 래퍼 함수입니다.
@@ -25,16 +24,16 @@ function useAsync(asyncFunction) {
     setError(null);
 
     try {
-      const responseData = await asyncFunction(...args);
-      setData(responseData);
+      return (responseData = await asyncFunction(...args));
     } catch (err) {
       setError(err.message);
+      return;
     } finally {
       setLoading(false);
     }
   };
 
-  return { loading, error, data, wrappedFunction };
+  return { loading, error, wrappedFunction };
 }
 
 export default useAsync;

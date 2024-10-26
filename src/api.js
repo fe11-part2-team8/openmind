@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const TEAM = '11-8';
-const PATH = {
+const PATHS = {
   SUBJECT: '/subjects/',
   QUESTION: '/questions/',
   ANSWER: '/answers/',
@@ -15,9 +15,9 @@ const instance = axios.create({
 });
 
 /**
- * 피드 보내는 함수
+ * 서브젝트 보내는 함수
  * @param {string} name - 닉네임
- * @returns {Promise<string>} - 생성된 피드의 ID
+ * @returns {Promise<string>} - 생성된 서브젝트의 ID
  */
 async function postSubject(name) {
   const data = {
@@ -25,65 +25,69 @@ async function postSubject(name) {
     team: TEAM,
   };
 
-  const response = await instance.post(`${PATH.SUBJECT}`, data);
-  return response.data.id;
-}
-
-/**
- * 모든 사람 피드 불러오는 함수
- * @returns {Promise<Object>} - 모든 피드의 데이터
- */
-async function getSubjectList() {
-  const response = await instance.get(`${PATH.SUBJECT}`);
+  const response = await instance.post(`${PATHS.SUBJECT}`, data);
   return response.data;
 }
 
 /**
- * ID에 해당하는 피드만 불러오는 함수
- * @param {string} subjectId - 피드 ID
- * @returns {Promise<Object>} - 해당 피드의 데이터
+ * 서브젝트 리스트
+ * @returns {Promise<Object>} - 서브젝트 리스트 데이터
+ */
+async function getSubjectList(limit = 8, offset = 0) {
+  const query = new URLSearchParams({ limit, offset }).toString();
+
+  const response = await instance.get(`${PATHS.SUBJECT}?${query}`);
+  return response.data;
+}
+
+/**
+ * ID에 해당하는 서브젝트만 불러오는 함수
+ * @param {string} subjectId - 서브젝트 ID
+ * @returns {Promise<Object>} - 해당 서브젝트의 데이터
  */
 async function getSubject(subjectId) {
-  const response = await instance.get(`${PATH.SUBJECT}${subjectId}/`);
+  const response = await instance.get(`${PATHS.SUBJECT}${subjectId}/`);
   return response.data;
 }
 
 /**
- * ID에 해당하는 피드만 삭제하는 함수
- * @param {string} subjectId - 피드 ID
- * @returns {Promise<Object>} - 삭제된 피드의 데이터
+ * ID에 해당하는 서브젝트만 삭제하는 함수
+ * @param {string} subjectId - 서브젝트 ID
+ * @returns {Promise<Object>} - 삭제된 서브젝트의 데이터
  */
 async function deleteSubject(subjectId) {
-  const response = await instance.delete(`${PATH.SUBJECT}${subjectId}/`);
+  const response = await instance.delete(`${PATHS.SUBJECT}${subjectId}/`);
   return response.data;
 }
 
 /**
  * 질문 보내는 함수
  * @param {string} content - 질문 내용
- * @param {string} subjectId - 관련된 피드의 ID
+ * @param {string} subjectId - 관련된 서브젝트의 ID
  * @returns {Promise<string>} - 생성된 질문의 ID
  */
 async function postQuestion(content, subjectId) {
-  const query = `${PATH.SUBJECT}${subjectId}${PATH.QUESTION}`;
+  const path = `${PATHS.SUBJECT}${subjectId}${PATHS.QUESTION}`;
   const data = {
     subjectId,
     content,
     team: TEAM,
   };
 
-  const response = await instance.post(`${query}`, data);
-  return response.data.id;
+  const response = await instance.post(`${path}`, data);
+  return response.data;
 }
 
 /**
  * 모든 질문을 목록으로 받아오는 함수
- * @param {string} subjectId - 관련된 피드의 ID
+ * @param {string} subjectId - 관련된 서브젝트의 ID
  * @returns {Promise<Object>} - 모든 질문의 데이터
  */
-async function getQuestionList(subjectId) {
-  const query = `${PATH.SUBJECT}${subjectId}${PATH.QUESTION}`;
-  const response = await instance.get(`${query}`);
+async function getQuestionList(subjectId, limit = 10, offset = 0) {
+  const query = new URLSearchParams({ limit, offset }).toString();
+  const path = `${PATHS.SUBJECT}${subjectId}${PATHS.QUESTION}?${query}`;
+
+  const response = await instance.get(`${path}`);
   return response.data;
 }
 
@@ -93,8 +97,8 @@ async function getQuestionList(subjectId) {
  * @returns {Promise<Object>} - 해당 질문의 데이터
  */
 async function getQuestion(questionId) {
-  const query = `${PATH.QUESTION}${questionId}/`;
-  const response = await instance.get(`${query}`);
+  const path = `${PATHS.QUESTION}${questionId}/`;
+  const response = await instance.get(`${path}`);
   return response.data;
 }
 
@@ -104,8 +108,8 @@ async function getQuestion(questionId) {
  * @returns {Promise<Object>} - 삭제된 질문의 데이터
  */
 async function deleteQuestion(questionId) {
-  const query = `${PATH.QUESTION}${questionId}/`;
-  const response = await instance.delete(`${query}`);
+  const path = `${PATHS.QUESTION}${questionId}/`;
+  const response = await instance.delete(`${path}`);
   return response.data;
 }
 
@@ -116,12 +120,12 @@ async function deleteQuestion(questionId) {
  * @returns {Promise<Object>} - 반응 데이터
  */
 async function postReaction(questionId, type = 'like') {
-  const query = `${PATH.QUESTION}${questionId}/reaction/`;
+  const path = `${PATHS.QUESTION}${questionId}/reaction/`;
   const data = {
     type,
   };
 
-  const response = await instance.post(`${query}`, data);
+  const response = await instance.post(`${path}`, data);
   return response.data;
 }
 
@@ -133,7 +137,7 @@ async function postReaction(questionId, type = 'like') {
  * @returns {Promise<string>} - 생성된 답변의 ID
  */
 async function postAnswer(content, questionId, isRejected = false) {
-  const query = `${PATH.QUESTION}${questionId}${PATH.ANSWER}`;
+  const path = `${PATHS.QUESTION}${questionId}${PATHS.ANSWER}`;
   const data = {
     questionId,
     content,
@@ -141,8 +145,8 @@ async function postAnswer(content, questionId, isRejected = false) {
     team: TEAM,
   };
 
-  const response = await instance.post(`${query}`, data);
-  return response.data.id;
+  const response = await instance.post(`${path}`, data);
+  return response.data;
 }
 
 /**
@@ -151,8 +155,8 @@ async function postAnswer(content, questionId, isRejected = false) {
  * @returns {Promise<Object>} - 해당 답변의 데이터
  */
 async function getAnswer(answerId) {
-  const query = `${PATH.ANSWER}${answerId}/`;
-  const response = await instance.get(`${query}`);
+  const path = `${PATHS.ANSWER}${answerId}/`;
+  const response = await instance.get(`${path}`);
   return response.data;
 }
 
@@ -164,13 +168,13 @@ async function getAnswer(answerId) {
  * @returns {Promise<Object>} - 수정된 답변의 데이터
  */
 async function putAnswer(content, answerId, isRejected = false) {
-  const query = `${PATH.ANSWER}${answerId}/`;
+  const path = `${PATHS.ANSWER}${answerId}/`;
   const data = {
     content,
     isRejected,
   };
 
-  const response = await instance.put(`${query}`, data);
+  const response = await instance.put(`${path}`, data);
   return response.data;
 }
 
@@ -182,13 +186,13 @@ async function putAnswer(content, answerId, isRejected = false) {
  * @returns {Promise<Object>} - 수정된 답변의 데이터
  */
 async function patchAnswer(content, answerId, isRejected = false) {
-  const query = `${PATH.ANSWER}${answerId}/`;
+  const path = `${PATHS.ANSWER}${answerId}/`;
   const data = {
     content,
     isRejected,
   };
 
-  const response = await instance.patch(`${query}`, data);
+  const response = await instance.patch(`${path}`, data);
   return response.data;
 }
 
@@ -198,8 +202,8 @@ async function patchAnswer(content, answerId, isRejected = false) {
  * @returns {Promise<Object>} - 삭제된 답변의 데이터
  */
 async function deleteAnswer(answerId) {
-  const query = `${PATH.ANSWER}${answerId}/`;
-  const response = await instance.delete(`${query}`);
+  const path = `${PATHS.ANSWER}${answerId}/`;
+  const response = await instance.delete(`${path}`);
   return response.data;
 }
 
