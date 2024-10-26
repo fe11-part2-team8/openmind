@@ -17,7 +17,7 @@ import {
   putAnswers,
   patchAnswers,
 } from './api';
-import FeedForm from './components/FeedForm';
+import SubjectCreateForm from './components/SubjectCreateForm';
 
 function Links() {
   return (
@@ -147,7 +147,7 @@ export default function App() {
         <button onClick={handlePatchAnswers}>ANSWER PATCH</button>
         <br />
         <button onClick={handleDeleteAnswers}>ANSWER DELETE</button>
-        <FeedForm />
+        <SubjectCreateForm />
       </div>
     </main>
   );

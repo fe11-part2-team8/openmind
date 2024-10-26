@@ -15,7 +15,7 @@ import {
   profiles_rabbit_smile,
 } from '../../assets/datas/profile/index';
 
-function FeedForm() {
+function SubjectCreateForm() {
   const [inputValue, setInputValue] = useState(''); // 입력된 이름 저장
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -60,7 +60,7 @@ function FeedForm() {
   };
 
   // 피드 생성, 페이지 이동
-  const handleCreateFeed = async (event) => {
+  const handleCreateSubject = async (event) => {
     event.preventDefault(); // 폼 제출 시 페이지 새로고침 방지
 
     try {
@@ -82,7 +82,7 @@ function FeedForm() {
       }
 
       // 피드 ID를 localStorage에 저장하고 경로 변경
-      localStorage.setItem('feedId', subjectId);
+      localStorage.setItem('SubjectId', subjectId);
       navigate(`/post/${subjectId}/answer`);
     } catch (error) {
       setError('피드를 생성하는 데 실패했습니다.');
@@ -91,7 +91,9 @@ function FeedForm() {
   };
 
   return (
-    <form onSubmit={handleCreateFeed}>
+    <form onSubmit={handleCreateSubject}>
+      {' '}
+      {/* 여기서 handleCreateFeed -> handleCreateSubject로 수정 */}
       <input
         type="text"
         value={inputValue}
@@ -105,4 +107,4 @@ function FeedForm() {
   );
 }
 
-export default FeedForm;
+export default SubjectCreateForm;
