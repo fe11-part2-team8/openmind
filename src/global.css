@@ -6,6 +6,7 @@
   --base-font: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
     Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic',
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+
   /* color */
   --gray-10: #fff;
   --gray-20: #f9f9f9;
@@ -36,7 +37,7 @@
     font-size: 16px;
   }
   body {
-    background-color: #fcfcfc;
+    background-color: var(--gray-20);
   }
   input,
   button,
@@ -123,5 +124,11 @@
   }
   .bg-red {
     background-color: var(--red);
+  }
+
+  .stretched-link::after {
+    @apply absolute inset-0;
+    content: '';
+    z-index: 1;
   }
 }
