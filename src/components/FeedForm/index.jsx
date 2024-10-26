@@ -2,36 +2,37 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postSubject, getAllSubject } from '../../api';
 
-// 프로필 이미지 리스트
-import profile_bear_smile from '../../assets/images/profile/bear-smile.png';
-import profile_cat_bee from '../../assets/images/profile/cat-bee.png';
-import profile_cat_smile from '../../assets/images/profile/cat-smile.png';
-import profile_dog_hone from '../../assets/images/profile/dog-hone.png';
-import profile_dog_smile from '../../assets/images/profile/dog-smile.png';
-import profile_hamster from '../../assets/images/profile/hamster.png';
-import profile_music_band_bass from '../../assets/images/profile/music-band-bass.png';
-import profile_music_band_guitar from '../../assets/images/profile/music-band-guitar.png';
-import profile_pig from '../../assets/images/profile/pig.png';
-import profile_rabbit_smile from '../../assets/images/profile/rabbit-smile.png';
-
-// 프로필 이미지 리스트
-const profileImages = [
-  profile_bear_smile,
-  profile_cat_bee,
-  profile_cat_smile,
-  profile_dog_hone,
-  profile_dog_smile,
-  profile_hamster,
-  profile_music_band_bass,
-  profile_music_band_guitar,
-  profile_pig,
-  profile_rabbit_smile,
-];
+import {
+  profiles_bear_smile,
+  profiles_cat_bee,
+  profiles_cat_smile,
+  profiles_dog_hone,
+  profiles_dog_smile,
+  profiles_hamster,
+  profiles_music_band_bass,
+  profiles_music_band_guitar,
+  profiles_pig,
+  profiles_rabbit_smile,
+} from '../../assets/datas/profile/index';
 
 function FeedForm() {
   const [inputValue, setInputValue] = useState(''); // 입력된 이름 저장
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  // 프로필 이미지 배열 정의
+  const profileImages = [
+    profiles_bear_smile,
+    profiles_cat_bee,
+    profiles_cat_smile,
+    profiles_dog_hone,
+    profiles_dog_smile,
+    profiles_hamster,
+    profiles_music_band_bass,
+    profiles_music_band_guitar,
+    profiles_pig,
+    profiles_rabbit_smile,
+  ];
 
   // 랜덤 프로필 함수
   const getRandomProfileImage = () => {
