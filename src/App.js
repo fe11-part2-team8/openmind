@@ -17,6 +17,7 @@ import {
   putAnswers,
   patchAnswers,
 } from './api';
+import QuestionListItem from './components/QuestionListItem/index.jsx';
 
 function Links() {
   return (
@@ -147,6 +148,7 @@ export default function App() {
         <br />
         <button onClick={handleDeleteAnswers}>ANSWER DELETE</button>
       </div>
+      <QuestionListItem />
     </main>
   );
 }
