@@ -29,12 +29,13 @@ function Header() {
 }
 
 /**
- * 서브젝트 리스트 페이지 서브젝트 목록 아이템
- * @param {number} id : 서브젝트 아이디
- * @param {string} name : 서브젝트 생성자 이름
- * @param {string} imageSource : 서브젝트 생성자 썸네일
- * @param {number} questionCount : 서브젝트의 질문 갯수
- * @return {JSX}
+ * 서브젝트 리스트 페이지 > 서브젝트 리스트의 아이템
+ * @param {object} props
+ * @param {number} props.id : 서브젝트 아이디
+ * @param {string} props.name : 서브젝트 생성자 이름
+ * @param {string} props.imageSource : 서브젝트 생성자 썸네일
+ * @param {number} props.questionCount : 서브젝트의 질문 갯수
+ * @return {React.JSX} 서브젝트 리스트의 아이템
  */
 function Subject({ id, name, imageSource, questionCount }) {
   return (
@@ -57,7 +58,7 @@ function Subject({ id, name, imageSource, questionCount }) {
  * 서브젝트 목록 페이지
  * @return {JSX}
  */
-function ListPage() {
+function SubjectListPage() {
   const [subjects, setSubjects] = useState([]);
 
   const handleSelectChange = (e) => {
@@ -74,14 +75,14 @@ function ListPage() {
   };
 
   useEffect(() => {
-    const handleGetSubjects = async () => {
+    const getSubjectList = async () => {
       const result = await getAllSubject();
       if (!result) return;
 
       setSubjects(result.results);
     };
 
-    handleGetSubjects();
+    getSubjectList();
   }, []);
 
   return (
@@ -116,4 +117,4 @@ function ListPage() {
   );
 }
 
-export default ListPage;
+export default SubjectListPage;
