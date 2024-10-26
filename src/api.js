@@ -1,5 +1,3 @@
-// keeping
-
 import axios from 'axios';
 
 const TEAM = '11-8';
@@ -41,6 +39,17 @@ function getAllSubject() {
     .catch((error) => {
       console.error('패칭 중 오류가 발생했습니다', error.response?.data || error.message);
       throw new Error('전체 피드를 불러오는데 실패했습니다.');
+    });
+}
+// 페이지네이션을 만들기 위해 임의로 만들었습니다.
+// 바꾸실때 이 함수 이름을 써주시면 감사하겠습니다.
+function getSubjectList(limit = 8, offset = 0) {
+  const query = new URLSearchParams({ limit, offset }).toString();
+  return instance
+    .get(`${SUBJECTQUERY}?${query}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('getSubjectList:error', error);
     });
 }
 
@@ -228,6 +237,7 @@ function deleteAnswers(answerId) {
 export {
   postSubject,
   getAllSubject,
+  getSubjectList,
   getSubject,
   deleteSubject,
   postQuestions,

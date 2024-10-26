@@ -138,3 +138,27 @@
     z-index: 1;
   }
 }
+
+/* pagination style */
+.pagination {
+  @apply my-10 flex items-center justify-center text-xl;
+  font-family: 'Actor', var(--base-font);
+
+  a {
+    @apply block h-10 w-10 rounded-lg p-2 text-center leading-6;
+    color: var(--gray-40);
+
+    &:hover {
+      color: var(--gray-50);
+    }
+
+    .active & {
+      color: var(--brown-40);
+    }
+    .disabled & {
+      opacity: 0.5;
+      cursor: default;
+      pointer-events: none;
+    }
+  }
+}
