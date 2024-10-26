@@ -54,7 +54,6 @@ function SubjectCreateForm() {
       const existingSubject = subjects.results.find((subject) => subject.name === name);
       return existingSubject ? existingSubject.id : null; // 이미 존재하면 해당 ID 반환
     } catch (error) {
-      console.error('피드를 조회하는 중 오류가 발생했습니다:', error);
       throw error;
     }
   };
@@ -70,15 +69,10 @@ function SubjectCreateForm() {
       let subjectId = await findSubjectByName(inputValue);
 
       if (subjectId) {
-        console.log(`이미 존재하는 피드 ID: ${subjectId}`);
       } else {
         // 피드가 없으면 랜덤 프로필 이미지와 함께 새 피드 생성
         const randomProfileImage = getRandomProfileImage();
         subjectId = await postSubject(inputValue, randomProfileImage);
-
-        // 확인용
-        console.log(`새로 생성된 피드 ID: ${subjectId}`);
-        console.log(`지정된 프로필 이미지:`, randomProfileImage);
       }
 
       // 피드 ID를 localStorage에 저장하고 경로 변경
