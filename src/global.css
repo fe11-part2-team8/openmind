@@ -124,4 +124,10 @@
   .bg-red {
     background-color: var(--red);
   }
+
+  /* actor 폰트 사용 */
+  .font-actor {
+    font-family: 'Actor', var(--base-font);
+    font-weight: 400;
+  }
 }
