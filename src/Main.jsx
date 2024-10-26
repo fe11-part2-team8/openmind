@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import App from './App';
 import HomePage from './pages/HomePage';
-import ListPage from './pages/ListPage';
+import SubjectListPage from './pages/SubjectList.page';
 import PostPage from './pages/PostPage';
 import AnswerPage from './pages/AnswerPage';
 
@@ -11,7 +11,7 @@ function Main() {
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<HomePage />} />
-          <Route path="list" element={<ListPage />} />
+          <Route path="list" element={<SubjectListPage />} />
           <Route path="post">
             <Route path=":id">
               <Route index element={<PostPage />} />
