@@ -61,6 +61,10 @@ function SubjectList() {
   return (
     <>
       <ul className={styles.list} onClick={handleClickSubject}>
+        {loadingRead && '로딩중'}
+        {errorRead ? errorRead : ''}
+        {loadingDelete && '로딩중'}
+        {errorDelete ? errorDelete : ''}
         {subjects.map((subject) => {
           return (
             <SubjectListItem
