@@ -1,0 +1,43 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  margin: 0 auto;
+  width: 100%;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  gap: 32px;
+  font-size: 20px;
+  transition: all 100ms;
+
+  .date {
+    flex-grow: 1;
+  }
+
+  button {
+    display: none;
+    font-weight: 600;
+  }
+
+  .green {
+    color: green;
+  }
+
+  .red {
+    color: red;
+  }
+
+  &:hover {
+    box-shadow: var(--shadow-3pt);
+    transform: scale(1.05);
+
+    button {
+      display: block;
+    }
+  }
+}
