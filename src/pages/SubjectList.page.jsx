@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Pagination from 'react-js-pagination';
 //
-import { getAllSubject } from '../api';
+import { getSubjectList } from '../api';
 //
-import { ReactComponent as Logo } from '../assets/images/logo.svg';
+import logo from '../assets/images/logo.svg';
 import styles from './SubjectList.page.module.css';
 
 /**
@@ -17,11 +18,11 @@ function Header() {
     <div className="flex items-center justify-between py-10">
       <h2>
         <Link to="/">
-          <Logo />
+          <img src={logo} alt="Open Mind" width="146" height="57" />
         </Link>
       </h2>
 
-      <Link to={id ? `/post/${id}/answer` : '/'} className="border px-4 py-2">
+      <Link to={id ? `/post/${id}/answer` : '/'} className="rounded-lg border px-4 py-2">
         답변하러 가기
       </Link>
     </div>
@@ -54,13 +55,24 @@ function Subject({ id, name, imageSource, questionCount }) {
   );
 }
 
+// 서브젝트 리스트 갯수 제한
+const LIMIT = 8;
+// 서브젝트 리스트 총 갯수
+let total = 0;
+
 /**
- * 서브젝트 목록 페이지
+ * 서브젝트 리스트 페이지
  * @return {React.JSX}
  */
 function SubjectListPage() {
   const [subjects, setSubjects] = useState([]);
+  const [page, setPage] = useState(1);
 
+  /**
+   * 정렬 셀렉트 핸들러 함수
+   * 셀렉트한 값에 따라 서브젝트를 정렬
+   * @param {object} event : 셀렉트 이벤트 객체
+   */
   const handleSelectChange = (e) => {
     const value = e.target.value;
     let sorted;
@@ -75,15 +87,21 @@ function SubjectListPage() {
   };
 
   useEffect(() => {
-    const getSubjectList = async () => {
-      const result = await getAllSubject();
+    /**
+     * 서브젝트 리스트를 요청해서 받아오는 함수
+     * @returns {object} 서브젝트 리스트 객체
+     */
+    const handleLoadSubjectList = async () => {
+      const offset = (page - 1) * LIMIT;
+      const result = await getSubjectList(LIMIT, offset);
       if (!result) return;
 
       setSubjects(result.results);
+      total = result.count;
     };
 
-    getSubjectList();
-  }, []);
+    handleLoadSubjectList();
+  }, [page]);
 
   return (
     <div className="container mx-auto">
@@ -103,16 +121,30 @@ function SubjectListPage() {
       </div>
 
       <ul className={styles.cards}>
-        {subjects.map(({ id, name, imageSource, questionCount }) => (
-          <Subject
-            key={id}
-            id={id}
-            name={name}
-            imageSource={imageSource}
-            questionCount={questionCount}
-          />
-        ))}
+        {subjects?.length > 0 ? (
+          subjects.map(({ id, name, imageSource, questionCount }) => (
+            <Subject
+              key={id}
+              id={id}
+              name={name}
+              imageSource={imageSource}
+              questionCount={questionCount}
+            />
+          ))
+        ) : (
+          <li className="w-full py-6 text-center text-2xl font-bold">서브젝트가 없습니다.</li>
+        )}
       </ul>
+
+      <Pagination
+        activePage={page}
+        totalItemsCount={total}
+        itemsCountPerPage={LIMIT}
+        onChange={setPage}
+        hideFirstLastPages={true}
+        prevPageText="&lt;"
+        nextPageText="&gt;"
+      />
     </div>
   );
 }
