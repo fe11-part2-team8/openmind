@@ -44,6 +44,7 @@ function QuestionListItem() {
       {questions.map((question) => (
         <QuestionWithAnswer
           key={question.id}
+          questionId={question.id} // 질문 ID 전달
           question={question} // 질문 객체 전달
           questionDate={question.createdAt} //질문 날짜 전달
           name={subjectData.name} // 이름 전달
@@ -51,6 +52,7 @@ function QuestionListItem() {
           answerDate={question.answer ? question.answer.createdAt : null} //답변 날짜 전달
           like={question.like} //좋아요 전달
           dislike={question.dislike} //싫어요 전달
+          isRejected={question.answer ? question.answer.isRejected : false} // 답변 거절 상태 전달
         />
       ))}
     </div>
