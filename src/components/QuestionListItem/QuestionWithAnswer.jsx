@@ -3,7 +3,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/ko'; // 한국어 가져오기
 
 dayjs.extend(relativeTime);
-// 맞춤형 한국어 로케일
+
 dayjs.locale('ko', {
   relativeTime: {
     future: '%s 후',
@@ -33,30 +33,38 @@ function QuestionWithAnswer({
   isRejected,
   questionId,
   handleReaction,
+  isSubjectOwner,
 }) {
   return (
     <div>
-      <badge>{answer ? '답변 완료' : '미답변'}</badge>
+      <span>{answer ? '답변 완료' : '미답변'}</span>
+
+      {/* 피드 주인일 경우 */}
+      {isSubjectOwner && <button>···</button>}
+
       <div>
         <p>질문 · {dayjs(questionDate).fromNow()}</p>
-        <h3>{question.content}</h3>
-        {/* <p>질문id: {questionId}</p> */}
+        <p>{question.content}</p>
       </div>
 
       {answer && (
         <div>
-          <h4>{name}</h4>
-          <p>{dayjs(answerDate).fromNow()}</p>
+          <div>
+            <p>{name}</p>
+            <p>{dayjs(answerDate).fromNow()}</p>
+          </div>
           <p>{answer.content}</p>
         </div>
       )}
-      <p>
+
+      <div>
+        {/* 좋아요/싫어요 버튼 */}
         <button onClick={() => handleReaction(questionId, 'like')}>좋아요: {like}</button>
         <button onClick={() => handleReaction(questionId, 'dislike')}>싫어요: {dislike}</button>
-      </p>
+      </div>
 
       {isRejected && <p>답변 거절</p>}
-      <br></br>
+      <br />
     </div>
   );
 }

@@ -8,6 +8,7 @@ function QuestionListItem() {
   const [questions, setQuestions] = useState([]); // 질문 목록 상태
   const [subjectData, setSubjectData] = useState(null); // 서브젝트 데이터 상태
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
+  const [isSubjectOwner, setIsSubjectOwner] = useState(false); //서브젝트 주인 여부
 
   useEffect(() => {
     async function getData() {
@@ -19,6 +20,14 @@ function QuestionListItem() {
         //서브젝트(name) 데이터 받아옴
         const subjectResponse = await getSubject(id); // subjectId를 전달
         setSubjectData(subjectResponse); // 서브젝트 데이터를 상태로 설정
+
+        // localStorage에서 저장된 피드 주인의 ID 가져오기
+        const storedSubjectId = localStorage.getItem('subjectId');
+
+        // 현재 피드 ID와 localStorage의 피드 ID 비교
+        if (storedSubjectId === id) {
+          setIsSubjectOwner(true); // 일치하면 피드 주인임
+        }
 
         setLoading(false); // 로딩 상태 해제
       } catch (error) {
@@ -82,6 +91,7 @@ function QuestionListItem() {
           dislike={question.dislike} //싫어요 전달
           isRejected={question.answer ? question.answer.isRejected : false} // 답변 거절 상태 전달
           handleReaction={handleReaction} // 좋아요/싫어요 처리 함수 전달
+          isSubjectOwner={isSubjectOwner}
         />
       ))}
     </div>
