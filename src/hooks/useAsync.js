@@ -24,7 +24,7 @@ function useAsync(asyncFunction) {
     setError(null);
 
     try {
-      return (responseData = await asyncFunction(...args));
+      return await asyncFunction(...args);
     } catch (err) {
       setError(err.message);
       return;
