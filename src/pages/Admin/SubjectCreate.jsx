@@ -18,8 +18,10 @@ const createData = async (value) => {
     for (let j = 0; j < value.question; j++) {
       const question = await postQuestion(content + i, subject.id);
       console.log('Question : ', question);
-      const answer = await postAnswer(content + i, question.id);
-      console.log('Answer : ', answer);
+      if (value.question) {
+        const answer = await postAnswer(content + i, question.id);
+        console.log('Answer : ', answer);
+      }
     }
   }
 };
