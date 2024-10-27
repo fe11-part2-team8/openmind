@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { postAnswer, postQuestion, postSubject } from '../../api';
-import useAsync from '../../hooks/useAsync';
 import styles from './SubjectCreate.module.css';
 
 const DEFAULT_VALUE = {
