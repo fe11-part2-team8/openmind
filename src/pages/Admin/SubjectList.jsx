@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react';
 import Pagination from 'react-js-pagination';
 import styles from './SubjectList.module.css';
-import { deleteSubject, getSubjectList } from '../../api';
+import { deleteSubject, getQuestionList, getSubjectList } from '../../api';
 import useAsync from '../../hooks/useAsync';
 import ic_user from '../../assets/images/ic_user.svg';
 import ic_trash from '../../assets/images/ic_trash.svg';
+import ic_message from '../../assets/images/ic_message.svg';
 
 const PAGE_SIZE = 16;
 let total = 0;
 
 function SubjectList() {
   const [subjects, setSubjects] = useState([]);
+  const [qusetions, setQuestions] = useState([]);
   const [page, setPage] = useState(1);
   const {
     loading: loadingRead,
@@ -36,13 +38,19 @@ function SubjectList() {
     fetchData();
   };
 
+  const handleClickSubject = async (e) => {
+    const subjectId = e.target.closest('li').dataset.id;
+    const response = await getQuestionList(subjectId);
+    setQuestions(response.results);
+  };
+
   useEffect(() => {
     fetchData();
   }, [page]);
 
   return (
     <>
-      <ul className={styles.list}>
+      <ul className={styles.list} onClick={handleClickSubject}>
         {subjects.map((subject) => (
           <SubjectListItem key={subject.id} subject={subject} onDelete={handleDeleteSubject} />
         ))}
@@ -61,7 +69,7 @@ function SubjectList() {
 }
 
 function SubjectListItem({ subject, onDelete }) {
-  const { id, name, createdAt } = subject;
+  const { id, name, createdAt, questionCount } = subject;
 
   const handleClickLoginButton = () => {
     localStorage.setItem('SubjectId', id);
@@ -72,10 +80,14 @@ function SubjectListItem({ subject, onDelete }) {
   };
 
   return (
-    <li className={styles.item}>
+    <li className={styles.item} data-id={id}>
       <p>{id}</p>
       <h4>{name}</h4>
       <p className={styles.date}>{createdAt}</p>
+      <div className={styles.question}>
+        <img src={ic_message} alt="질문" />
+        {questionCount}
+      </div>
       <button className={styles.green} onClick={handleClickLoginButton}>
         <img src={ic_user} alt="로그인" />
       </button>

@@ -19,17 +19,13 @@
     flex-grow: 1;
   }
 
+  .question {
+    display: flex;
+  }
+
   button {
     display: none;
     font-weight: 600;
-  }
-
-  .green {
-    color: green;
-  }
-
-  .red {
-    color: red;
   }
 
   &:hover {
