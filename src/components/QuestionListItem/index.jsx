@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { getAllQuestions, getSubject } from '../../api';
+import { getAllQuestions, getSubject, postReaction } from '../../api';
 import QuestionWithAnswer from './QuestionWithAnswer';
 
 function QuestionListItem() {
@@ -39,6 +39,34 @@ function QuestionListItem() {
     return <div>질문이 없습니다.</div>;
   }
 
+  // 좋아요/싫어요 클릭 처리 함수
+  const handleReaction = async (questionId, type) => {
+    try {
+      // 서버에 좋아요/싫어요 반영 요청을 보냄
+      await postReaction(questionId, type);
+
+      // 이전 질문 목록을 복사하고, 해당 질문의 좋아요/싫어요 상태를 업데이트
+      setQuestions((prevQuestions) =>
+        prevQuestions.map((question) => {
+          // 질문 ID가 일치하는 질문만 업데이트
+          if (question.id === questionId) {
+            return {
+              ...question, // 기존 질문 내용을 유지
+              // type이 'like'일 때만 좋아요를 1 증가, 아니면 그대로 유지
+              like: type === 'like' ? question.like + 1 : question.like,
+              // type이 'dislike'일 때만 싫어요를 1 증가, 아니면 그대로 유지
+              dislike: type === 'dislike' ? question.dislike + 1 : question.dislike,
+            };
+          }
+          // 질문 ID가 일치하지 않으면 기존 질문 반환
+          return question;
+        }),
+      );
+    } catch (error) {
+      console.error('좋아요/싫어요 반영 실패:', error);
+    }
+  };
+
   return (
     <div>
       {questions.map((question) => (
@@ -53,6 +81,7 @@ function QuestionListItem() {
           like={question.like} //좋아요 전달
           dislike={question.dislike} //싫어요 전달
           isRejected={question.answer ? question.answer.isRejected : false} // 답변 거절 상태 전달
+          handleReaction={handleReaction} // 좋아요/싫어요 처리 함수 전달
         />
       ))}
     </div>
