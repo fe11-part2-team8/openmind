@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Pagination from 'react-js-pagination';
 import styles from './SubjectList.module.css';
 import { deleteSubject, getQuestionList, getSubjectList } from '../../api';
@@ -7,7 +7,7 @@ import ic_user from '../../assets/images/ic_user.svg';
 import ic_trash from '../../assets/images/ic_trash.svg';
 import ic_message from '../../assets/images/ic_message.svg';
 
-const PAGE_SIZE = 16;
+const PAGE_SIZE = 12;
 let total = 0;
 
 function SubjectList() {
@@ -26,16 +26,16 @@ function SubjectList() {
     wrappedFunction: deleteSubjectAsync,
   } = useAsync(deleteSubject);
 
-  const fetchData = useCallback(async () => {
-    const offset = PAGE_SIZE * (page - 1);
-    const response = await getSubjectListAsync(PAGE_SIZE, offset);
-    total = response.count;
-    setSubjects(response.results);
-  }, [page, getSubjectListAsync]);
-
   const handleDeleteSubject = async (subjectId) => {
     const result = await deleteSubjectAsync(subjectId);
     if (result === '') alert(result);
+
+    const fetchData = async () => {
+      const offset = PAGE_SIZE * (page - 1);
+      const response = await getSubjectListAsync(PAGE_SIZE, offset);
+      total = response?.count;
+      setSubjects(response?.results);
+    };
     fetchData();
   };
 
@@ -55,8 +55,16 @@ function SubjectList() {
   };
 
   useEffect(() => {
+    const fetchData = async () => {
+      const offset = PAGE_SIZE * (page - 1);
+      const response = await getSubjectListAsync(PAGE_SIZE, offset);
+      if (!response) return;
+      total = response?.count;
+      setSubjects(response?.results);
+    };
+
     fetchData();
-  }, [page, fetchData]);
+  }, [page, getSubjectListAsync]);
 
   return (
     <>
