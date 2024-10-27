@@ -13,6 +13,7 @@ let total = 0;
 function SubjectList() {
   const [subjects, setSubjects] = useState([]);
   const [qusetions, setQuestions] = useState([]);
+  const [selected, setSelected] = useState(null);
   const [page, setPage] = useState(1);
   const {
     loading: loadingRead,
@@ -39,8 +40,17 @@ function SubjectList() {
   };
 
   const handleClickSubject = async (e) => {
-    const subjectId = e.target.closest('li').dataset.id;
+    if (e.target.closest(`.${styles.item}`) == null) return;
+
+    const subjectId = e.target.closest(`.${styles.item}`).dataset.id;
+
+    if (subjectId === String(selected)) {
+      setSelected(null);
+      return;
+    }
+
     const response = await getQuestionList(subjectId);
+    setSelected(Number(subjectId));
     setQuestions(response.results);
   };
 
@@ -51,9 +61,17 @@ function SubjectList() {
   return (
     <>
       <ul className={styles.list} onClick={handleClickSubject}>
-        {subjects.map((subject) => (
-          <SubjectListItem key={subject.id} subject={subject} onDelete={handleDeleteSubject} />
-        ))}
+        {subjects.map((subject) => {
+          return (
+            <SubjectListItem
+              key={subject.id}
+              selected={selected === subject.id}
+              subject={subject}
+              questions={qusetions}
+              onDelete={handleDeleteSubject}
+            />
+          );
+        })}
       </ul>
       <Pagination
         activePage={page}
@@ -68,7 +86,7 @@ function SubjectList() {
   );
 }
 
-function SubjectListItem({ subject, onDelete }) {
+function SubjectListItem({ selected, subject, onDelete, questions }) {
   const { id, name, createdAt, questionCount } = subject;
 
   const handleClickLoginButton = () => {
@@ -80,21 +98,46 @@ function SubjectListItem({ subject, onDelete }) {
   };
 
   return (
-    <li className={styles.item} data-id={id}>
-      <p>{id}</p>
-      <h4>{name}</h4>
-      <p className={styles.date}>{createdAt}</p>
-      <div className={styles.question}>
-        <img src={ic_message} alt="질문" />
-        {questionCount}
+    <li className={selected ? styles.selected : ''}>
+      <div className={styles.item} data-id={id}>
+        <p>{id}</p>
+        <h4>{name}</h4>
+        <p className={styles.date}>{createdAt}</p>
+        <div className={styles.questionCount}>
+          <img src={ic_message} alt="질문" />
+          {questionCount}
+        </div>
+        <button onClick={handleClickLoginButton}>
+          <img src={ic_user} alt="로그인" />
+        </button>
+        <button onClick={handleClickDeleteButton}>
+          <img src={ic_trash} alt="삭제" />
+        </button>
       </div>
-      <button className={styles.green} onClick={handleClickLoginButton}>
-        <img src={ic_user} alt="로그인" />
-      </button>
-      <button className={styles.red} onClick={handleClickDeleteButton}>
-        <img src={ic_trash} alt="삭제" />
-      </button>
+      {selected && <QuestionList questions={questions} />}
     </li>
+  );
+}
+
+function QuestionList({ questions }) {
+  return (
+    <ul>
+      {questions.map((question) => {
+        const { id, content, createdAt, answer } = question;
+        return (
+          <li key={question.id} className={styles.question}>
+            <p>Q. {id}</p>
+            <p>{content}</p>
+            <p className={styles.date}>{createdAt}</p>
+            <div className={styles.answer}>
+              <p>A. {answer.id}</p>
+              <p>{answer.content}</p>
+              <p className={styles.date}>{answer.createdAt}</p>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 

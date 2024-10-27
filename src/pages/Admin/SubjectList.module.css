@@ -7,9 +7,15 @@
   width: 100%;
 }
 
+.selected .item {
+  background-color: var(--gray-30);
+}
+
 .item {
   display: flex;
   align-items: center;
+  width: 100%;
+
   padding: 12px 24px;
   gap: 32px;
   font-size: 20px;
@@ -19,13 +25,12 @@
     flex-grow: 1;
   }
 
-  .question {
+  .questionCount {
     display: flex;
   }
 
   button {
     display: none;
-    font-weight: 600;
   }
 
   &:hover {
@@ -35,5 +40,35 @@
     button {
       display: block;
     }
+  }
+}
+
+.question {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  width: 100%;
+  flex-wrap: wrap;
+  padding: 12px 32px;
+  gap: 32px;
+  font-size: 20px;
+
+  .date {
+    flex-grow: 1;
+  }
+}
+
+.answer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+
+  padding: 0 32px;
+  gap: 32px;
+  font-size: 20px;
+
+  .date {
+    flex-grow: 1;
   }
 }
