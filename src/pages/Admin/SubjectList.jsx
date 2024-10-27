@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Pagination from 'react-js-pagination';
 import styles from './SubjectList.module.css';
 import { deleteSubject, getQuestionList, getSubjectList } from '../../api';
@@ -26,12 +26,12 @@ function SubjectList() {
     wrappedFunction: deleteSubjectAsync,
   } = useAsync(deleteSubject);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     const offset = PAGE_SIZE * (page - 1);
     const response = await getSubjectListAsync(PAGE_SIZE, offset);
     total = response.count;
     setSubjects(response.results);
-  };
+  }, [page, getSubjectListAsync]);
 
   const handleDeleteSubject = async (subjectId) => {
     const result = await deleteSubjectAsync(subjectId);
@@ -56,7 +56,7 @@ function SubjectList() {
 
   useEffect(() => {
     fetchData();
-  }, [page]);
+  }, [page, fetchData]);
 
   return (
     <>
