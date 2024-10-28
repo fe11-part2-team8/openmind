@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 //
-import { getSubjectList } from '../api';
+import { deleteSubject, getSubjectList } from '../api';
 //
 import logo from '../assets/images/logo.svg';
 import styles from './SubjectList.page.module.css';
@@ -39,14 +39,16 @@ function Header() {
  * @return {React.JSX} 서브젝트 리스트의 아이템
  */
 function Subject({ id, name, imageSource, questionCount }) {
+  const handleClickDelete = async () => {
+    const result = await deleteSubject(id);
+    console.log(result);
+  };
   return (
-    <li className={styles.card}>
+    <li className={styles.card} onClick={handleClickDelete}>
       <figure className={styles.thumbnail}>
         <img src={imageSource} alt={`${name} 썸네일`} />
       </figure>
-      <a href={`/post/${id}`} className="stretched-link">
-        {name}
-      </a>
+      <a className="stretched-link">{name}</a>
       <div className="flex justify-between">
         <span>받은 질문</span>
         <span>{questionCount}개</span>
