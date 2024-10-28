@@ -2,11 +2,11 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useState } from 'react';
 import 'dayjs/locale/ko'; // 한국어 가져오기
-import thumbsUp from '../../assets/images/ic_thumbs-up.svg'; // 좋아요 아이콘
-import thumbsDown from '../../assets/images/ic_thumbs-down.svg'; // 싫어요 아이콘
+
 import Dropdown from './Dropdown/index';
 import { deleteQuestion, patchAnswer, postAnswer } from '../../api'; // 답변 수정 및 추가 API 불러오기
 import AnswerEditor from './Dropdown/AnswerEditor'; // 수정 컴포넌트 가져오기
+import ReactionButtons from '../../components/QuestionListItem/ReactionButton'; // 좋아요/싫어요 컴포넌트 불러오기
 
 dayjs.extend(relativeTime);
 
@@ -117,20 +117,8 @@ function QuestionWithAnswer({
             isSubjectOwner && <button onClick={handleEdit}>답변하기</button>
           )}
 
-          <div style={{ display: 'flex' }}>
-            {/* 좋아요/싫어요 버튼 */}
-            <button onClick={() => handleReaction(questionId, 'like')} style={{ display: 'flex' }}>
-              <img src={thumbsUp} alt="좋아요 아이콘" />
-              좋아요: {like}
-            </button>
-            <button
-              onClick={() => handleReaction(questionId, 'dislike')}
-              style={{ display: 'flex' }}
-            >
-              <img src={thumbsDown} alt="싫어요 아이콘" />
-              싫어요: {dislike}
-            </button>
-          </div>
+          {/* ReactionButtons 컴포넌트를 사용하여 좋아요/싫어요 버튼 렌더링 */}
+          <ReactionButtons questionId={questionId} initialLikes={like} initialDislikes={dislike} />
 
           {isRejected && <p>답변 거절</p>}
         </>
