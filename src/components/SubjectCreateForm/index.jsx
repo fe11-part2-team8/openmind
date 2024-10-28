@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { postSubject, getAllSubject } from '../../api';
+import { postSubject, getSubjectList } from '../../api';
 
 import PROFILES from '../../assets/datas/profile/index'; // PROFILES 배열
 
@@ -20,17 +20,23 @@ function SubjectCreateForm() {
   };
 
   // 이름으로 기존 피드 조회
-  const findSubjectByName = async (name) => {
-    try {
-      const subjects = await getAllSubject(); // 모든 피드를 가져옴
+  /*
+const findSubjectByName = async (name) => {
+  try {
+    // 모든 피드 리스트를 가져옴
+    const subjects = await getSubjectList(); 
 
-      // subjects.results 배열에 접근
-      const existingSubject = subjects.results.find((subject) => subject.name === name);
-      return existingSubject ? existingSubject.id : null; // 이미 존재하면 해당 ID 반환
-    } catch (error) {
-      throw error;
-    }
-  };
+    // subjects.results 배열에서 해당 이름을 가진 피드를 찾음
+    const existingSubject = subjects.results.find((subject) => subject.name === name);
+
+    // 이미 존재하는 피드가 있으면 해당 피드의 ID를 반환하고, 없으면 null을 반환
+    return existingSubject ? existingSubject.id : null; 
+  } catch (error) {
+    // 오류가 발생하면 예외를 던짐
+    throw error;
+  }
+};
+*/
 
   // 피드 생성, 페이지 이동
   const handleCreateSubject = async (event) => {

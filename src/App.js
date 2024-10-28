@@ -147,12 +147,8 @@ export default function App() {
         <br />
         <button onClick={handlePatchAnswer}>ANSWER PATCH</button>
         <br />
-<<<<<<< HEAD
-        <button onClick={handleDeleteAnswers}>ANSWER DELETE</button>
         <SubjectCreateForm />
-=======
         <button onClick={handleDeleteAnswer}>ANSWER DELETE</button>
->>>>>>> origin/develop
       </div>
     </main>
   );

@@ -24,22 +24,9 @@ async function postSubject(name) {
     name,
     team: TEAM,
   };
-<<<<<<< HEAD
-  return instance
-    .post(`${SUBJECTQUERY}`, data)
-    .then((response) => {
-      const subjectId = response.data.id;
-      return subjectId;
-    })
-    .catch((error) => {
-      console.error('패칭 중 오류가 발생했습니다', error.response?.data || error.message);
-      throw new Error('피드를 보내는데 실패했습니다.');
-    });
-=======
 
   const response = await instance.post(`${PATHS.SUBJECT}`, data);
   return response.data;
->>>>>>> origin/develop
 }
 
 /**
