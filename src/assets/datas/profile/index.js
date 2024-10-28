@@ -9,7 +9,7 @@ import profiles_music_band_guitar from '../profile/profileImages/music-band-guit
 import profiles_pig from '../profile/profileImages/pig.png';
 import profiles_rabbit_smile from '../profile/profileImages/rabbit-smile.png';
 
-export {
+const PROFILES = [
   profiles_bear_smile,
   profiles_cat_bee,
   profiles_cat_smile,
@@ -20,4 +20,6 @@ export {
   profiles_music_band_guitar,
   profiles_pig,
   profiles_rabbit_smile,
-};
+];
+
+export default PROFILES;
