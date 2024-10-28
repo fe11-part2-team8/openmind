@@ -43,21 +43,18 @@ const findSubjectByName = async (name) => {
     event.preventDefault(); // 폼 제출 시 페이지 새로고침 방지
 
     try {
-      let subjectId;
-      // 이름으로 피드가 존재하는지 확인
-      // let subjectId = await findSubjectByName(inputValue);
+      // 피드가 없으면 랜덤 프로필 이미지와 함께 새 피드 생성
+      const randomProfileImage = getRandomProfileImage();
+      const result = await postSubject(inputValue, randomProfileImage);
+      const subjectId = result.id;
 
+      // 피드 ID를 localStorage에 저장
       if (subjectId) {
-        // 피드가 이미 존재하면 로직 추가 가능
+        localStorage.setItem('SubjectId', subjectId); // 로컬 스토리지에 저장
+        navigate(`/post/${subjectId}/answer`); // 피드 ID로 경로 변경
       } else {
-        // 피드가 없으면 랜덤 프로필 이미지와 함께 새 피드 생성
-        const randomProfileImage = getRandomProfileImage();
-        subjectId = await postSubject(inputValue, randomProfileImage);
+        console.error('피드 생성 중 오류가 발생했습니다: subjectId가 유효하지 않습니다.');
       }
-
-      // 피드 ID를 localStorage에 저장하고 경로 변경
-      localStorage.setItem('SubjectId', subjectId);
-      navigate(`/post/${subjectId}/answer`);
     } catch (error) {
       console.error('피드 생성 중 오류가 발생했습니다:', error);
     }
