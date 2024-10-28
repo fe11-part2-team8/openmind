@@ -1,12 +1,12 @@
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { useState } from 'react';
 import 'dayjs/locale/ko'; // 한국어 가져오기
 import thumbsUp from '../../assets/images/ic_thumbs-up.svg'; // 좋아요 아이콘
 import thumbsDown from '../../assets/images/ic_thumbs-down.svg'; // 싫어요 아이콘
-import Dropdown from './Dropdown';
-import { deleteQuestion, patchAnswer } from '../../api'; // 답변 수정 API 불러오기
+import Dropdown from './Dropdown/index';
+import { deleteQuestion, patchAnswer, postAnswer } from '../../api'; // 답변 수정 및 추가 API 불러오기
 import AnswerEditor from './Dropdown/AnswerEditor'; // 수정 컴포넌트 가져오기
-import { useState } from 'react';
 
 dayjs.extend(relativeTime);
 
@@ -59,12 +59,24 @@ function QuestionWithAnswer({
   // 수정 완료 핸들러
   const handleSave = async (newContent, answerId, isRejected) => {
     try {
-      await patchAnswer(newContent, answerId, isRejected); // API 호출
+      await patchAnswer(newContent, answerId, isRejected); // 답변 수정 API 호출
       setIsEditMode(false); // 수정 완료 후 수정 모드 해제
-      // 수정 후 페이지 새로고침
+      //수정 후 새로고침
       window.location.reload();
     } catch (error) {
       alert('답변 수정에 실패했습니다.');
+    }
+  };
+
+  // 새 답변 추가 핸들러
+  const handlePostAnswer = async (newContent, questionId, isRejected) => {
+    try {
+      await postAnswer(newContent, questionId, isRejected); // 답변 추가 API 호출
+      setIsEditMode(false); // 답변 추가 후 수정 모드 해제
+      //답변추가후새로고침
+      window.location.reload();
+    } catch (error) {
+      alert('답변 추가에 실패했습니다.');
     }
   };
 
@@ -79,9 +91,11 @@ function QuestionWithAnswer({
       {isEditMode ? (
         <AnswerEditor
           answerId={answer?.id || answerId} // 답변 ID 전달
+          questionId={questionId} // 질문 ID 전달
           initialContent={answer?.content || ''} // 답변 내용 전달
           initialIsRejected={isRejected} // 답변 거절 여부 전달
-          onSave={handleSave} // 저장 핸들러 전달
+          onSave={handleSave} // 저장 핸들러 전달 (수정)
+          postAnswer={handlePostAnswer} // 새 답변 추가 핸들러 전달
         />
       ) : (
         <>
@@ -90,7 +104,7 @@ function QuestionWithAnswer({
             <p>{question.content}</p>
           </div>
 
-          {answer && (
+          {answer ? (
             <div>
               <div style={{ display: 'flex' }}>
                 <p>{name}</p>
@@ -98,6 +112,9 @@ function QuestionWithAnswer({
               </div>
               <p>{answer.content}</p> {/* 답변 내용 표시 */}
             </div>
+          ) : (
+            // 답변이 없으면 답변하기 버튼 표시
+            isSubjectOwner && <button onClick={handleEdit}>답변하기</button>
           )}
 
           <div style={{ display: 'flex' }}>

@@ -1,19 +1,34 @@
 import { useState } from 'react';
 
-function AnswerEditor({ answerId, initialContent, onSave }) {
+function AnswerEditor({
+  answerId,
+  questionId,
+  initialContent,
+  initialIsRejected,
+  onSave,
+  postAnswer,
+}) {
   const [newContent, setNewContent] = useState(initialContent);
+  const [isRejected, setIsRejected] = useState(initialIsRejected);
 
   const handleSaveClick = async () => {
     try {
       console.log('newContent:', newContent);
       console.log('answerId:', answerId);
+      console.log('isRejected:', isRejected);
 
-      // 수정된 답변 내용 전달
-      await onSave(newContent, answerId);
-      alert('답변이 수정되었습니다.');
+      if (answerId) {
+        // 답변이 존재하면 수정
+        await onSave(newContent, answerId, isRejected);
+      } else {
+        // 답변이 없으면 새 답변 추가
+        await postAnswer(newContent, questionId, isRejected);
+      }
+
+      alert('처리가 완료되었습니다.');
     } catch (error) {
-      console.error('답변 수정 실패:', error);
-      alert('답변 수정에 실패했습니다.');
+      console.error('처리 실패:', error);
+      alert('처리 실패');
     }
   };
 
@@ -25,7 +40,13 @@ function AnswerEditor({ answerId, initialContent, onSave }) {
         rows="4"
         cols="50"
       />
-      <button onClick={handleSaveClick}>수정 완료</button>
+      <div>
+        <label>
+          <input type="checkbox" checked={isRejected} onChange={() => setIsRejected(!isRejected)} />
+          답변 거절 여부
+        </label>
+      </div>
+      <button onClick={handleSaveClick}>완료</button>
     </div>
   );
 }

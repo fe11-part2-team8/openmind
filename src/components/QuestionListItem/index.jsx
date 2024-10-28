@@ -82,8 +82,6 @@ function QuestionListItem() {
   return (
     <div>
       {questions.map((question) => {
-        console.log('질문 아이디:', question.id); // 각 질문의 ID를 출력
-        console.log('답변아이디: ', question.answer.id);
         return (
           <QuestionWithAnswer
             key={question.id}
