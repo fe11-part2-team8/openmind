@@ -3,6 +3,15 @@ import { postReaction } from '../../api';
 import thumbsUp from '../../assets/images/ic_thumbs-up.svg';
 import thumbsDown from '../../assets/images/ic_thumbs-down.svg';
 
+/**
+ * 좋아요 및 싫어요 버튼을 제공하는 컴포넌트
+ * @param {object} props - 컴포넌트의 props
+ * @param {number} props.questionId - 질문 ID
+ * @param {number} props.initialLikes - 초기 좋아요 수
+ * @param {number} props.initialDislikes - 초기 싫어요 수
+ * @returns {React.JSX} 좋아요/싫어요 버튼 컴포넌트
+ */
+
 function ReactionButtons({ questionId, initialLikes, initialDislikes }) {
   const [likes, setLikes] = useState(initialLikes);
   const [dislikes, setDislikes] = useState(initialDislikes);

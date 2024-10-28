@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { getQuestionList, getSubject } from '../../api';
-import QuestionWithAnswer from './QuestionWithAnswer';
+import QuestionWithAnswer from './QuestionAndAnswer';
 
 function QuestionListItem() {
   const { id } = useParams(); // URL에서 id (subjectId) 받아옴

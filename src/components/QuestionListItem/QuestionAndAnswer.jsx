@@ -5,11 +5,11 @@ import 'dayjs/locale/ko'; // 한국어 가져오기
 
 import Dropdown from './Dropdown/index';
 import { deleteQuestion, patchAnswer, postAnswer } from '../../api'; // 답변 수정 및 추가 API 불러오기
-import AnswerEditor from './Dropdown/AnswerEditor'; // 수정 컴포넌트 가져오기
-import ReactionButtons from '../../components/QuestionListItem/ReactionButton'; // 좋아요/싫어요 컴포넌트 불러오기
+import AnswerEditor from './Dropdown/EditAnswerForm'; // 수정 컴포넌트 가져오기
+import ReactionButtons from './ReactionButton'; // 좋아요/싫어요 컴포넌트 불러오기
 
+// 상대적인 시간표기를 위한 시간 계산
 dayjs.extend(relativeTime);
-
 dayjs.locale('ko', {
   relativeTime: {
     future: '%s 후',
@@ -28,6 +28,16 @@ dayjs.locale('ko', {
   },
 });
 
+/**
+ * 질문과 답변을 표시하는 컴포넌트
+ * @param {object} props - 컴포넌트의 props
+ * @param {number} props.questionId - 질문 ID
+ * @param {string} props.answer - 답변 내용
+ * @param {boolean} props.isSubjectOwner - 사용자가 질문의 소유자인지 여부
+ * @param {boolean} props.isRejected - 답변이 거절되었는지 여부
+ * @returns {React.JSX} 질문과 답변을 렌더링하는 컴포넌트
+ */
+
 function QuestionWithAnswer({
   question,
   questionDate,
@@ -38,8 +48,7 @@ function QuestionWithAnswer({
   dislike,
   isRejected,
   questionId,
-  answerId, // 답변 ID 추가
-  handleReaction,
+  answerId,
   isSubjectOwner,
 }) {
   const [isEditMode, setIsEditMode] = useState(false); // 수정 모드 상태 추가

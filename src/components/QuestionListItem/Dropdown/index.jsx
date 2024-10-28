@@ -3,6 +3,14 @@ import more from '../../../assets/images/ic_More.svg'; // "더보기" 아이콘
 import dropDownEdit from '../../../assets/images/ic_Edit.svg'; // 수정하기 아이콘
 import dropDownClose from '../../../assets/images/ic_close.svg'; // 삭제하기 아이콘
 
+/**
+ * 답변 수정 및 삭제 옵션을 제공하는 드롭다운 컴포넌트
+ * @param {object} props - 컴포넌트의 props
+ * @param {function} props.onEdit - 수정 버튼 클릭 시 호출되는 함수
+ * @param {function} props.onDelete - 삭제 버튼 클릭 시 호출되는 함수
+ * @returns {React.JSX} 수정/삭제 드롭다운 컴포넌트
+ */
+
 const Dropdown = ({ onEdit, onDelete }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false); // 드롭다운 상태 관리
 
