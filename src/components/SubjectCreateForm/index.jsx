@@ -43,6 +43,7 @@ const findSubjectByName = async (name) => {
     event.preventDefault(); // 폼 제출 시 페이지 새로고침 방지
 
     try {
+      let subjectId;
       // 이름으로 피드가 존재하는지 확인
       // let subjectId = await findSubjectByName(inputValue);
 
