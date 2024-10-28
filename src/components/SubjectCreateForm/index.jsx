@@ -44,7 +44,7 @@ const findSubjectByName = async (name) => {
 
     try {
       // 이름으로 피드가 존재하는지 확인
-      let subjectId = await findSubjectByName(inputValue);
+      // let subjectId = await findSubjectByName(inputValue);
 
       if (subjectId) {
         // 피드가 이미 존재하면 로직 추가 가능
