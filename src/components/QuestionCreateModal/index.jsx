@@ -1,5 +1,5 @@
-import ic_message from '../../assets/images/ic_message.svg';
-import ic_close from '../../assets/images/ic_close.svg';
+import icon_message from '../../assets/images/icon_message.svg';
+import icon_close from '../../assets/images/icon_close.svg';
 import test_profile from '../../assets/images/test_profile.svg';
 import styles from './QuestionCreateModal.module.css';
 import { useState } from 'react';
@@ -70,12 +70,12 @@ function QuestionCreateModal({ subject = MOCK_SUBJECT_VALUE, onClick }) {
       <div id="modal" className={styles.modal}>
         <div className={styles.header}>
           <div className={styles.text}>
-            <img src={ic_message} alt="메세지 아이콘" />
+            <img src={icon_message} alt="메세지 아이콘" />
             <span>질문을 작성해 주세요</span>
           </div>
           <img
             className={styles.btnClose}
-            src={ic_close}
+            src={icon_close}
             alt="닫기 버튼"
             onClick={handleClickClose}
           />

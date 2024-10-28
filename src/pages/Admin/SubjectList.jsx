@@ -3,9 +3,9 @@ import Pagination from 'react-js-pagination';
 import styles from './SubjectList.module.css';
 import { deleteSubject, getQuestionList, getSubjectList } from '../../api';
 import useAsync from '../../hooks/useAsync';
-import ic_user from '../../assets/images/ic_user.svg';
-import ic_trash from '../../assets/images/ic_trash.svg';
-import ic_message from '../../assets/images/ic_message.svg';
+import icon_user from '../../assets/images/icon_user.svg';
+import icon_trash from '../../assets/images/icon_trash.svg';
+import icon_message from '../../assets/images/icon_message.svg';
 
 const PAGE_SIZE = 12;
 let total = 0;
@@ -116,14 +116,14 @@ function SubjectListItem({ selected, subject, onDelete, questions }) {
         <h4>{name}</h4>
         <p className={styles.date}>{createdAt}</p>
         <div className={styles.questionCount}>
-          <img src={ic_message} alt="질문" />
+          <img src={icon_message} alt="질문" />
           {questionCount}
         </div>
         <button onClick={handleClickLoginButton}>
-          <img src={ic_user} alt="로그인" />
+          <img src={icon_user} alt="로그인" />
         </button>
         <button onClick={handleClickDeleteButton}>
-          <img src={ic_trash} alt="삭제" />
+          <img src={icon_trash} alt="삭제" />
         </button>
       </div>
       {selected && <QuestionList questions={questions} />}
