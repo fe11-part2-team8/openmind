@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { postSubject, getSubjectList } from '../../api';
+import { postSubject } from '../../api';
 
 import PROFILES from '../../assets/datas/profile/index'; // PROFILES 배열
 
