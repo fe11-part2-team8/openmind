@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { getAllQuestions, getSubject, postReaction } from '../../api';
+import { getQuestionList, getSubject, postReaction } from '../../api';
 import QuestionWithAnswer from './QuestionWithAnswer';
 
 function QuestionListItem() {
@@ -14,7 +14,7 @@ function QuestionListItem() {
     async function getData() {
       try {
         //질문 데이터 받아옴
-        const questionsResponse = await getAllQuestions(id); // subjectId를 전달
+        const questionsResponse = await getQuestionList(id); // subjectId를 전달
         setQuestions(questionsResponse.results); // 결과 데이터를 상태로 설정
 
         //서브젝트(name) 데이터 받아옴
