@@ -3,7 +3,7 @@ import ic_close from '../../assets/images/ic_close.svg';
 import test_profile from '../../assets/images/test_profile.svg';
 import styles from './QuestionCreateModal.module.css';
 import { useState } from 'react';
-import { postQuestions } from '../../api';
+import { postQuestion } from '../../api';
 
 /**
  * subject가 전달 됐을 때를 가정한 값
@@ -59,7 +59,7 @@ function QuestionCreateModal({ subject = MOCK_SUBJECT_VALUE, onClick }) {
 
   const handleSubmitQuestion = async (e) => {
     e.preventDefault();
-    await postQuestions(content, subjectId);
+    await postQuestion(content, subjectId);
     // 로딩 디자인
     alert('질문 등록이 완료되었습니다.');
     handleClickClose();
