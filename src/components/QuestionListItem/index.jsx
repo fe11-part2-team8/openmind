@@ -83,6 +83,7 @@ function QuestionListItem() {
     <div>
       {questions.map((question) => {
         console.log('질문 아이디:', question.id); // 각 질문의 ID를 출력
+        console.log('답변아이디: ', question.answer.id);
         return (
           <QuestionWithAnswer
             key={question.id}
@@ -98,6 +99,7 @@ function QuestionListItem() {
             handleReaction={handleReaction} // 좋아요/싫어요 처리 함수 전달
             isSubjectOwner={isSubjectOwner}
             setQuestions={setQuestions}
+            answerId={question.answer ? question.answer.id : null} // 답변 ID (답변수정을 위해)
           />
         );
       })}
