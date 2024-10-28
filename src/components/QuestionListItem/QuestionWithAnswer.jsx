@@ -5,6 +5,8 @@ import thumbsUp from '../../assets/images/ic_thumbs-up.svg'; // 좋아요 아이
 import thumbsDown from '../../assets/images/ic_thumbs-down.svg'; // 싫어요 아이콘
 import Dropdown from './QuestionListItemDropdown';
 
+import { deleteQuestion } from '../../api';
+
 dayjs.extend(relativeTime);
 
 dayjs.locale('ko', {
@@ -37,6 +39,7 @@ function QuestionWithAnswer({
   questionId,
   handleReaction,
   isSubjectOwner,
+  setQuestions,
 }) {
   //드롭다운
   // 수정하기 핸들러
@@ -45,9 +48,10 @@ function QuestionWithAnswer({
     // 수정하기 로직 추가
   };
   // 삭제하기 핸들러
-  const handleDelete = () => {
-    console.log('삭제하기 클릭');
-    // 삭제하기 로직 추가
+  const handleDelete = async () => {
+    await deleteQuestion(questionId);
+    // 질문 삭제 후 페이지 새로고침
+    window.location.reload();
   };
   return (
     <div>
@@ -59,6 +63,7 @@ function QuestionWithAnswer({
       <div>
         <p>질문 · {dayjs(questionDate).fromNow()}</p>
         <p>{question.content}</p>
+        <p>{questionId}</p> {/* 확인용 */}
       </div>
 
       {answer && (
