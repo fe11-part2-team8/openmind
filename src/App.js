@@ -18,6 +18,7 @@ import {
   putAnswer,
   patchAnswer,
 } from './api';
+import SubjectCreateForm from './components/SubjectCreateForm';
 
 function Links() {
   return (
@@ -146,6 +147,7 @@ export default function App() {
         <br />
         <button onClick={handlePatchAnswer}>ANSWER PATCH</button>
         <br />
+        <SubjectCreateForm />
         <button onClick={handleDeleteAnswer}>ANSWER DELETE</button>
       </div>
     </main>
