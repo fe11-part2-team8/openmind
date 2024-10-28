@@ -1,6 +1,9 @@
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/ko'; // 한국어 가져오기
+import thumbsUp from '../../assets/images/ic_thumbs-up.svg'; // 좋아요 아이콘
+import thumbsDown from '../../assets/images/ic_thumbs-down.svg'; // 싫어요 아이콘
+import Dropdown from './QuestionListItemDropdown';
 
 dayjs.extend(relativeTime);
 
@@ -35,12 +38,23 @@ function QuestionWithAnswer({
   handleReaction,
   isSubjectOwner,
 }) {
+  //드롭다운
+  // 수정하기 핸들러
+  const handleEdit = () => {
+    console.log('수정하기 클릭');
+    // 수정하기 로직 추가
+  };
+  // 삭제하기 핸들러
+  const handleDelete = () => {
+    console.log('삭제하기 클릭');
+    // 삭제하기 로직 추가
+  };
   return (
     <div>
       <span>{answer ? '답변 완료' : '미답변'}</span>
 
-      {/* 피드 주인일 경우 */}
-      {isSubjectOwner && <button>···</button>}
+      {/* 피드 주인일 경우에만 드롭다운 표시 */}
+      {isSubjectOwner && <Dropdown onEdit={handleEdit} onDelete={handleDelete} />}
 
       <div>
         <p>질문 · {dayjs(questionDate).fromNow()}</p>
@@ -59,8 +73,14 @@ function QuestionWithAnswer({
 
       <div>
         {/* 좋아요/싫어요 버튼 */}
-        <button onClick={() => handleReaction(questionId, 'like')}>좋아요: {like}</button>
-        <button onClick={() => handleReaction(questionId, 'dislike')}>싫어요: {dislike}</button>
+        <button onClick={() => handleReaction(questionId, 'like')}>
+          <img src={thumbsUp} alt="좋아요 아이콘" />
+          좋아요: {like}
+        </button>
+        <button onClick={() => handleReaction(questionId, 'dislike')}>
+          <img src={thumbsDown} alt="싫어요 아이콘" />
+          싫어요: {dislike}
+        </button>
       </div>
 
       {isRejected && <p>답변 거절</p>}

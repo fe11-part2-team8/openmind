@@ -76,6 +76,9 @@ function QuestionListItem() {
     }
   };
 
+  //확인용!!!!!!!!!!나중에지우기~~~~~~~~~~~~~~~~~~~~~~
+  localStorage.setItem('subjectId', 8643);
+
   return (
     <div>
       {questions.map((question) => (
