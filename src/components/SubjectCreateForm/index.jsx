@@ -45,12 +45,14 @@ const findSubjectByName = async (name) => {
     try {
       // 피드가 없으면 랜덤 프로필 이미지와 함께 새 피드 생성
       const randomProfileImage = getRandomProfileImage();
-      const result = await postSubject(inputValue, randomProfileImage);
+      const result = await postSubject(inputValue);
       const subjectId = result.id;
 
       // 피드 ID를 localStorage에 저장
       if (subjectId) {
         localStorage.setItem('SubjectId', subjectId); // 로컬 스토리지에 저장
+        localStorage.setItem(`ProfileImage_${subjectId}`, randomProfileImage); // subjectId에 해당하는 프로필 이미지 저장
+
         navigate(`/post/${subjectId}/answer`); // 피드 ID로 경로 변경
       } else {
         console.error('피드 생성 중 오류가 발생했습니다: subjectId가 유효하지 않습니다.');
