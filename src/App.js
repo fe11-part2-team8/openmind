@@ -1,21 +1,22 @@
 import './global.css';
 import { Link, Outlet } from 'react-router-dom';
 import { useState } from 'react';
+
 import {
   postSubject,
-  getAllSubject,
+  getSubjectList,
   getSubject,
   deleteSubject,
-  postQuestions,
-  getAllQuestions,
-  getQuestions,
-  deleteQuestions,
+  postQuestion,
+  getQuestionList,
+  getQuestion,
+  deleteQuestion,
   postReaction,
-  postAnswers,
-  getAnswers,
-  deleteAnswers,
-  putAnswers,
-  patchAnswers,
+  postAnswer,
+  getAnswer,
+  deleteAnswer,
+  putAnswer,
+  patchAnswer,
 } from './api';
 import SubjectCreateForm from './components/SubjectCreateForm';
 
@@ -47,12 +48,12 @@ export default function App() {
 
   const handlePostSubject = async () => {
     const result = await postSubject('테스트씨');
-    console.log(`피드 ID : ${result}`);
-    setSubjectId(result);
+    console.log(`피드 ID : ${result.id}`);
+    setSubjectId(result.id);
   };
 
-  const handleGetAllSubject = async () => {
-    console.log(await getAllSubject());
+  const handleGetSubjectList = async () => {
+    console.log(await getSubjectList());
   };
 
   const handleGetSubject = async () => {
@@ -63,48 +64,48 @@ export default function App() {
     console.log(await deleteSubject(subjectId));
   };
 
-  const handlePostQuestions = async () => {
-    const result = await postQuestions('테스트 질문입니다.', subjectId);
-    console.log(`질문한 ID : ${result}`);
-    setQuestionId(result);
+  const handlePostQuestion = async () => {
+    const result = await postQuestion('테스트 질문입니다.', subjectId);
+    console.log(`질문한 ID : ${result.id}`);
+    setQuestionId(result.id);
   };
 
-  const handleGetAllQuestions = async () => {
-    console.log(await getAllQuestions(subjectId));
+  const handleGetQuestionList = async () => {
+    console.log(await getQuestionList(subjectId));
   };
 
-  const handleGetQuestions = async () => {
-    console.log(await getQuestions(questionId));
+  const handleGetQuestion = async () => {
+    console.log(await getQuestion(questionId));
   };
 
-  const handleDeleteQuestions = async () => {
-    deleteQuestions(questionId);
+  const handleDeleteQuestion = async () => {
+    deleteQuestion(questionId);
   };
 
   const handlePostReaction = async () => {
     postReaction(questionId, 'like');
   };
 
-  const handlePostAnswers = async () => {
-    const result = await postAnswers('테스트 답변입니다.', questionId);
-    console.log(`답변한 ID : ${result}`);
-    setAnswerId(result);
+  const handlePostAnswer = async () => {
+    const result = await postAnswer('테스트 답변입니다.', questionId);
+    console.log(`답변한 ID : ${result.id}`);
+    setAnswerId(result.id);
   };
 
-  const handleGetAnswers = async () => {
-    console.log(await getAnswers(answerId));
+  const handleGetAnswer = async () => {
+    console.log(await getAnswer(answerId));
   };
 
-  const handlePutAnswers = async () => {
-    putAnswers('수정한 테스트 답변입니다.(put)', answerId);
+  const handlePutAnswer = async () => {
+    putAnswer('수정한 테스트 답변입니다.(put)', answerId);
   };
 
-  const handlePatchAnswers = async () => {
-    patchAnswers('수정한 테스트 답변입니다.(patch)', answerId);
+  const handlePatchAnswer = async () => {
+    patchAnswer('수정한 테스트 답변입니다.(patch)', answerId);
   };
 
-  const handleDeleteAnswers = async () => {
-    deleteAnswers(answerId);
+  const handleDeleteAnswer = async () => {
+    deleteAnswer(answerId);
   };
 
   return (
@@ -119,35 +120,39 @@ export default function App() {
         <h2 className="text-2xl font-bold">SUBJECT</h2>
         <button onClick={handlePostSubject}>SUBJECT POST</button>
         <br />
-        <button onClick={handleGetAllSubject}>ALL SUBJECT GET</button>
+        <button onClick={handleGetSubjectList}>ALL SUBJECT GET</button>
         <br />
         <button onClick={handleGetSubject}>SUBJECT GET</button>
         <br />
         <button onClick={handleDeleteSubject}>SUBJECT DELETE</button>
         <hr style={{ margin: '30px 0' }} />
         <h2 className="text-2xl font-bold">QUESTIONS</h2>
-        <button onClick={handlePostQuestions}>QUESTION POST</button>
+        <button onClick={handlePostQuestion}>QUESTION POST</button>
         <br />
-        <button onClick={handleGetAllQuestions}>ALL QUESTION GET</button>
+        <button onClick={handleGetQuestionList}>ALL QUESTION GET</button>
         <br />
-        <button onClick={handleGetQuestions}>QUESTION GET</button>
+        <button onClick={handleGetQuestion}>QUESTION GET</button>
         <br />
-        <button onClick={handleDeleteQuestions}>QUESTION DELETE</button>
+        <button onClick={handleDeleteQuestion}>QUESTION DELETE</button>
         <hr style={{ margin: '30px 0' }} />
         <h2 className="text-2xl font-bold">REACTION</h2>
         <button onClick={handlePostReaction}>REACTION POST</button>
         <hr style={{ margin: '30px 0' }} />
         <h2 className="text-2xl font-bold">ANSWERS</h2>
-        <button onClick={handlePostAnswers}>ANSWER POST</button>
+        <button onClick={handlePostAnswer}>ANSWER POST</button>
         <br />
-        <button onClick={handleGetAnswers}>ANSWER GET</button>
+        <button onClick={handleGetAnswer}>ANSWER GET</button>
         <br />
-        <button onClick={handlePutAnswers}>ANSWER PUT</button>
+        <button onClick={handlePutAnswer}>ANSWER PUT</button>
         <br />
-        <button onClick={handlePatchAnswers}>ANSWER PATCH</button>
+        <button onClick={handlePatchAnswer}>ANSWER PATCH</button>
         <br />
+<<<<<<< HEAD
         <button onClick={handleDeleteAnswers}>ANSWER DELETE</button>
         <SubjectCreateForm />
+=======
+        <button onClick={handleDeleteAnswer}>ANSWER DELETE</button>
+>>>>>>> origin/develop
       </div>
     </main>
   );
