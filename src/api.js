@@ -56,8 +56,10 @@ async function getSubject(subjectId) {
  * @returns {Promise<Object>} - 삭제된 서브젝트의 데이터
  */
 async function deleteSubject(subjectId) {
-  const response = await instance.delete(`${PATHS.SUBJECT}${subjectId}/`);
-  return response.data;
+  const result = {};
+  result.question = await deleteQuestionList(subjectId);
+  result.subject = await instance.delete(`${PATHS.SUBJECT}${subjectId}/`);
+  return result;
 }
 
 /**
@@ -102,15 +104,42 @@ async function getQuestion(questionId) {
   return response.data;
 }
 
+async function deleteQuestionList(subjectId) {
+  const limit = 8;
+  let offset = 0;
+  const result = [];
+  let questions = [];
+
+  while (true) {
+    const { next, results } = await getQuestionList(subjectId);
+    offset += limit;
+    questions = [...questions, ...results];
+    if (next === null) break;
+  }
+
+  questions.forEach((e, i) => {
+    setTimeout(async () => {
+      result[i] = await deleteQuestion(e.id);
+    }, 10);
+  });
+
+  return result;
+}
+
 /**
  * 질문 삭제하는 함수
  * @param {string} questionId - 질문 ID
  * @returns {Promise<Object>} - 삭제된 질문의 데이터
  */
 async function deleteQuestion(questionId) {
+  const result = {};
+  const { data: question } = await getQuestion(questionId);
+  if (question?.answer) {
+    result.answer = await deleteAnswer(question.answer.id);
+  }
   const path = `${PATHS.QUESTION}${questionId}/`;
-  const response = await instance.delete(`${path}`);
-  return response.data;
+  result.question = await instance.delete(`${path}`);
+  return result;
 }
 
 /**
@@ -202,6 +231,7 @@ async function patchAnswer(content, answerId, isRejected = false) {
  * @returns {Promise<Object>} - 삭제된 답변의 데이터
  */
 async function deleteAnswer(answerId) {
+  console.log(answerId);
   const path = `${PATHS.ANSWER}${answerId}/`;
   const response = await instance.delete(`${path}`);
   return response.data;
