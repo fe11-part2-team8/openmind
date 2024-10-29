@@ -12,6 +12,7 @@ import urlShare from '../assets/images/urlShare.png';
 import kakaoShare from '../assets/images/kakaoShare.png';
 import facebookShare from '../assets/images/facebookShare.png';
 import message from '../assets/images/messages.png';
+import empty from '../assets/images/empty.png';
 
 function PostPage() {
   const { id } = useParams();
@@ -34,7 +35,7 @@ function PostPage() {
           const script = document.createElement('script');
           script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
           script.onload = () => {
-            window.Kakao.init('1152271'); // 여기에 실제 Kakao App Key 입력
+            window.Kakao.init('1152271'); // Kakao App Key
             resolve();
           };
           document.body.appendChild(script);
@@ -129,7 +130,7 @@ function PostPage() {
       <img src={banner} alt="Background_Banner" className={styles.banner} />
       <div className="relative z-10 mt-[50px] flex flex-col items-center gap-3">
         <Link to="/">
-          <img src={logo} alt="OpenMind" />
+          <img src={logo} alt="OpenMind" className={styles.logo} />
         </Link>
         <img src={profileImage} alt="ProfileImage" className={styles.profile} />
         <h2 className="h2">{username}</h2>
@@ -149,9 +150,14 @@ function PostPage() {
           />
         </div>
         <div className="bg-brown-10 border-brown-30 text-brown-40 font-actor body1 mt-[50px] w-full rounded-[16px] border p-4 text-center">
-          <div className="flex justify-center gap-2">
-            <img src={message} alt="total" />
-            <p className="body1">{total}개의 질문이 있습니다</p>
+          <div className="flex flex-col items-center">
+            <div className="flex items-center justify-center gap-2">
+              <img src={message} alt="total" className={styles.message} />
+              <p className="body1">
+                {total !== false ? `${total}개의 질문이 있습니다.` : '아직 질문이 없습니다.'}
+              </p>
+            </div>
+            {!total && <img src={empty} alt="empty" className={styles.empty} />}
           </div>
         </div>
         <div className="fixed bottom-[24px] right-[24px]">

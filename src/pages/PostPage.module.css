@@ -6,12 +6,32 @@
   height: auto;
 }
 
+.logo {
+  width: 170px;
+  height: 67px;
+}
+
 .profile {
   border-radius: 50%;
+  width: 136px;
+  height: 136px;
 }
 
 .share {
   cursor: pointer;
+  width: 40px;
+  height: 40px;
+}
+
+.message {
+  width: 24px;
+  height: 24px;
+}
+
+.empty {
+  margin: 50px;
+  width: 150px;
+  height: 154px;
 }
 
 @keyframes slideUp {
