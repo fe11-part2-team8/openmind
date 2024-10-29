@@ -51,6 +51,10 @@ function SubjectCreate() {
       console.error(err);
     } finally {
       setLoading(false);
+      setValue(DEFAULT_VALUE);
+      document.querySelector('#subject').value = DEFAULT_VALUE.subject;
+      document.querySelector('#question').value = DEFAULT_VALUE.question;
+      document.querySelector('#answer').checked = DEFAULT_VALUE.answer;
     }
   };
 
@@ -58,11 +62,21 @@ function SubjectCreate() {
     <form className={styles.form} onSubmit={handleSubmitForm} onChange={handleChangeInput}>
       <fieldset>
         <label htmlFor="subject">생성 피드 수</label>
-        <input id="subject" type="number" placeholder="생성할 피드 수를 입력해주세요" />
+        <input
+          id="subject"
+          type="number"
+          placeholder="생성할 피드 수를 입력해주세요"
+          defaultValue={DEFAULT_VALUE.subject}
+        />
       </fieldset>
       <fieldset>
         <label htmlFor="question">피드당 질문 수</label>
-        <input id="question" type="number" placeholder="피드당 질문 수를 입력해주세요" />
+        <input
+          id="question"
+          type="number"
+          placeholder="피드당 질문 수를 입력해주세요"
+          defaultValue={DEFAULT_VALUE.question}
+        />
       </fieldset>
       <fieldset>
         <label htmlFor="answer">답글 작성 여부</label>

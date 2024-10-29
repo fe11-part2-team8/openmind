@@ -12,7 +12,7 @@ let total = 0;
 
 function SubjectList() {
   const [subjects, setSubjects] = useState([]);
-  const [qusetions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState([]);
   const [selected, setSelected] = useState(null);
   const [page, setPage] = useState(1);
   const {
@@ -79,7 +79,7 @@ function SubjectList() {
               key={subject.id}
               selected={selected === subject.id}
               subject={subject}
-              questions={qusetions}
+              questions={questions}
               onDelete={handleDeleteSubject}
             />
           );
