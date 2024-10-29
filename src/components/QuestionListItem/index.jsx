@@ -13,31 +13,28 @@ function QuestionListItem() {
   useEffect(() => {
     async function getData() {
       try {
-        //질문 데이터 받아옴
-        const questionsResponse = await getQuestionList(id); // subjectId를 전달
-        setQuestions(questionsResponse.results); // 결과 데이터를 상태로 설정
+        const questionsResponse = await getQuestionList(id);
+        setQuestions(questionsResponse.results);
 
-        //서브젝트(name) 데이터 받아옴
-        const subjectResponse = await getSubject(id); // subjectId를 전달
-        setSubjectData(subjectResponse); // 서브젝트 데이터를 상태로 설정
+        const subjectResponse = await getSubject(id);
+        setSubjectData(subjectResponse);
 
-        // localStorage에서 저장된 피드 주인의 ID 가져오기
+        // subjectId 확인
         const storedSubjectId = localStorage.getItem('subjectId');
 
-        // 현재 피드 ID와 localStorage의 피드 ID 비교
         if (storedSubjectId === id) {
-          setIsSubjectOwner(true); // 일치하면 피드 주인임
+          setIsSubjectOwner(true);
         }
 
-        setLoading(false); // 로딩 상태 해제
+        setLoading(false);
       } catch (error) {
         console.error('데이터를 불러오는데 실패했습니다!', error);
-        setLoading(false); // 실패 시에도 로딩 상태 해제
+        setLoading(false);
       }
     }
 
     getData();
-  }, [id]); // 의존성 배열에 id 추가
+  }, [id]);
 
   //비동기 시 잘못된 데이터 불러오는 거 방지용
   if (loading) {
@@ -47,9 +44,6 @@ function QuestionListItem() {
   if (!questions.length || !subjectData) {
     return <div>질문이 없습니다.</div>;
   }
-
-  // 확인용!!!!!!!!!! 나중에 지우기~~~~~~~~~~~~~~~~~~~~~~
-  localStorage.setItem('subjectId', 8668);
 
   return (
     <div>
