@@ -6,6 +6,7 @@ import SubjectListPage from './pages/SubjectList.page';
 import PostPage from './pages/PostPage';
 import AnswerPage from './pages/AnswerPage';
 import QuestionCreateModal from './components/QuestionCreateModal';
+import AdminPage from './pages/Admin/Admin.page';
 
 function Main() {
   return (
@@ -16,6 +17,7 @@ function Main() {
           <Route index element={<SubjectCreateForm />} />
           <Route path="list" element={<SubjectListPage />} />
           <Route path="modal" element={<QuestionCreateModal />} />
+          <Route path="admin" element={<AdminPage />} />
           <Route path="post">
             <Route path=":id">
               <Route index element={<PostPage />} />
