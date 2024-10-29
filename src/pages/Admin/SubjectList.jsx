@@ -141,11 +141,13 @@ function QuestionList({ questions }) {
             <p>Q. {id}</p>
             <p>{content}</p>
             <p className={styles.date}>{createdAt}</p>
-            <div className={styles.answer}>
-              <p>A. {answer.id}</p>
-              <p>{answer.content}</p>
-              <p className={styles.date}>{answer.createdAt}</p>
-            </div>
+            {answer && (
+              <div className={styles.answer}>
+                <p>A. {answer.id}</p>
+                <p>{answer.content}</p>
+                <p className={styles.date}>{answer.createdAt}</p>
+              </div>
+            )}
           </li>
         );
       })}
