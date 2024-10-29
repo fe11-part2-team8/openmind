@@ -14,6 +14,22 @@ import facebookShare from '../assets/images/facebookShare.png';
 import message from '../assets/images/messages.png';
 import empty from '../assets/images/empty.png';
 
+// 카카오 sdk 로드, 초기화
+const loadKakaoSDK = () => {
+  return new Promise((resolve) => {
+    if (window.Kakao && window.Kakao.isInitialized()) {
+      resolve();
+    } else {
+      const script = document.createElement('script');
+      script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
+      script.onload = () => {
+        window.Kakao.init('1152271'); // Kakao App Key
+        resolve();
+      };
+    }
+  });
+};
+
 function PostPage() {
   const { id } = useParams();
   const [total, setTotal] = useState(0);
@@ -25,24 +41,7 @@ function PostPage() {
   const { error: questionError, wrappedFunction: fetchQuestion } = useAsync(getQuestionList);
   const { error: subjectError, wrappedFunction: fetchSubject } = useAsync(getSubject);
 
-  // 카카오 sdk 로드, 초기화
   useEffect(() => {
-    const loadKakaoSDK = () => {
-      return new Promise((resolve) => {
-        if (window.Kakao && window.Kakao.isInitialized()) {
-          resolve();
-        } else {
-          const script = document.createElement('script');
-          script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
-          script.onload = () => {
-            window.Kakao.init('1152271'); // Kakao App Key
-            resolve();
-          };
-          document.body.appendChild(script);
-        }
-      });
-    };
-
     // 질문 및 서브젝트 불러옴
     loadKakaoSDK().then(() => {
       const loadContent = async () => {

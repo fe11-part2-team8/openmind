@@ -27,7 +27,7 @@ function Links() {
 export default function App() {
   return (
     <main>
-      {/*<Links />*/}
+      <Links />
       <Outlet />
     </main>
   );
