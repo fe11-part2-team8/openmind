@@ -1,6 +1,6 @@
-import icon_message from '../../assets/images/icon_message.svg';
-import icon_close from '../../assets/images/icon_close.svg';
-import test_profile from '../../assets/images/test_profile.svg';
+import icon_message from '../../assets/images/icon-message.svg';
+import icon_close from '../../assets/images/icon-close.svg';
+import test_profile from '../../assets/images/test-profile.svg';
 import styles from './QuestionCreateModal.module.css';
 import { useState } from 'react';
 import { postQuestion } from '../../api';

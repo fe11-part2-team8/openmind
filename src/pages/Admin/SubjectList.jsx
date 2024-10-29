@@ -3,9 +3,9 @@ import Pagination from 'react-js-pagination';
 import styles from './SubjectList.module.css';
 import { deleteSubject, getQuestionList, getSubjectList } from '../../api';
 import useAsync from '../../hooks/useAsync';
-import icon_user from '../../assets/images/icon_user.svg';
-import icon_trash from '../../assets/images/icon_trash.svg';
-import icon_message from '../../assets/images/icon_message.svg';
+import icon_user from '../../assets/images/icon-user.svg';
+import icon_trash from '../../assets/images/icon-trash.svg';
+import icon_message from '../../assets/images/icon-message.svg';
 
 const PAGE_SIZE = 12;
 let total = 0;

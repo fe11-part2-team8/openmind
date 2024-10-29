@@ -14,12 +14,15 @@ const createData = async (value) => {
   for (let i = 0; i < value.subject; i++) {
     const subject = await postSubject(content + i);
     console.log('Subject : ', subject);
+    await new Promise((resolve) => setTimeout(resolve, 200));
     for (let j = 0; j < value.question; j++) {
       const question = await postQuestion(content + i, subject.id);
       console.log('Question : ', question);
+      await new Promise((resolve) => setTimeout(resolve, 200));
       if (value.question) {
         const answer = await postAnswer(content + i, question.id);
         console.log('Answer : ', answer);
+        await new Promise((resolve) => setTimeout(resolve, 200));
       }
     }
   }
