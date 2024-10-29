@@ -16,6 +16,7 @@ function AnswerCreateForm({
   subjectName = '아초는 고양이',
   subjectProfile = 'subjectProfile',
   questionId = '1234',
+  type = 'create',
 }) {
   const [answerContent, setAnswerContent] = useState('');
 
