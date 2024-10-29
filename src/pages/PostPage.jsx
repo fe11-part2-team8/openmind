@@ -30,6 +30,12 @@ const loadKakaoSDK = () => {
   });
 };
 
+// 로컬 id랑 현재 접속한 질문 id랑 같은지 검사
+const isMysubject = (id) => {
+  const myId = localStorage.getItem('SubjectId');
+  return myId === id;
+};
+
 function PostPage() {
   const { id } = useParams();
   const [total, setTotal] = useState(0);
@@ -115,12 +121,6 @@ function PostPage() {
     window.open(facebookShareUrl, '_blank'); // 새 창으로 페북 열어요, 오픈그래프는 index.html 확인해주세요.
   };
 
-  // 로컬 id랑 현재 접속한 질문 id랑 같은지 검사
-  const isMysubject = () => {
-    const myId = localStorage.getItem('SubjectId');
-    return myId === id;
-  };
-
   /* div랑 button은 global.css에 있는 유틸 공용 컴포넌트 및 테일윈드 사용 */
   const buttonClassName = 'btn btn-rounded body1 shadow-1 flex w-[208px] justify-center';
 
@@ -163,7 +163,7 @@ function PostPage() {
           <Link to="/list">
             <button className={`${buttonClassName} btn-secondary mb-3`}>목록으로 이동</button>
           </Link>
-          {isMysubject() ? (
+          {isMysubject(id) ? (
             <Link to={`/post/${id}/answer`}>
               <button className={buttonClassName}>답변 작성하기</button>
             </Link>
