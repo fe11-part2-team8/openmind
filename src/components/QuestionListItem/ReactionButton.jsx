@@ -15,7 +15,7 @@ import thumbsDown from '../../assets/images/ic_thumbs-down.svg';
 function ReactionButtons({ questionId, initialLikes, initialDislikes }) {
   const [likes, setLikes] = useState(initialLikes);
   const [dislikes, setDislikes] = useState(initialDislikes);
-  const [userReaction, setUserReaction] = useState(null); // 사용자의 반응 상태 저장
+  const [userReaction, setUserReaction] = useState(null); // 사용자의 반응 상태
 
   const handleLike = async () => {
     if (userReaction) return; // 이미 반응한 경우 중복 방지

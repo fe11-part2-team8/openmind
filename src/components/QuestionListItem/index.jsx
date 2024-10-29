@@ -45,6 +45,7 @@ function QuestionListItem() {
     return <div>질문이 없습니다.</div>;
   }
 
+  // porp 보내기
   return (
     <div>
       {questions.map((question) => {

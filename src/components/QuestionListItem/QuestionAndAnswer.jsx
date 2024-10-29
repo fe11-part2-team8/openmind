@@ -50,9 +50,9 @@ function QuestionWithAnswer({
   questionId,
   answerId,
   isSubjectOwner,
-  imageSource, // 이미지 소스 추가
+  imageSource,
 }) {
-  const [isEditMode, setIsEditMode] = useState(false); // 수정 모드 상태 추가
+  const [isEditMode, setIsEditMode] = useState(false); // 수정 모드 상태
 
   // 수정하기 핸들러
   const handleEdit = () => {
@@ -130,7 +130,11 @@ function QuestionWithAnswer({
             </div>
           ) : (
             // 답변이 없으면 답변하기 버튼 표시
-            isSubjectOwner && <button onClick={handleEdit}>답변하기</button>
+            isSubjectOwner && (
+              <div>
+                <button onClick={handleEdit}>답변하기</button>
+              </div>
+            )
           )}
 
           {/* ReactionButtons 컴포넌트를 사용하여 좋아요/싫어요 버튼 렌더링 */}
