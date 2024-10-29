@@ -5,7 +5,7 @@ import SubjectListPage from './pages/SubjectList.page';
 import PostPage from './pages/PostPage';
 import AnswerPage from './pages/AnswerPage';
 import QuestionCreateModal from './components/QuestionCreateModal';
-import AnswerForm from './components/AnswerForm';
+import AnswerCreateForm from './components/AnswerCreateForm';
 
 function Main() {
   return (
@@ -14,10 +14,7 @@ function Main() {
         <Route path="/" element={<App />}>
           <Route index element={<HomePage />} />
           <Route path="list" element={<SubjectListPage />} />
-          <Route
-            path="answerform"
-            element={<AnswerForm type="create" questionId={12} feedName="adc" feedProfile="adc" />}
-          />
+          <Route path="answercreateform" element={<AnswerCreateForm />} />
           <Route path="modal" element={<QuestionCreateModal />} />
           <Route path="post">
             <Route path=":id">
