@@ -16,15 +16,7 @@ function Main() {
           <Route path="list" element={<SubjectListPage />} />
           <Route
             path="answerform"
-            element={
-              <AnswerForm
-                type="create"
-                questionId={12}
-                feedName="adc"
-                feedProfile="adc"
-                onSubmit={AnswerForm}
-              />
-            }
+            element={<AnswerForm type="create" questionId={12} feedName="adc" feedProfile="adc" />}
           />
           <Route path="modal" element={<QuestionCreateModal />} />
           <Route path="post">
