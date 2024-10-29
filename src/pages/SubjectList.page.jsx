@@ -67,6 +67,11 @@ function Subject({ id, name, imageSource, questionCount }) {
 const LIMIT = 8;
 // 서브젝트 리스트 총 갯수
 let total = 0;
+// 정렬 함수 객체
+const sorting = {
+  name: (arr) => arr.sort((a, b) => (a['name'] > b['name'] ? 1 : -1)),
+  createdAt: (arr) => arr.sort((a, b) => new Date(b['createdAt']) - new Date(a['createdAt'])),
+};
 
 /**
  * 서브젝트 리스트 페이지
@@ -83,15 +88,7 @@ function SubjectListPage() {
    */
   const handleSelectChange = (e) => {
     const value = e.target.value;
-    let sorted;
-    if (value === 'name') {
-      // 문자열 정렬
-      sorted = subjects.sort((a, b) => (a[value] > b[value] ? 1 : -1));
-    } else {
-      // 날짜 정렬
-      sorted = subjects.sort((a, b) => new Date(b[value]) - new Date(a[value]));
-    }
-    setSubjects([...sorted]);
+    setSubjects([...sorting[value](subjects)]);
   };
 
   useEffect(() => {
@@ -136,7 +133,7 @@ function SubjectListPage() {
             />
           ))
         ) : (
-          <li className="w-full py-6 text-center text-2xl font-bold">서브젝트가 없습니다.</li>
+          <li className="w-full py-6 text-center text-xl font-bold">서브젝트가 없습니다.</li>
         )}
       </ul>
 
