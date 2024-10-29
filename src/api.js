@@ -121,24 +121,28 @@ async function deleteQuestionList(subjectId) {
     throw new Error('deleteQuestionList 파라미터 미전달');
   }
 
-  while (true) {
-    const response = await getQuestionList(subjectId, LIMIT, offset);
-    questions = [...questions, ...response.results];
+  try {
+    while (true) {
+      const response = await getQuestionList(subjectId, LIMIT, offset);
+      questions = [...questions, ...response.results];
 
-    if (response.next === null) break;
-    offset += LIMIT;
+      if (response.next === null) break;
+      offset += LIMIT;
 
-    await new Promise((resolve) => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    }
+
+    for (const question of questions) {
+      const deleteResult = await deleteQuestion(question.id);
+      result.push(deleteResult);
+
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    }
+
+    return result;
+  } catch (error) {
+    throw error;
   }
-
-  for (const question of questions) {
-    const deleteResult = await deleteQuestion(question.id);
-    result.push(deleteResult);
-
-    await new Promise((resolve) => setTimeout(resolve, 200));
-  }
-
-  return result;
 }
 
 /**
