@@ -104,23 +104,48 @@ async function getQuestion(questionId) {
   return response.data;
 }
 
+/**
+ * 특정 Subject의 질문과 답변을 모두 삭제하는 API
+ * @param {string | number} subjectId
+ * @returns {Promise<[{question : object, answer : object}]>} 반환값은 question과 answer의 `DELETE` 요청에 대한 응답을 담고 있다.
+ * @description 데이터를 API로 불러오는 과정에서 서버의 과부하를 줄이기 위해 결과 반환까지 소요시간이 발생합니다.
+ */
 async function deleteQuestionList(subjectId) {
   const limit = 8;
   let offset = 0;
   const result = [];
   let questions = [];
 
+  if (!subjectId) {
+    throw new Error('deleteQuestionList 파라미터 미전달');
+  }
+  if (typeof subjectId !== 'string') {
+    throw new Error('deleteQuestionList 파라미터 타입 오류');
+  }
+  if (typeof subjectId !== 'number') {
+    throw new Error('deleteQuestionList 파라미터 타입 오류');
+  }
+
   while (true) {
-    const { next, results } = await getQuestionList(subjectId);
+    let next;
+    let results;
+
+    setTimeout(async () => {
+      const response = await getQuestionList(subjectId);
+      next = response.next;
+      result = response.results;
+    }, 200);
+
     offset += limit;
     questions = [...questions, ...results];
+
     if (next === null) break;
   }
 
   questions.forEach((e, i) => {
     setTimeout(async () => {
       result[i] = await deleteQuestion(e.id);
-    }, 10);
+    }, 200);
   });
 
   return result;
@@ -129,16 +154,19 @@ async function deleteQuestionList(subjectId) {
 /**
  * 질문 삭제하는 함수
  * @param {string} questionId - 질문 ID
- * @returns {Promise<Object>} - 삭제된 질문의 데이터
+ * @returns {Promise<{question : object, answer : object}>} - 삭제된 질문의 데이터
  */
 async function deleteQuestion(questionId) {
   const result = {};
-  const { data: question } = await getQuestion(questionId);
+  const question = await getQuestion(questionId);
+
   if (question?.answer) {
     result.answer = await deleteAnswer(question.answer.id);
   }
+
   const path = `${PATHS.QUESTION}${questionId}/`;
   result.question = await instance.delete(`${path}`);
+
   return result;
 }
 
@@ -234,7 +262,7 @@ async function deleteAnswer(answerId) {
   console.log(answerId);
   const path = `${PATHS.ANSWER}${answerId}/`;
   const response = await instance.delete(`${path}`);
-  return response.data;
+  return response;
 }
 
 export {
