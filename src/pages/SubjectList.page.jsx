@@ -6,6 +6,7 @@ import { deleteSubject, getSubjectList } from '../api';
 //
 import logo from '../assets/images/logo.svg';
 import styles from './SubjectList.page.module.css';
+import { ReactComponent as IconArrowRight } from '../assets/images/icon-arrow-right.svg';
 
 /**
  * 서브젝트 리스트 페이지 상단 컴포넌트
@@ -22,8 +23,9 @@ function Header() {
         </Link>
       </h2>
 
-      <Link to={id ? `/post/${id}/answer` : '/'} className="rounded-lg border px-4 py-2">
+      <Link to={id ? `/post/${id}/answer` : '/'} className="btn btn-outline">
         답변하러 가기
+        <IconArrowRight />
       </Link>
     </div>
   );
