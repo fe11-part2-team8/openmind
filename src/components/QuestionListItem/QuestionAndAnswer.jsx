@@ -35,9 +35,9 @@ dayjs.locale('ko', {
  * @param {string} props.answer - 답변 내용
  * @param {boolean} props.isSubjectOwner - 사용자가 질문의 소유자인지 여부
  * @param {boolean} props.isRejected - 답변이 거절되었는지 여부
+ * @param {string} props.imageSource - 답변자 이미지 소스 URL
  * @returns {React.JSX} 질문과 답변을 렌더링하는 컴포넌트
  */
-
 function QuestionWithAnswer({
   question,
   questionDate,
@@ -50,6 +50,7 @@ function QuestionWithAnswer({
   questionId,
   answerId,
   isSubjectOwner,
+  imageSource, // 이미지 소스 추가
 }) {
   const [isEditMode, setIsEditMode] = useState(false); // 수정 모드 상태 추가
 
@@ -115,7 +116,13 @@ function QuestionWithAnswer({
 
           {answer ? (
             <div>
-              <div style={{ display: 'flex' }}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                {/* 이미지 썸네일 표시 */}
+                <img
+                  src={imageSource}
+                  alt={`${name}의 프로필 이미지`}
+                  style={{ width: '40px', height: '40px', borderRadius: '50%', marginRight: '8px' }}
+                />
                 <p>{name}</p>
                 <p>{dayjs(answerDate).fromNow()}</p>
               </div>

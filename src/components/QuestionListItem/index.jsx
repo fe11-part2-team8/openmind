@@ -49,27 +49,27 @@ function QuestionListItem() {
   }
 
   // 확인용!!!!!!!!!! 나중에 지우기~~~~~~~~~~~~~~~~~~~~~~
-  localStorage.setItem('subjectId', 8665);
+  localStorage.setItem('subjectId', 8668);
 
   return (
     <div>
-      {questions.map((question, handleReaction) => {
+      {questions.map((question) => {
         return (
           <QuestionWithAnswer
             key={question.id}
             questionId={question.id} // 질문 ID 전달
             question={question} // 질문 객체 전달
-            questionDate={question.createdAt} //질문 날짜 전달
+            questionDate={question.createdAt} // 질문 날짜 전달
             name={subjectData.name} // 이름 전달
             answer={question.answer} // 질문 객체 안의 답변 전달
-            answerDate={question.answer ? question.answer.createdAt : null} //답변 날짜 전달
-            like={question.like} //좋아요 전달
-            dislike={question.dislike} //싫어요 전달
+            answerDate={question.answer ? question.answer.createdAt : null} // 답변 날짜 전달
+            like={question.like} // 좋아요 전달
+            dislike={question.dislike} // 싫어요 전달
             isRejected={question.answer ? question.answer.isRejected : false} // 답변 거절 상태 전달
-            handleReaction={handleReaction} // 좋아요/싫어요 처리 함수 전달
-            isSubjectOwner={isSubjectOwner}
+            isSubjectOwner={isSubjectOwner} // 주인 여부 전달
             setQuestions={setQuestions}
             answerId={question.answer ? question.answer.id : null} // 답변 ID (답변수정을 위해)
+            imageSource={subjectData.imageSource} // 프로필 이미지 URL 전달
           />
         );
       })}
