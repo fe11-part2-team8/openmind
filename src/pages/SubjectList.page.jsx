@@ -7,6 +7,7 @@ import { getSubjectList } from '../api';
 import logo from '../assets/images/logo.svg';
 import styles from './SubjectList.page.module.css';
 import { ReactComponent as IconArrowRight } from '../assets/images/icon-arrow-right.svg';
+import { ReactComponent as IconMessage } from '../assets/images/ic_message.svg';
 
 /**
  * 서브젝트 리스트 페이지 상단 컴포넌트
@@ -16,7 +17,7 @@ function Header() {
   const id = window.localStorage.getItem('id');
 
   return (
-    <div className="flex items-center justify-between py-10">
+    <div className="flex flex-col items-center justify-between py-10 sm:flex-row">
       <h2>
         <Link to="/">
           <img src={logo} alt="Open Mind" width="146" height="57" />
@@ -46,11 +47,16 @@ function Subject({ id, name, imageSource, questionCount }) {
       <figure className={styles.thumbnail}>
         <img src={imageSource} alt={`${name} 썸네일`} />
       </figure>
-      <a href={`/post/${id}`} className="stretched-link">
+
+      <a href={`/post/${id}`} className="stretched-link body1 mt-3 block truncate">
         {name}
       </a>
-      <div className="flex justify-between">
-        <span>받은 질문</span>
+
+      <div className={styles.meta}>
+        <div className="flex items-center gap-1">
+          <IconMessage width="18" height="18" />
+          <span>받은 질문</span>
+        </div>
         <span>{questionCount}개</span>
       </div>
     </li>
@@ -109,14 +115,10 @@ function SubjectListPage() {
     <div className="container mx-auto">
       <Header />
 
-      <div className="my-4 text-center">
-        <h1 className="h1">누구에게 질문할까요?</h1>
+      <div className={styles.wrapTitle}>
+        <h1 className={styles.title}>누구에게 질문할까요?</h1>
 
-        <select
-          className="rounded border px-4 py-2"
-          defaultValue="createdAt"
-          onChange={handleSelectChange}
-        >
+        <select className={styles.select} defaultValue="createdAt" onChange={handleSelectChange}>
           <option value="name">이름순</option>
           <option value="createdAt">최신순</option>
         </select>

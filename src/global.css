@@ -58,7 +58,7 @@
 @layer components {
   /* 버튼 - button */
   .btn {
-    @apply flex items-center gap-2 rounded-lg border-2 px-6 py-3 leading-tight transition-all;
+    @apply flex items-center gap-2 rounded-lg border-2 px-3 py-1 text-sm transition-all sm:px-6 sm:py-3 sm:text-base;
     color: var(--gray-10);
     border-color: var(--brown-40);
     background-color: var(--brown-40);
