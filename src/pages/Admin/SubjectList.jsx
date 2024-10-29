@@ -64,7 +64,7 @@ function SubjectList() {
     };
 
     fetchData();
-  }, [page]);
+  }, [page, getSubjectListAsync]);
 
   return (
     <>
