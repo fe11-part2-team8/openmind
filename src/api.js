@@ -51,9 +51,10 @@ async function getSubject(subjectId) {
 }
 
 /**
- * ID에 해당하는 서브젝트만 삭제하는 함수
- * @param {string} subjectId - 서브젝트 ID
- * @returns {Promise<Object>} - 삭제된 서브젝트의 데이터
+ * 특정 Subject와 이에 해당하는 질문과 답변을 모두 삭제하는 API
+ * @param {string} subjectId
+ * @returns {Promise<{subject : object, question :[ {question : object, answer : object}]}>} 반환값은 question과 answer의 `DELETE` 요청에 대한 응답을 담고 있다.
+ * @description 데이터를 API로 불러오는 과정에서 서버의 과부하를 줄이기 위해 결과 반환까지 소요시간이 발생합니다.
  */
 async function deleteSubject(subjectId) {
   const result = {};
@@ -106,7 +107,7 @@ async function getQuestion(questionId) {
 
 /**
  * 특정 Subject의 질문과 답변을 모두 삭제하는 API
- * @param {string | number} subjectId
+ * @param {string} subjectId 질문과 답변이 속한 subject의 id
  * @returns {Promise<[{question : object, answer : object}]>} 반환값은 question과 answer의 `DELETE` 요청에 대한 응답을 담고 있다.
  * @description 데이터를 API로 불러오는 과정에서 서버의 과부하를 줄이기 위해 결과 반환까지 소요시간이 발생합니다.
  */
@@ -118,12 +119,6 @@ async function deleteQuestionList(subjectId) {
 
   if (!subjectId) {
     throw new Error('deleteQuestionList 파라미터 미전달');
-  }
-  if (typeof subjectId !== 'string') {
-    throw new Error('deleteQuestionList 파라미터 타입 오류');
-  }
-  if (typeof subjectId !== 'number') {
-    throw new Error('deleteQuestionList 파라미터 타입 오류');
   }
 
   while (true) {
@@ -273,6 +268,7 @@ export {
   postQuestion,
   getQuestionList,
   getQuestion,
+  deleteQuestionList,
   deleteQuestion,
   postReaction,
   postAnswer,
