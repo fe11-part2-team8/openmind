@@ -19,7 +19,7 @@ const createData = async (value) => {
       const question = await postQuestion(content + i, subject.id);
       console.log('Question : ', question);
       await new Promise((resolve) => setTimeout(resolve, 200));
-      if (value.question) {
+      if (value.answer) {
         const answer = await postAnswer(content + i, question.id);
         console.log('Answer : ', answer);
         await new Promise((resolve) => setTimeout(resolve, 200));
@@ -66,7 +66,7 @@ function SubjectCreate() {
       </fieldset>
       <fieldset>
         <label htmlFor="answer">답글 작성 여부</label>
-        <input id="answer " type="checkbox" />
+        <input id="answer" type="checkbox" />
       </fieldset>
       <button type="submit" disabled={loading}>
         생성하기
