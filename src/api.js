@@ -112,7 +112,7 @@ async function getQuestion(questionId) {
  * @description 데이터를 API로 불러오는 과정에서 서버의 과부하를 줄이기 위해 결과 반환까지 소요시간이 발생합니다.
  */
 async function deleteQuestionList(subjectId) {
-  const limit = 8;
+  const LIMIT = 8;
   let offset = 0;
   const result = [];
   let questions = [];
@@ -126,12 +126,12 @@ async function deleteQuestionList(subjectId) {
     let results;
 
     setTimeout(async () => {
-      const response = await getQuestionList(subjectId);
+      const response = await getQuestionList(subjectId, LIMIT, offset);
       next = response.next;
-      result = response.results;
+      results = response.results;
     }, 200);
 
-    offset += limit;
+    offset += LIMIT;
     questions = [...questions, ...results];
 
     if (next === null) break;
@@ -251,10 +251,9 @@ async function patchAnswer(content, answerId, isRejected = false) {
 /**
  * 답변 삭제하는 함수
  * @param {string} answerId - 답변 ID
- * @returns {Promise<Object>} - 삭제된 답변의 데이터
+ * @returns {Promise<object>} - 삭제된 답변의 데이터
  */
 async function deleteAnswer(answerId) {
-  console.log(answerId);
   const path = `${PATHS.ANSWER}${answerId}/`;
   const response = await instance.delete(`${path}`);
   return response;
