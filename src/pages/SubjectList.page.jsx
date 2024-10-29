@@ -14,7 +14,7 @@ import { ReactComponent as IconMessage } from '../assets/images/ic_message.svg';
  * @return {React.JSX}
  */
 function Header() {
-  const id = window.localStorage.getItem('id');
+  const id = window.localStorage.getItem('SubjectId');
 
   return (
     <div className="flex flex-col items-center justify-between py-10 sm:flex-row">
