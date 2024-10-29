@@ -24,7 +24,7 @@ function Header() {
       </h2>
 
       <Link to={id ? `/post/${id}/answer` : '/'} className="btn btn-outline">
-        답변하러 가기
+        내 피드로 이동
         <IconArrowRight />
       </Link>
     </div>
