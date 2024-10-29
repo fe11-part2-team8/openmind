@@ -1,0 +1,11 @@
+.banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: auto;
+}
+
+.profile {
+  border-radius: 50%;
+}
