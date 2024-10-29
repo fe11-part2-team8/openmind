@@ -122,26 +122,21 @@ async function deleteQuestionList(subjectId) {
   }
 
   while (true) {
-    let next;
-    let results;
+    const response = await getQuestionList(subjectId, LIMIT, offset);
+    questions = [...questions, ...response.results];
 
-    setTimeout(async () => {
-      const response = await getQuestionList(subjectId, LIMIT, offset);
-      next = response.next;
-      results = response.results;
-    }, 200);
-
+    if (response.next === null) break;
     offset += LIMIT;
-    questions = [...questions, ...results];
 
-    if (next === null) break;
+    await new Promise((resolve) => setTimeout(resolve, 200));
   }
 
-  questions.forEach((e, i) => {
-    setTimeout(async () => {
-      result[i] = await deleteQuestion(e.id);
-    }, 200);
-  });
+  for (const question of questions) {
+    const deleteResult = await deleteQuestion(question.id);
+    result.push(deleteResult);
+
+    await new Promise((resolve) => setTimeout(resolve, 200));
+  }
 
   return result;
 }
