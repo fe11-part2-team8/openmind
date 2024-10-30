@@ -47,14 +47,6 @@ function Subject({ id, name, imageSource, questionCount }) {
       <figure className={styles.thumbnail}>
         <img src={imageSource} alt={`${name} 썸네일`} />
       </figure>
-<<<<<<< HEAD
-      {/* a 태그를 Link로 변경 */}
-      <Link to={`/post/${id}`} className="stretched-link">
-        {name}
-      </Link>
-      <div className="flex justify-between">
-        <span>받은 질문</span>
-=======
 
       <a href={`/post/${id}`} className="stretched-link body1 mt-3 block truncate">
         {name}
@@ -65,7 +57,6 @@ function Subject({ id, name, imageSource, questionCount }) {
           <IconMessage width="18" height="18" />
           <span>받은 질문</span>
         </div>
->>>>>>> origin/develop
         <span>{questionCount}개</span>
       </div>
     </li>

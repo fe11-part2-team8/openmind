@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import more from '../../../assets/images/ic_More.svg'; // "더보기" 아이콘
 import dropDownEdit from '../../../assets/images/ic_Edit.svg'; // 수정하기 아이콘
-import dropDownClose from '../../../assets/images/ic_close.svg'; // 삭제하기 아이콘
+import dropDownClose from '../../../assets/images/icon-close.svg'; // 삭제하기 아이콘
 
 /**
  * 답변 수정 및 삭제 옵션을 제공하는 드롭다운 컴포넌트

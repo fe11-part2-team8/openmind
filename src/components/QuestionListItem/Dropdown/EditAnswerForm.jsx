@@ -40,7 +40,9 @@ function AnswerEditor({ answerId, questionId, initialContent, onSave, postAnswer
         cols="50"
       />
 
-      <button onClick={handleSaveClick}>완료</button>
+      <button type="submit" onClick={handleSaveClick} disabled={!newContent.trim()}>
+        완료
+      </button>
     </div>
   );
 }

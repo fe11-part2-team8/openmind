@@ -132,7 +132,9 @@ function QuestionWithAnswer({
             // 답변이 없으면 답변하기 버튼 표시
             isSubjectOwner && (
               <div>
-                <button onClick={handleEdit}>답변하기</button>
+                <button type="submit" onClick={handleEdit}>
+                  답변하기
+                </button>
               </div>
             )
           )}
