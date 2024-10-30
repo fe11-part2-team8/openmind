@@ -5,7 +5,11 @@ import SubjectListPage from './pages/SubjectList.page';
 import PostPage from './pages/PostPage';
 import AnswerPage from './pages/AnswerPage';
 import QuestionCreateModal from './components/QuestionCreateModal';
+<<<<<<< HEAD
 import AnswerCreateForm from './components/AnswerCreateForm';
+=======
+import AdminPage from './pages/Admin/Admin.page';
+>>>>>>> origin/develop
 
 function Main() {
   return (
@@ -16,6 +20,7 @@ function Main() {
           <Route path="list" element={<SubjectListPage />} />
           <Route path="answercreateform" element={<AnswerCreateForm />} />
           <Route path="modal" element={<QuestionCreateModal />} />
+          <Route path="admin" element={<AdminPage />} />
           <Route path="post">
             <Route path=":id">
               <Route index element={<PostPage />} />
