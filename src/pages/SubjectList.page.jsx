@@ -7,7 +7,7 @@ import { getSubjectList } from '../api';
 import logo from '../assets/images/logo.svg';
 import styles from './SubjectList.page.module.css';
 import { ReactComponent as IconArrowRight } from '../assets/images/icon-arrow-right.svg';
-import { ReactComponent as IconMessage } from '../assets/images/ic_message.svg';
+import { ReactComponent as IconMessage } from '../assets/images/icon-message.svg';
 
 /**
  * 서브젝트 리스트 페이지 상단 컴포넌트
