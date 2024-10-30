@@ -14,22 +14,6 @@ import facebookShare from '../assets/images/facebookShare.png';
 import message from '../assets/images/messages.png';
 import empty from '../assets/images/empty.png';
 
-// 카카오 sdk 로드, 초기화
-const loadKakaoSDK = () => {
-  return new Promise((resolve) => {
-    if (window.Kakao && window.Kakao.isInitialized()) {
-      resolve();
-    } else {
-      const script = document.createElement('script');
-      script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
-      script.onload = () => {
-        window.Kakao.init('1152271'); // Kakao App Key
-        resolve();
-      };
-    }
-  });
-};
-
 // 로컬 id랑 현재 접속한 질문 id랑 같은지 검사
 const isMysubject = (id) => {
   const myId = localStorage.getItem('SubjectId');
@@ -38,37 +22,47 @@ const isMysubject = (id) => {
 
 function PostPage() {
   const { id } = useParams();
-  const [total, setTotal] = useState(0);
-  const [profileImage, setProfileImage] = useState('');
-  const [username, setUsername] = useState('');
+  const [result, setResult] = useState({ count: 0 });
+  const [profile, setProfile] = useState({ name: '', imageSource: '' });
   const [isToastVisible, setIsToastVisible] = useState(false);
   const navigate = useNavigate();
 
-  const { error: questionError, wrappedFunction: fetchQuestion } = useAsync(getQuestionList);
-  const { error: subjectError, wrappedFunction: fetchSubject } = useAsync(getSubject);
+  const { wrappedFunction: fetchQuestion } = useAsync(getQuestionList);
+  const { wrappedFunction: fetchSubject } = useAsync(getSubject);
 
   useEffect(() => {
-    // 질문 및 서브젝트 불러옴
-    loadKakaoSDK().then(() => {
-      const loadContent = async () => {
-        const result = await fetchQuestion(id);
-        const profile = await fetchSubject(id);
-
-        if (!result || !profile) {
-          alert('결과를 불러올 수 없습니다.');
-          console.log(questionError || subjectError);
-          navigate('/list');
-          return;
+    const loadKakaoSDK = () => {
+      return new Promise((resolve) => {
+        if (window.Kakao && window.Kakao.isInitialized()) {
+          resolve();
+        } else {
+          const script = document.createElement('script');
+          script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
+          script.onload = () => {
+            window.Kakao.init('1152271'); // Kakao App Key
+            resolve();
+          };
+          document.body.appendChild(script);
         }
+      });
+    };
 
-        setTotal(result.count);
-        setProfileImage(profile.imageSource);
-        setUsername(profile.name);
-      };
+    const loadContent = async () => {
+      try {
+        await loadKakaoSDK(); // 카카오 SDK 로드 및 초기화
+        const question = await fetchQuestion(id);
+        const subject = await fetchSubject(id);
+        setResult(question);
+        setProfile(subject);
+      } catch (err) {
+        alert('결과를 불러올 수 없습니다.');
+        console.log(err);
+        navigate('/list');
+      }
+    };
 
-      loadContent();
-    });
-  }, [id, questionError, subjectError, fetchQuestion, fetchSubject, navigate]);
+    loadContent();
+  }, [id, fetchQuestion, fetchSubject, navigate]);
 
   // url 복사
   const handleCopyUrl = async () => {
@@ -131,8 +125,8 @@ function PostPage() {
         <Link to="/">
           <img src={logo} alt="OpenMind" className={styles.logo} />
         </Link>
-        <img src={profileImage} alt="ProfileImage" className={styles.profile} />
-        <h2 className="h2">{username}</h2>
+        <img src={profile.imageSource} alt="ProfileImage" className={styles.profile} />
+        <h2 className="h2">{profile.name}</h2>
         <div className="flex gap-3">
           <img src={urlShare} alt="url" onClick={handleCopyUrl} className={styles.share} />
           <img
@@ -153,10 +147,10 @@ function PostPage() {
             <div className="flex items-center justify-center gap-2">
               <img src={message} alt="total" className={styles.message} />
               <p className="body1">
-                {total !== false ? `${total}개의 질문이 있습니다.` : '아직 질문이 없습니다.'}
+                {result.count ? `${result.count}개의 질문이 있습니다.` : '아직 질문이 없습니다.'}
               </p>
             </div>
-            {!total && <img src={empty} alt="empty" className={styles.empty} />}
+            {!result.count && <img src={empty} alt="empty" className={styles.empty} />}
           </div>
         </div>
         <div className="fixed bottom-[24px] right-[24px]">
