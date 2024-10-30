@@ -81,6 +81,7 @@
       border-color: var(--brown-50);
     }
   }
+
   .btn-rounded {
     @apply rounded-full;
   }
@@ -158,6 +159,54 @@
   .bg-red {
     background-color: var(--red);
   }
+
+  /* 선 색상 */
+  .border-brown-10 {
+    border: 1px solid var(--brown-10);
+  }
+
+  .border-brown-20 {
+    border: 1px solid var(--brown-20);
+  }
+
+  .border-brown-30 {
+    border: 1px solid var(--brown-30);
+  }
+
+  .border-brown-40 {
+    border: 1px solid var(--brown-40);
+  }
+
+  .border-brown-50 {
+    border: 1px solid var(--brown-50);
+  }
+
+  /* 색상 */
+  .text-brown-10 {
+    color: var(--brown-10);
+  }
+
+  .text-brown-20 {
+    color: var(--brown-20);
+  }
+
+  .text-brown-30 {
+    color: var(--brown-30);
+  }
+
+  .text-brown-40 {
+    color: var(--brown-40);
+  }
+
+  .text-brown-50 {
+    color: var(--brown-50);
+  }
+
+  .text-white {
+    color: #fff;
+  }
+
+  /* 그림자 */
 
   .shadow-1 {
     box-shadow: var(--shadow-1pt);
