@@ -1,0 +1,57 @@
+.banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: auto;
+}
+
+.logo {
+  width: 170px;
+  height: 67px;
+}
+
+.profile {
+  border-radius: 50%;
+  width: 136px;
+  height: 136px;
+}
+
+.share {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+}
+
+.message {
+  width: 24px;
+  height: 24px;
+}
+
+.empty {
+  margin: 50px;
+  width: 150px;
+  height: 154px;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%); /* 아래에서 시작 */
+    opacity: 0; /* 투명도 0으로 시작 */
+  }
+  to {
+    transform: translateY(0); /* 제자리로 이동 */
+    opacity: 1; /* 완전 불투명으로 */
+  }
+}
+
+.toast {
+  position: fixed;
+  bottom: 50px;
+  background-color: #000;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  z-index: 100;
+  animation: slideUp 0.3s ease-out; /* 애니메이션 적용 */
+}

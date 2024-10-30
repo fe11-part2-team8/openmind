@@ -25,7 +25,7 @@ function Header() {
       </h2>
 
       <Link to={id ? `/post/${id}/answer` : '/'} className="btn btn-outline">
-        답변하러 가기
+        내 피드로 이동
         <IconArrowRight />
       </Link>
     </div>
@@ -47,10 +47,9 @@ function Subject({ id, name, imageSource, questionCount }) {
       <figure className={styles.thumbnail}>
         <img src={imageSource} alt={`${name} 썸네일`} />
       </figure>
-
-      <a href={`/post/${id}`} className="stretched-link body1 mt-3 block truncate">
+      <Link to={`/post/${id}`} className="stretched-link body1 mt-3 block truncate">
         {name}
-      </a>
+      </Link>
 
       <div className={styles.meta}>
         <div className="flex items-center gap-1">

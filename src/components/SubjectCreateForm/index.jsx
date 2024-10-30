@@ -44,7 +44,7 @@ const findSubjectByName = async (name) => {
       if (subjectId) {
         localStorage.setItem('subjectId', subjectId); // 로컬 스토리지에 저장
 
-        navigate(`/post/${subjectId}/answer`); // 서브젝트 ID로 경로 변경
+        navigate(`/list`); // 서브젝트 ID로 경로 변경
       } else {
         console.error('서브젝트 생성 중 오류가 발생했습니다: subjectId가 유효하지 않습니다.');
       }
