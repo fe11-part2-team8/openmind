@@ -3,11 +3,15 @@ import { postAnswer, patchAnswer } from '../../api';
 // import styles from './AnswerCreateForm.module.css';
 
 function verifyContent(content, originAnswer) {
-  if (content === '' || content === originAnswer) {
+  if (content === '') {
     return false;
-  } else {
-    return true;
   }
+
+  if (content === originAnswer) {
+    return false;
+  }
+
+  return true;
 }
 
 /**
