@@ -53,6 +53,7 @@ function QuestionWithAnswer({
   imageSource,
 }) {
   const [isEditMode, setIsEditMode] = useState(false); // 수정 모드 상태
+  const [currentAnswer, setCurrentAnswer] = useState(answer); // 현재 답변 상태 관리
 
   // 수정하기 핸들러
   const handleEdit = () => {
@@ -62,17 +63,15 @@ function QuestionWithAnswer({
   // 삭제하기 핸들러
   const handleDelete = async () => {
     await deleteQuestion(questionId);
-    // 질문 삭제 후 페이지 새로고침
-    window.location.reload();
+    setCurrentAnswer(null); // 삭제 후 상태 초기화
   };
 
   // 수정 완료 핸들러
   const handleSave = async (newContent, answerId, isRejected) => {
     try {
-      await patchAnswer(newContent, answerId, isRejected); // 답변 수정 API 호출
+      const updatedAnswer = await patchAnswer(newContent, answerId, isRejected);
+      setCurrentAnswer(updatedAnswer); // 변경된 답변 상태 업데이트
       setIsEditMode(false); // 수정 완료 후 수정 모드 해제
-      //수정 후 새로고침
-      window.location.reload();
     } catch (error) {
       alert('답변 수정에 실패했습니다.');
     }
@@ -81,10 +80,9 @@ function QuestionWithAnswer({
   // 새 답변 추가 핸들러
   const handlePostAnswer = async (newContent, questionId, isRejected) => {
     try {
-      await postAnswer(newContent, questionId, isRejected); // 답변 추가 API 호출
+      const newAnswer = await postAnswer(newContent, questionId, isRejected); // 새 답변 추가 API 호출
+      setCurrentAnswer(newAnswer); // 새로운 답변을 상태에 설정하여 렌더링 업데이트
       setIsEditMode(false); // 답변 추가 후 수정 모드 해제
-      //답변추가후새로고침
-      window.location.reload();
     } catch (error) {
       alert('답변 추가에 실패했습니다.');
     }
@@ -92,7 +90,7 @@ function QuestionWithAnswer({
 
   return (
     <div>
-      <span>{answer ? '답변 완료' : '미답변'}</span>
+      <span>{currentAnswer ? '답변 완료' : '미답변'}</span>
 
       {/* 피드 주인일 경우에만 드롭다운 표시 */}
       {isSubjectOwner && <Dropdown onEdit={handleEdit} onDelete={handleDelete} />}
@@ -114,7 +112,7 @@ function QuestionWithAnswer({
             <p>{question.content}</p>
           </div>
 
-          {answer ? (
+          {currentAnswer ? (
             <div>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 {/* 이미지 썸네일 표시 */}
@@ -126,7 +124,7 @@ function QuestionWithAnswer({
                 <p>{name}</p>
                 <p>{dayjs(answerDate).fromNow()}</p>
               </div>
-              <p>{answer.content}</p> {/* 답변 내용 표시 */}
+              <p>{currentAnswer?.content}</p> {/* 답변 내용 표시 */}
             </div>
           ) : (
             // 답변이 없으면 답변하기 버튼 표시

@@ -19,6 +19,18 @@ const Dropdown = ({ onEdit, onDelete }) => {
     setDropdownOpen(!dropdownOpen);
   };
 
+  // 수정 클릭 핸들러
+  const handleEditClick = () => {
+    onEdit();
+    setDropdownOpen(false); // 수정 클릭 시 드롭다운 닫기
+  };
+
+  // 삭제 클릭 핸들러
+  const handleDeleteClick = () => {
+    onDelete();
+    setDropdownOpen(false); // 삭제 클릭 시 드롭다운 닫기
+  };
+
   return (
     <div style={{ position: 'relative' }}>
       {/* 더보기 버튼 */}
@@ -37,14 +49,14 @@ const Dropdown = ({ onEdit, onDelete }) => {
           }}
         >
           <div
-            onClick={onEdit}
+            onClick={handleEditClick}
             style={{ display: 'flex', alignItems: 'center', padding: '8px', cursor: 'pointer' }}
           >
             <img src={dropDownEdit} alt="수정하기" />
             <span>수정하기</span>
           </div>
           <div
-            onClick={onDelete}
+            onClick={handleDeleteClick} // 삭제 클릭 핸들러
             style={{ display: 'flex', alignItems: 'center', padding: '8px', cursor: 'pointer' }}
           >
             <img src={dropDownClose} alt="삭제하기" />
