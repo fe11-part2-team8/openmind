@@ -13,41 +13,32 @@ import thumbsDown from '../../assets/images/ic_thumbs-down.svg';
  */
 
 function ReactionButtons({ questionId, initialLikes, initialDislikes }) {
-  const [likes, setLikes] = useState(initialLikes);
-  const [dislikes, setDislikes] = useState(initialDislikes);
-  const [userReaction, setUserReaction] = useState(null); // 사용자의 반응 상태
+  const [reaction, setReaction] = useState({ like: initialLikes, dislike: initialDislikes });
 
-  const handleLike = async () => {
-    if (userReaction) return; // 이미 반응한 경우 중복 방지
-    try {
-      await postReaction(questionId, 'like');
-      setLikes((prev) => prev + 1);
-      setUserReaction('like');
-    } catch (error) {
-      console.error('좋아요 반영 실패:', error);
-    }
-  };
+  const handleClickReaction = async (e) => {
+    const btn = e.target.closest('button');
+    if (!btn || btn.hasAttribute('data-checked')) return;
 
-  const handleDislike = async () => {
-    if (userReaction) return; // 이미 반응한 경우 중복 방지
+    const type = btn.dataset.type;
+
     try {
-      await postReaction(questionId, 'dislike');
-      setDislikes((prev) => prev + 1);
-      setUserReaction('dislike');
+      setReaction((prev) => ({ ...prev, [type]: prev[type] + 1 }));
+      btn.setAttribute('data-checked', ''); // 중복 방지 속성 추가
+      await postReaction(questionId, type);
     } catch (error) {
-      console.error('싫어요 반영 실패:', error);
+      console.error(`"${type}" 반영 실패:`, error);
     }
   };
 
   return (
-    <div style={{ display: 'flex', gap: '10px' }}>
-      <button onClick={handleLike} disabled={userReaction !== null} style={{ display: 'flex' }}>
+    <div onClick={handleClickReaction} style={{ display: 'flex', gap: '10px' }}>
+      <button data-type="like" style={{ display: 'flex', alignItems: 'center' }}>
         <img src={thumbsUp} alt="좋아요 아이콘" />
-        좋아요: {likes}
+        좋아요: {reaction.like}
       </button>
-      <button onClick={handleDislike} disabled={userReaction !== null} style={{ display: 'flex' }}>
+      <button data-type="dislike" style={{ display: 'flex', alignItems: 'center' }}>
         <img src={thumbsDown} alt="싫어요 아이콘" />
-        싫어요: {dislikes}
+        싫어요: {reaction.dislike}
       </button>
     </div>
   );
