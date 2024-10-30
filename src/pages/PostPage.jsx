@@ -20,6 +20,22 @@ const isMysubject = (id) => {
   return myId === id;
 };
 
+const loadKakaoSDK = (appKey) => {
+  return new Promise((resolve) => {
+    if (window.Kakao && window.Kakao.isInitialized()) {
+      resolve();
+    } else {
+      const script = document.createElement('script');
+      script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
+      script.onload = () => {
+        window.Kakao.init(appKey);
+        resolve();
+      };
+      document.body.appendChild(script);
+    }
+  });
+};
+
 function PostPage() {
   const { id } = useParams();
   const [result, setResult] = useState({ count: 0 });
@@ -31,25 +47,9 @@ function PostPage() {
   const { wrappedFunction: fetchSubject } = useAsync(getSubject);
 
   useEffect(() => {
-    const loadKakaoSDK = () => {
-      return new Promise((resolve) => {
-        if (window.Kakao && window.Kakao.isInitialized()) {
-          resolve();
-        } else {
-          const script = document.createElement('script');
-          script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
-          script.onload = () => {
-            window.Kakao.init('1152271'); // Kakao App Key
-            resolve();
-          };
-          document.body.appendChild(script);
-        }
-      });
-    };
-
     const loadContent = async () => {
       try {
-        await loadKakaoSDK(); // 카카오 SDK 로드 및 초기화
+        await loadKakaoSDK('1152271'); // 앱 키를 인자로 전달
         const question = await fetchQuestion(id);
         const subject = await fetchSubject(id);
         setResult(question);
