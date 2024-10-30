@@ -23,6 +23,20 @@ function verifyContent(content, originAnswer) {
 }
 
 //상위 컴포넌트에서 subjectName, subjectProfile, originAnswer를 받아온다. 4.1 0
+
+// TODO: 답변 수정일때 answerId 가 있을때, originAnswer 빈값이 아닐때
+// answerId 받아야함. 수정일때 patchAnswer 에 answerId 로 값을 보내야함
+
+/**
+ * 답변 폼 컴포넌트
+ * @param {object} props
+ * @param {string} props.subjectName
+ * @param {string} props.subjectProfile 썸네일 주소값
+ * @param {string} props.questionId
+ * @param {string} props.type
+ * @param {string} props.originAnswer 내용 유무로 답변 저장, 수정 체크 -> 나중
+ * @returns
+ */
 function AnswerCreateForm({
   subjectName,
   subjectProfile,
@@ -73,7 +87,11 @@ function AnswerCreateForm({
         />
         {/*답변 제출 버튼을 만듬*/}
         {/*disabled 초기 속성은 비활성화하고 유효성 검사가 성공하면 활성화 한다. 4.4 0*/}
-        <button type="submit" disabled={!verifyContent(answerContent, originAnswer)}>
+        <button
+          type="submit"
+          className="btn"
+          disabled={!verifyContent(answerContent, originAnswer)}
+        >
           {type === 'create' ? '답변 완료' : '수정 완료'}
         </button>
       </form>
