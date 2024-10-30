@@ -14,6 +14,8 @@ import facebookShare from '../assets/images/facebookShare.png';
 import { ReactComponent as IconMessage } from '../assets/images/icon-message.svg';
 import empty from '../assets/images/empty.png';
 
+import QuestionListItem from '../components/QuestionListItem';
+
 // 로컬 id랑 현재 접속한 질문 id랑 같은지 검사
 const isMysubject = (id) => {
   const myId = localStorage.getItem('SubjectId');
@@ -160,6 +162,7 @@ function PostPage() {
               </p>
             </div>
             {!result.count && <img src={empty} alt="empty" className={styles.empty} />}
+            <QuestionListItem />
           </div>
         </div>
         <div className="fixed bottom-6 right-6">
