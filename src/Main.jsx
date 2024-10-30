@@ -5,11 +5,8 @@ import SubjectListPage from './pages/SubjectList.page';
 import PostPage from './pages/PostPage';
 import AnswerPage from './pages/AnswerPage';
 import QuestionCreateModal from './components/QuestionCreateModal';
-<<<<<<< HEAD
 import AnswerCreateForm from './components/AnswerCreateForm';
-=======
 import AdminPage from './pages/Admin/Admin.page';
->>>>>>> origin/develop
 
 function Main() {
   return (
