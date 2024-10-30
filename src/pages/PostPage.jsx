@@ -20,6 +20,7 @@ const isMysubject = (id) => {
   return myId === id;
 };
 
+// 카카오 sdk 로드 및 초기화
 const loadKakaoSDK = (appKey) => {
   return new Promise((resolve) => {
     if (window.Kakao && window.Kakao.isInitialized()) {
