@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 /**
  * 예외 처리를 위한 커스텀 훅입니다.
@@ -19,19 +19,22 @@ function useAsync(asyncFunction) {
    * 비동기 함수를 호출하는 래퍼 함수입니다.
    * @param {...any} args - 비동기 함수에 전달할 인자들
    */
-  const wrappedFunction = async (...args) => {
-    setLoading(true);
-    setError(null);
+  const wrappedFunction = useCallback(
+    async (...args) => {
+      setLoading(true);
+      setError(null);
 
-    try {
-      return (responseData = await asyncFunction(...args));
-    } catch (err) {
-      setError(err.message);
-      return;
-    } finally {
-      setLoading(false);
-    }
-  };
+      try {
+        return await asyncFunction(...args);
+      } catch (err) {
+        setError(err.message);
+        return;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [asyncFunction],
+  );
 
   return { loading, error, wrappedFunction };
 }
