@@ -164,7 +164,9 @@ function PostPage() {
         </div>
         <div className="fixed bottom-[24px] right-[24px]">
           <Link to="/list">
-            <button className={`${buttonClassName} btn-secondary mb-3`}>목록으로 이동</button>
+            <button className={`${buttonClassName} btn-outline mb-3 font-semibold`}>
+              목록으로 이동
+            </button>
           </Link>
           {isMysubject(id) ? (
             <Link to={`/post/${id}/answer`}>

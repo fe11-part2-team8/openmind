@@ -7,6 +7,7 @@ import PostPage from './pages/PostPage';
 import AnswerPage from './pages/AnswerPage';
 import QuestionCreateModal from './components/QuestionCreateModal';
 import AdminPage from './pages/Admin/Admin.page';
+import NotFound from './pages/NotFound';
 
 function Main() {
   return (
@@ -24,6 +25,7 @@ function Main() {
               <Route path="answer" element={<AnswerPage />} />
             </Route>
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>

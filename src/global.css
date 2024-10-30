@@ -81,16 +81,6 @@
       border-color: var(--brown-50);
     }
   }
-  .btn-secondary {
-    color: var(--brown-40);
-    border: 1px solid var(--brown-50);
-    background-color: var(--brown-10);
-    font-weight: 600;
-
-    &:hover {
-      background-color: var(--brown-20);
-    }
-  }
 
   .btn-rounded {
     @apply rounded-full;
