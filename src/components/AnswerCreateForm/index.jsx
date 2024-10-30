@@ -13,7 +13,7 @@ function verifyContent(content, originAnswer) {
 /**
  * AnswerForm 컴포넌트
  * 사용자가 답변을 작성하거나 수정할 수 있도록 하는 답변 폼 컴포넌트입니다.
- * @param {Object} props - 컴포넌트에 전달된 속성
+ * @param {object} props - 컴포넌트에 전달된 속성
  * @param {string} props.type - create 또는 edit로 답변 폼의 작동 방식을 결정합니다
  * @param {string} props.questionId - 질문의 ID
  * @param {string} props.subjectName - 피드의 사용자 이름
