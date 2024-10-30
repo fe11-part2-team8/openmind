@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 /**
  *  답변을 작성하거나 수정하는 컴포넌트
@@ -13,12 +13,15 @@ import { useState } from 'react';
 
 function AnswerCreateAndEdit({ answerId, questionId, initialContent, onSave, postAnswer }) {
   const [newContent, setNewContent] = useState(initialContent);
+  const [isContentChanged, setIsContentChanged] = useState(false); // 내용 변경 여부 상태
+
+  // 등록된 답변과 수정하려는 답변 내용 비교
+  useEffect(() => {
+    setIsContentChanged(newContent.trim() !== initialContent.trim());
+  }, [newContent, initialContent]);
 
   const handleSaveClick = async () => {
     try {
-      console.log('newContent:', newContent);
-      console.log('answerId:', answerId);
-
       if (answerId) {
         // 답변이 존재하면 수정
         await onSave(newContent, answerId);
@@ -40,7 +43,11 @@ function AnswerCreateAndEdit({ answerId, questionId, initialContent, onSave, pos
         cols="50"
       />
 
-      <button type="submit" onClick={handleSaveClick} disabled={!newContent.trim()}>
+      <button
+        type="submit"
+        onClick={handleSaveClick}
+        disabled={!newContent.trim() || !isContentChanged}
+      >
         완료
       </button>
     </div>
