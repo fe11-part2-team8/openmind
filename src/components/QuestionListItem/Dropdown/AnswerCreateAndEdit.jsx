@@ -11,7 +11,7 @@ import { useState } from 'react';
  * @returns {React.JSX} 답변 작성/수정 폼 컴포넌트
  */
 
-function AnswerEditor({ answerId, questionId, initialContent, onSave, postAnswer }) {
+function AnswerCreateAndEdit({ answerId, questionId, initialContent, onSave, postAnswer }) {
   const [newContent, setNewContent] = useState(initialContent);
 
   const handleSaveClick = async () => {
@@ -47,4 +47,4 @@ function AnswerEditor({ answerId, questionId, initialContent, onSave, postAnswer
   );
 }
 
-export default AnswerEditor;
+export default AnswerCreateAndEdit;

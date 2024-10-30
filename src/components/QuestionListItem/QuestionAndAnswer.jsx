@@ -5,7 +5,7 @@ import 'dayjs/locale/ko'; // 한국어 가져오기
 
 import Dropdown from './Dropdown/index';
 import { deleteQuestion, patchAnswer, postAnswer } from '../../api'; // 답변 수정 및 추가 API 불러오기
-import AnswerEditor from './Dropdown/EditAnswerForm'; // 수정 컴포넌트 가져오기
+import AnswerCreateAndEdit from './Dropdown/AnswerCreateAndEdit'; // 수정 컴포넌트 가져오기
 import ReactionButtons from './ReactionButton'; // 좋아요/싫어요 컴포넌트 불러오기
 
 // 상대적인 시간표기를 위한 시간 계산
@@ -97,9 +97,9 @@ function QuestionWithAnswer({
       {/* 피드 주인일 경우에만 드롭다운 표시 */}
       {isSubjectOwner && <Dropdown onEdit={handleEdit} onDelete={handleDelete} />}
 
-      {/* 수정 모드일 때 AnswerEditor 표시 */}
+      {/* 수정 모드일 때 AnswerCreateAndEdit 표시 */}
       {isEditMode ? (
-        <AnswerEditor
+        <AnswerCreateAndEdit
           answerId={answer?.id || answerId} // 답변 ID 전달
           questionId={questionId} // 질문 ID 전달
           initialContent={answer?.content || ''} // 답변 내용 전달
