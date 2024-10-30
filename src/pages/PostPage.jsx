@@ -44,8 +44,8 @@ function PostPage() {
   const [isToastVisible, setIsToastVisible] = useState(false);
   const navigate = useNavigate();
 
-  const { wrappedFunction: fetchQuestion } = useAsync(getQuestionList);
-  const { wrappedFunction: fetchSubject } = useAsync(getSubject);
+  const { error: questionError, wrappedFunction: fetchQuestion } = useAsync(getQuestionList);
+  const { error: subjectError, wrappedFunction: fetchSubject } = useAsync(getSubject);
 
   useEffect(() => {
     const loadContent = async () => {
@@ -59,11 +59,19 @@ function PostPage() {
         alert('결과를 불러올 수 없습니다.');
         console.log(err);
         navigate('/list');
+
+        // 오류가 존재할 경우 콘솔에 출력
+        if (questionError) {
+          console.log('질문 오류:', questionError);
+        }
+        if (subjectError) {
+          console.log('서브젝트 오류:', subjectError);
+        }
       }
     };
 
     loadContent();
-  }, [id, fetchQuestion, fetchSubject, navigate]);
+  }, [id, fetchQuestion, fetchSubject, questionError, subjectError, navigate]);
 
   // url 복사
   const handleCopyUrl = async () => {
