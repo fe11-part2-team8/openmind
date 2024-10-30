@@ -11,7 +11,7 @@ import banner from '../assets/images/banner.png';
 import urlShare from '../assets/images/urlShare.png';
 import kakaoShare from '../assets/images/kakaoShare.png';
 import facebookShare from '../assets/images/facebookShare.png';
-import message from '../assets/images/messages.png';
+import { ReactComponent as IconMessage } from '../assets/images/icon-message.svg';
 import empty from '../assets/images/empty.png';
 
 // 로컬 id랑 현재 접속한 질문 id랑 같은지 검사
@@ -130,7 +130,7 @@ function PostPage() {
   return (
     <div className="container mx-auto">
       <img src={banner} alt="Background_Banner" className={styles.banner} />
-      <div className="relative z-10 mt-[50px] flex flex-col items-center gap-3">
+      <div className="relative z-10 mt-12 flex flex-col items-center gap-3">
         <Link to="/">
           <img src={logo} alt="OpenMind" className={styles.logo} />
         </Link>
@@ -151,10 +151,10 @@ function PostPage() {
             className={styles.share}
           />
         </div>
-        <div className="bg-brown-10 border-brown-30 text-brown-40 font-actor body1 mt-[50px] w-full rounded-[16px] border p-4 text-center">
+        <div className="bg-brown-10 border-brown-30 text-brown-40 font-actor body1 mt-12 w-full rounded-[16px] border p-4 text-center">
           <div className="flex flex-col items-center">
             <div className="flex items-center justify-center gap-2">
-              <img src={message} alt="total" className={styles.message} />
+              <IconMessage alt="total" className={`${styles.message} text-brown-40`} />
               <p className="body1">
                 {result.count ? `${result.count}개의 질문이 있습니다.` : '아직 질문이 없습니다.'}
               </p>
@@ -162,7 +162,7 @@ function PostPage() {
             {!result.count && <img src={empty} alt="empty" className={styles.empty} />}
           </div>
         </div>
-        <div className="fixed bottom-[24px] right-[24px]">
+        <div className="fixed bottom-6 right-6">
           <Link to="/list">
             <button className={`${buttonClassName} btn-outline mb-3 font-semibold`}>
               목록으로 이동
