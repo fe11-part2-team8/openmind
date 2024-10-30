@@ -10,10 +10,10 @@
 
 import { useState } from 'react';
 import { postAnswer, patchAnswer } from '../../api';
-import styles from './AnswerCreateForm.module.css';
+// import styles from './AnswerCreateForm.module.css';
 
 //상태값이 변경되면 유효성 검사를 진행한다 :
-//빈값이거나 기존 답변(edit타입일때)이면 false, 값이 있거나 수정된 답변일 경우 true 4.2 0
+//빈값이거나 기존 답변(edit타입일때)이면 false, 값이 있거나 수정된 답변일 경우 true 4.2 0  이거하기
 function verifyContent(content, originAnswer) {
   if (content === '' || content === originAnswer) {
     return false;
@@ -24,14 +24,15 @@ function verifyContent(content, originAnswer) {
 
 //상위 컴포넌트에서 subjectName, subjectProfile, originAnswer를 받아온다. 4.1 0
 function AnswerCreateForm({
-  subjectName = '아초는 고양이',
-  subjectProfile = 'subjectProfile',
-  questionId = '1234',
+  subjectName,
+  subjectProfile,
+  questionId,
+  answerId,
   type = 'create',
-  originAnswer = '아초는 무엇인가?',
+  originAnswer = '', // 더블체크 -> 추후 수정해보면 좋을듯
 }) {
   //타입에 따라 초기값을 빈 값 또는 originAnswer로 설정한다. - 유효성검사 4.3 0
-  const [answerContent, setAnswerContent] = useState(type === 'edit' ? originAnswer : '');
+  const [answerContent, setAnswerContent] = useState(originAnswer);
 
   //사용자가 입력한 값을 상태값으로 저장한다.(여백없이)
   const handleChangeContent = (e) => {
@@ -41,13 +42,13 @@ function AnswerCreateForm({
   const handleSubmitContent = async (e) => {
     //폼 제출 이벤트 발생 시 폼 제출을 막는다.
     e.preventDefault();
-    let response; //상태에 따라 값을 보내주기 전 가지고 있는 용도
+    let response; //상태에 따라 값을 보내주기 전 가지고 있는 용도 - 검색
 
     //API를 사용해서 답변을 보낸다. -> 타입에 따라 create = postAnswer, edit = patchAnswer 실행 4.5 0
     if (type === 'create') {
       response = await postAnswer(answerContent, questionId);
     } else if (type === 'edit') {
-      response = await patchAnswer(answerContent, questionId);
+      response = await patchAnswer(answerContent, answerId);
     }
     console.log(response);
   };
@@ -64,7 +65,12 @@ function AnswerCreateForm({
       <form onSubmit={handleSubmitContent}>
         {/*입력란을 textarea 태그로 만든다.*/}
         {/*placeholder로 "답변을 입력해주세요" 라고 표기한다.*/}
-        <textarea type="text" placeholder="답변을 입력해주세요" onChange={handleChangeContent} />
+        <textarea
+          type="text"
+          value={answerContent}
+          placeholder="답변을 입력해주세요"
+          onChange={handleChangeContent}
+        />
         {/*답변 제출 버튼을 만듬*/}
         {/*disabled 초기 속성은 비활성화하고 유효성 검사가 성공하면 활성화 한다. 4.4 0*/}
         <button type="submit" disabled={!verifyContent(answerContent, originAnswer)}>
