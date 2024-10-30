@@ -10,7 +10,7 @@
 
 import { useState } from 'react';
 import { postAnswer, patchAnswer } from '../../api';
-import styles from './AnswerCreateForm.module.css';
+// import styles from './AnswerCreateForm.module.css';
 
 //상태값이 변경되면 유효성 검사를 진행한다 :
 //빈값이거나 기존 답변(edit타입일때)이면 false, 값이 있거나 수정된 답변일 경우 true 4.2 0
@@ -23,12 +23,26 @@ function verifyContent(content, originAnswer) {
 }
 
 //상위 컴포넌트에서 subjectName, subjectProfile, originAnswer를 받아온다. 4.1 0
+
+// TODO: 답변 수정일때 answerId 가 있을때, originAnswer 빈값이 아닐때
+// answerId 받아야함. 수정일때 patchAnswer 에 answerId 로 값을 보내야함
+
+/**
+ * 답변 폼 컴포넌트
+ * @param {object} props
+ * @param {string} props.subjectName
+ * @param {string} props.subjectProfile 썸네일 주소값
+ * @param {string} props.questionId
+ * @param {string} props.type
+ * @param {string} props.originAnswer 내용 유무로 답변 저장, 수정 체크 -> 나중
+ * @returns
+ */
 function AnswerCreateForm({
   subjectName = '아초는 고양이',
   subjectProfile = 'subjectProfile',
-  questionId = '1234',
-  type = 'create',
-  originAnswer = '아초는 무엇인가?',
+  questionId = '14319',
+  type = 'edit',
+  originAnswer = 'testtest',
 }) {
   //타입에 따라 초기값을 빈 값 또는 originAnswer로 설정한다. - 유효성검사 4.3 0
   const [answerContent, setAnswerContent] = useState(type === 'edit' ? originAnswer : '');
@@ -64,10 +78,19 @@ function AnswerCreateForm({
       <form onSubmit={handleSubmitContent}>
         {/*입력란을 textarea 태그로 만든다.*/}
         {/*placeholder로 "답변을 입력해주세요" 라고 표기한다.*/}
-        <textarea type="text" placeholder="답변을 입력해주세요" onChange={handleChangeContent} />
+        <textarea
+          type="text"
+          value={answerContent}
+          placeholder="답변을 입력해주세요"
+          onChange={handleChangeContent}
+        />
         {/*답변 제출 버튼을 만듬*/}
         {/*disabled 초기 속성은 비활성화하고 유효성 검사가 성공하면 활성화 한다. 4.4 0*/}
-        <button type="submit" disabled={!verifyContent(answerContent, originAnswer)}>
+        <button
+          type="submit"
+          className="btn"
+          disabled={!verifyContent(answerContent, originAnswer)}
+        >
           {type === 'create' ? '답변 완료' : '수정 완료'}
         </button>
       </form>
