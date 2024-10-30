@@ -70,7 +70,7 @@ function QuestionCreateModal({ subject = MOCK_SUBJECT_VALUE, onClick }) {
       <div id="modal" className={styles.modal}>
         <div className={styles.header}>
           <div className={styles.text}>
-            <img src={icon_message} alt="메세지 아이콘" />
+            <img src={icon_message} alt="메세지 아이콘" className="size-7" />
             <span>질문을 작성해 주세요</span>
           </div>
           <img
