@@ -50,7 +50,7 @@ function PostPage() {
   useEffect(() => {
     const loadContent = async () => {
       try {
-        await loadKakaoSDK('1152271'); // 앱 키를 인자로 전달
+        await loadKakaoSDK('8cfdc4efb45f22c48d8a37640d890eb5'); // 앱 키를 인자로 전달
         const question = await fetchQuestion(id);
         const subject = await fetchSubject(id);
         setResult(question);
