@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState, useCallback } from 'react';
 
 /**
  * 예외 처리를 위한 커스텀 훅입니다.
@@ -43,9 +43,8 @@ export default useAsync;
 
 // loading: 함수 실행하는 동안 true (값 받아오는 동안 버튼 비활성화 할 때)
 // error: catch에서 받아온 에러 메시지
-// data: 함수 실행 후 리턴된 data 값
 
 // 페이지에서 사용 시 아래처럼 사용해주세요 //
 
-// const { loading, error, data, wrappedFunction } = useAsync(API 함수);
+// const { loading, error, wrappedFunction } = useAsync(API 함수);
 // wrappedFunction(...args);
