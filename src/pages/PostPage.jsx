@@ -50,7 +50,7 @@ function PostPage() {
   useEffect(() => {
     const loadContent = async () => {
       try {
-        await loadKakaoSDK('1152271'); // 앱 키를 인자로 전달
+        await loadKakaoSDK(process.env.REACT_APP_KAKAO_SHARE_API_KEY);
         const question = await fetchQuestion(id);
         const subject = await fetchSubject(id);
         setResult(question);

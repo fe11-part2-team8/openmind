@@ -8,7 +8,7 @@ const PATHS = {
 };
 
 const instance = axios.create({
-  baseURL: `https://openmind-api.vercel.app/${TEAM}`,
+  baseURL: process.env.REACT_APP_API_BASE_URL + TEAM,
   headers: {
     'Content-Type': 'application/json',
   },
