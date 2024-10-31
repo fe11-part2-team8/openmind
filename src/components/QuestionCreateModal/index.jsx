@@ -36,12 +36,6 @@ function QuestionCreateModal({ profile, onClick }) {
     onClick(false);
   };
 
-  /**
-   * 모달 밖을 클릭하면 모달을 강조해주는 애니메이션 클래스를 추가함
-   * 애니메이션이 끝나면 클래스를 제거함
-   * @param {Event} e
-   */
-
   const handleSubmitQuestion = async (e) => {
     e.preventDefault();
     await postQuestion(content, subjectId);
@@ -50,16 +44,22 @@ function QuestionCreateModal({ profile, onClick }) {
     handleClickClose();
   };
 
+  /**
+   * 모달 외부를 클릭했을 때 모달 애니메이션을 보여주는 핸들러
+   * @param {Event} e
+   * @description `e.target`(클릭한 요소)가 modal 노드 내부에 포함되어 있어야 한다. 그렇지 않으면 모달 강조 애니메이션 출
+   */
+  const handleClickModalOutside = (e) => {
+    if (!modalRef.current.contains(e.target)) {
+      const modal = document.querySelector('#modal');
+      modal.classList.add(styles.highlight);
+      modal.addEventListener('animationend', () => {
+        modal.classList.remove(styles.highlight);
+      });
+    }
+  };
+
   useEffect(() => {
-    const handleClickModalOutside = (e) => {
-      if (!modalRef.current.contains(e.target)) {
-        const modal = document.querySelector('#modal');
-        modal.classList.add(styles.highlight);
-        modal.addEventListener('animationend', () => {
-          modal.classList.remove(styles.highlight);
-        });
-      }
-    };
     document.addEventListener('click', handleClickModalOutside);
     return () => document.removeEventListener('click', handleClickModalOutside);
   }, []);
