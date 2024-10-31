@@ -6,16 +6,6 @@ import { useState } from 'react';
 import { postQuestion } from '../../api';
 
 /**
- * subject가 전달 됐을 때를 가정한 값
- * @todo subject가 잘 전달되면 제거
- */
-const MOCK_SUBJECT_VALUE = {
-  id: 123456789,
-  name: '아초는 고양이',
-  imageSource: undefined,
-};
-
-/**
  * 질문 내용의 유효성 검사 함수
  * @param {string} content 질문 내용
  * @returns 질문의 유효성 여부
@@ -35,7 +25,7 @@ function checkContentValid(content) {
  * @param {function} props.onClick 모달 on/off 상태를 조작할 함수
  * @returns {React.JSX} 질문 입력 모달 컴포넌트
  */
-function QuestionCreateModal({ subject = MOCK_SUBJECT_VALUE, onClick }) {
+function QuestionCreateModal({ subject, onClick }) {
   const [content, setContent] = useState('');
   const { id: subjectId, name, imageSource } = subject;
 
