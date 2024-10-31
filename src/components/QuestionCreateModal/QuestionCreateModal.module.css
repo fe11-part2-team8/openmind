@@ -8,6 +8,7 @@
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.56);
+  z-index: 10;
 }
 
 .modal {
@@ -78,10 +79,11 @@
 
   img {
     width: 28px;
+    border-radius: 50%;
   }
 }
 
-form {
+.questionCreateFrom {
   display: flex;
   flex-direction: column;
   base-palette: 8px;

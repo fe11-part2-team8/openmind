@@ -2,18 +2,11 @@ import icon_message from '../../assets/images/icon-message.svg';
 import icon_close from '../../assets/images/icon-close.svg';
 import test_profile from '../../assets/images/test-profile.svg';
 import styles from './QuestionCreateModal.module.css';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { postQuestion } from '../../api';
-
-/**
- * subject가 전달 됐을 때를 가정한 값
- * @todo subject가 잘 전달되면 제거
- */
-const MOCK_SUBJECT_VALUE = {
-  id: 123456789,
-  name: '아초는 고양이',
-  imageSource: undefined,
-};
+import { useParams } from 'react-router-dom';
+import useAsync from '../../hooks/useAsync';
+import Loading from '../Loading';
 
 /**
  * 질문 내용의 유효성 검사 함수
@@ -28,46 +21,58 @@ function checkContentValid(content) {
 /**
  * 피드에 대한 질문 입력 폼을 담고 있는 모달 컴포넌트
  * @param {object} props
- * @param {object} props.subject 피드 정보
- * @param {id} props.subject.id 피드 아이디
- * @param {string} props.subject.name 피드 이름
- * @param {string} props.subject.imageSource 피드 프로필 경로
+ * @param {object} props.profile 피드 프로필 정보
+ * @param {string} props.profile.name 피드 이름
+ * @param {string} props.profile.imageSource 피드 프로필 경로
  * @param {function} props.onClick 모달 on/off 상태를 조작할 함수
  * @returns {React.JSX} 질문 입력 모달 컴포넌트
  */
-function QuestionCreateModal({ subject = MOCK_SUBJECT_VALUE, onClick }) {
+function QuestionCreateModal({ profile, onClick, onUpdate }) {
   const [content, setContent] = useState('');
-  const { id: subjectId, name, imageSource } = subject;
+  const { name, imageSource } = profile;
+  const { id: subjectId } = useParams();
+  const { loading, error, wrappedFunction: postQuestionAsync } = useAsync(postQuestion);
+  const modalRef = useRef();
 
   const handleChangeContent = (e) => setContent(e.target.value.trim());
-  const handleClickClose = () => onClick(false);
-
-  /**
-   * 모달 밖을 클릭하면 모달을 강조해주는 애니메이션 클래스를 추가함
-   * 애니메이션이 끝나면 클래스를 제거함
-   * @param {Event} e
-   */
-  const handleClickModalOutside = (e) => {
-    if (e.target.classList.contains(styles.modalBackground)) {
-      const modal = document.querySelector('#modal');
-      modal.classList.add(styles.highlight);
-      modal.addEventListener('animationend', () => {
-        modal.classList.remove(styles.highlight);
-      });
-    }
+  const handleClickClose = () => {
+    onClick(false);
   };
 
   const handleSubmitQuestion = async (e) => {
     e.preventDefault();
-    await postQuestion(content, subjectId);
-    // 로딩 디자인
-    alert('질문 등록이 완료되었습니다.');
+    await postQuestionAsync(content, subjectId);
+    if (error) {
+      alert(error);
+    } else {
+      onUpdate(subjectId);
+    }
     handleClickClose();
   };
 
+  /**
+   * 모달 외부를 클릭했을 때 모달 애니메이션을 보여주는 핸들러
+   * @param {Event} e
+   * @description `e.target`(클릭한 요소)가 modal 노드 내부에 포함되어 있어야 한다. 그렇지 않으면 모달 강조 애니메이션 출력
+   */
+  const handleClickModalOutside = (e) => {
+    if (!modalRef.current.contains(e.target)) {
+      modalRef.current.classList.add(styles.highlight);
+      modalRef.current.addEventListener('animationend', () => {
+        modalRef.current.classList.remove(styles.highlight);
+      });
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickModalOutside);
+    return () => document.removeEventListener('click', handleClickModalOutside);
+  }, []);
+
   return (
-    <div className={styles.modalBackground} onClick={handleClickModalOutside}>
-      <div id="modal" className={styles.modal}>
+    <div className={styles.modalBackground}>
+      <Loading isVisible={loading} />
+      <div id="modal" className={styles.modal} ref={modalRef}>
         <div className={styles.header}>
           <div className={styles.text}>
             <img src={icon_message} alt="메세지 아이콘" className="size-7" />
@@ -89,15 +94,16 @@ function QuestionCreateModal({ subject = MOCK_SUBJECT_VALUE, onClick }) {
           isValid={checkContentValid(content)}
           onChange={handleChangeContent}
           onSubmit={handleSubmitQuestion}
+          loading={loading}
         />
       </div>
     </div>
   );
 }
 
-function QuestionCreateForm({ isValid, onChange, onSubmit }) {
+function QuestionCreateForm({ isValid, onChange, onSubmit, loading }) {
   return (
-    <form onSubmit={onSubmit}>
+    <form className={styles.questionCreateFrom} onSubmit={onSubmit}>
       <textarea
         name="content"
         type="text"
@@ -105,7 +111,7 @@ function QuestionCreateForm({ isValid, onChange, onSubmit }) {
         required
         onChange={onChange}
       />
-      <button type="submit" disabled={!isValid}>
+      <button type="submit" disabled={!isValid || loading}>
         질문 보내기
       </button>
     </form>
