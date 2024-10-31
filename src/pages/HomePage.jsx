@@ -8,25 +8,17 @@ import SubjectCreateForm from '../components/SubjectCreateForm';
 
 function HomePage() {
   return (
-    <div className="grid min-h-screen grid-rows-[auto_auto_auto] gap-8 bg-white p-6">
-      <div className="mt-20 flex flex-col items-center">
-        <img src={logo} alt="Open Mind" className="mb-6 w-60" />
-        <Link
-          to="/list"
-          className="flex items-center rounded-md border border-gray-700 px-4 py-2 text-base font-semibold text-gray-700 hover:bg-gray-100"
-        >
-          질문하러 가기
-          <IconArrowRight width="18" height="18" className="ml-2" />
-        </Link>
-      </div>
+    <div>
+      <img src={logo} alt="Open Mind" className="h-[180px] w-[456px]" />
 
-      <div className="grid gap-4">
-        <SubjectCreateForm />
-      </div>
+      <Link to="/list" className="btn btn-outline">
+        질문하러 가기
+        <IconArrowRight width="18" height="18" />
+      </Link>
 
-      <div>
-        <img src={homeImg} alt="HomePage bottom img" className="h-auto w-full object-contain" />
-      </div>
+      <SubjectCreateForm />
+
+      <img src={homeImg} alt="HomePage bottom img" />
     </div>
   );
 }
