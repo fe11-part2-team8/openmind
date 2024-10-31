@@ -26,7 +26,7 @@ function SubjectCreateForm() {
       return;
     }
     const subjectId = result.id;
-    localStorage.setItem('SubjectId', subjectId);
+    localStorage.setItem('subjectId', subjectId);
     navigate(`/list`);
   };
 
@@ -44,7 +44,6 @@ function SubjectCreateForm() {
     </form>
   );
 }
-
 
 function InputName({ name, onChange }) {
   const inputRef = useRef();
