@@ -13,6 +13,7 @@ import kakaoShare from '../assets/images/kakaoShare.png';
 import facebookShare from '../assets/images/facebookShare.png';
 import { ReactComponent as IconMessage } from '../assets/images/icon-message.svg';
 import empty from '../assets/images/empty.png';
+import QuestionCreateModal from '../components/QuestionCreateModal';
 
 // 로컬 id랑 현재 접속한 질문 id랑 같은지 검사
 const isMysubject = (id) => {
@@ -42,6 +43,7 @@ function PostPage() {
   const [result, setResult] = useState({ count: 0 });
   const [profile, setProfile] = useState({ name: '', imageSource: '' });
   const [isToastVisible, setIsToastVisible] = useState(false);
+  const [isCreateQuestion, setIsCreateQuestion] = useState(false);
   const navigate = useNavigate();
 
   const { error: questionError, wrappedFunction: fetchQuestion } = useAsync(getQuestionList);
@@ -173,15 +175,16 @@ function PostPage() {
               <button className={buttonClassName}>답변 작성하기</button>
             </Link>
           ) : (
-            <Link to={`/modal`}>
-              <button className={buttonClassName}>질문 작성하기</button>
-            </Link>
+            <button onClick={() => setIsCreateQuestion(true)} className={buttonClassName}>
+              질문 작성하기
+            </button>
           )}
         </div>
         {isToastVisible && (
           <span className={`${styles.toast} caption-medium`}>url이 복사되었습니다.</span>
         )}
       </div>
+      {isCreateQuestion && <QuestionCreateModal subject={profile} onClick={setIsCreateQuestion} />}
     </div>
   );
 }

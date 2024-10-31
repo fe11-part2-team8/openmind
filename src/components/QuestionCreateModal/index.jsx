@@ -4,6 +4,7 @@ import test_profile from '../../assets/images/test-profile.svg';
 import styles from './QuestionCreateModal.module.css';
 import { useState } from 'react';
 import { postQuestion } from '../../api';
+import { useParams } from 'react-router-dom';
 
 /**
  * 질문 내용의 유효성 검사 함수
@@ -27,10 +28,14 @@ function checkContentValid(content) {
  */
 function QuestionCreateModal({ subject, onClick }) {
   const [content, setContent] = useState('');
-  const { id: subjectId, name, imageSource } = subject;
+  const { name, imageSource } = subject;
+  const { id: subjectId } = useParams();
 
   const handleChangeContent = (e) => setContent(e.target.value.trim());
-  const handleClickClose = () => onClick(false);
+  const handleClickClose = () => {
+    console.log('click');
+    onClick(false);
+  };
 
   /**
    * 모달 밖을 클릭하면 모달을 강조해주는 애니메이션 클래스를 추가함

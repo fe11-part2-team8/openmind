@@ -19,7 +19,6 @@ function Main() {
           <Route index element={<SubjectCreateForm />} />
           <Route path="list" element={<SubjectListPage />} />
           <Route path="answercreateform" element={<AnswerCreateForm />} />
-          <Route path="modal" element={<QuestionCreateModal />} />
           <Route path="admin" element={<AdminPage />} />
           <Route path="post">
             <Route path=":id">
