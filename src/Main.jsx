@@ -4,7 +4,6 @@ import HomePage from './pages/HomePage';
 import SubjectListPage from './pages/SubjectList.page';
 import PostPage from './pages/PostPage';
 import AnswerPage from './pages/AnswerPage';
-import QuestionCreateModal from './components/QuestionCreateModal';
 import AdminPage from './pages/Admin/Admin.page';
 import NotFound from './pages/NotFound';
 
@@ -15,7 +14,6 @@ function Main() {
         <Route path="/" element={<App />}>
           <Route index element={<HomePage />} />
           <Route path="list" element={<SubjectListPage />} />
-          <Route path="modal" element={<QuestionCreateModal />} />
           <Route path="admin" element={<AdminPage />} />
           <Route path="post">
             <Route path=":id">

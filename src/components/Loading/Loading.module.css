@@ -1,0 +1,14 @@
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+.loading {
+  @apply fixed inset-0 z-30 flex h-svh w-full items-center justify-center bg-gray-100 bg-opacity-70;
+
+  &::after {
+    @apply h-7 w-7 animate-spin rounded-full border-4 border-gray-500 border-x-gray-300 shadow-lg;
+    content: '';
+  }
+}

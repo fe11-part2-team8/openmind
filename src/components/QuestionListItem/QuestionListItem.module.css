@@ -1,0 +1,96 @@
+.QuestionListItem {
+  width: 100%;
+}
+
+.select {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--gray-10);
+  margin: 20px;
+  border-radius: 16px;
+  padding: 32px;
+  height: 100%;
+  position: relative;
+  flex-direction: column;
+  height: 100%;
+}
+
+.badge {
+  border: 1px solid var(--brown-40);
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding: 32px 0;
+}
+
+.question {
+  font-size: 14px;
+  color: var(--gray-40);
+}
+
+.profile {
+  display: flex;
+}
+
+.nameday {
+  display: flex;
+  gap: 8px;
+  text-align: center;
+  align-items: center;
+}
+
+.day {
+  font-size: 14px;
+  color: var(--gray-40);
+}
+
+.reaction {
+  display: flex;
+  font-size: 14px;
+  border-top: 1px solid var(--gray-30);
+  gap: 32px;
+  align-items: center;
+  margin-top: 32px;
+}
+
+.thumbsUp,
+.thumbsDown {
+  display: flex;
+  gap: 8px;
+  padding-top: 5px;
+  align-items: center;
+  margin-top: 10px;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.thumbsUp:active,
+.thumbsDown:active {
+  transform: scale(1.1);
+}
+
+.active {
+  color: var(--blue);
+}
+
+.thumbsDown.active {
+  color: var(--red);
+}
+
+.answer {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}

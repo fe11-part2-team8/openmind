@@ -42,7 +42,7 @@ const findSubjectByName = async (name) => {
 
       // 서브젝트 ID를 localStorage에 저장
       if (subjectId) {
-        localStorage.setItem('SubjectId', subjectId); // 로컬 스토리지에 저장
+        localStorage.setItem('subjectId', subjectId); // 로컬 스토리지에 저장
 
         navigate(`/list`); // 서브젝트 ID로 경로 변경
       } else {
