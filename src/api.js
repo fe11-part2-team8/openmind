@@ -8,7 +8,7 @@ const PATHS = {
 };
 
 const instance = axios.create({
-  baseURL: `https://openmind-api.vercel.app/${TEAM}`,
+  baseURL: process.env.REACT_APP_API_BASE_URL + TEAM,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -17,7 +17,7 @@ const instance = axios.create({
 /**
  * 서브젝트 보내는 함수
  * @param {string} name - 닉네임
- * @returns {Promise<string>} - 생성된 서브젝트의 ID
+ * @returns {Promise<string>} - 생성된 서브젝트 데이터
  */
 async function postSubject(name) {
   const data = {
@@ -64,7 +64,7 @@ async function deleteSubject(subjectId) {
  * 질문 보내는 함수
  * @param {string} content - 질문 내용
  * @param {string} subjectId - 관련된 서브젝트의 ID
- * @returns {Promise<string>} - 생성된 질문의 ID
+ * @returns {Promise<string>} - 생성된 질문의 데이터
  */
 async function postQuestion(content, subjectId) {
   const path = `${PATHS.SUBJECT}${subjectId}${PATHS.QUESTION}`;
@@ -134,7 +134,7 @@ async function postReaction(questionId, type = 'like') {
  * @param {string} content - 답변 내용
  * @param {string} questionId - 질문 ID
  * @param {boolean} [isRejected=false] - 답변 거절 여부
- * @returns {Promise<string>} - 생성된 답변의 ID
+ * @returns {Promise<string>} - 생성된 답변의 데이터
  */
 async function postAnswer(content, questionId, isRejected = false) {
   const path = `${PATHS.QUESTION}${questionId}${PATHS.ANSWER}`;
