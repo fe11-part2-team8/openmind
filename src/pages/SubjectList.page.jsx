@@ -8,6 +8,8 @@ import logo from '../assets/images/logo.svg';
 import styles from './SubjectList.page.module.css';
 import { ReactComponent as IconArrowRight } from '../assets/images/icon-arrow-right.svg';
 import { ReactComponent as IconMessage } from '../assets/images/icon-message.svg';
+import useAsync from '../hooks/useAsync';
+import Loading from '../components/Loading';
 
 /**
  * 서브젝트 리스트 페이지 상단 컴포넌트
@@ -79,6 +81,7 @@ const sorting = {
 function SubjectListPage() {
   const [subjects, setSubjects] = useState([]);
   const [page, setPage] = useState(1);
+  const { loading, error, wrappedFunction: getSubjectListAsync } = useAsync(getSubjectList);
 
   /**
    * 정렬 셀렉트 핸들러 함수
@@ -97,7 +100,8 @@ function SubjectListPage() {
      */
     const handleLoadSubjectList = async () => {
       const offset = (page - 1) * LIMIT;
-      const result = await getSubjectList(LIMIT, offset);
+
+      const result = await getSubjectListAsync(LIMIT, offset);
       if (!result) return;
 
       setSubjects(result.results);
@@ -105,10 +109,12 @@ function SubjectListPage() {
     };
 
     handleLoadSubjectList();
-  }, [page]);
+  }, [page, getSubjectListAsync]);
 
   return (
     <div className="container mx-auto">
+      <Loading isVisible={loading} />
+
       <Header />
 
       <div className={styles.wrapTitle}>
@@ -133,6 +139,10 @@ function SubjectListPage() {
           ))
         ) : (
           <li className="w-full py-6 text-center text-xl font-bold">서브젝트가 없습니다.</li>
+        )}
+
+        {error?.message && (
+          <p className="w-full py-6 text-center text-xl font-bold">{error.message}</p>
         )}
       </ul>
 
