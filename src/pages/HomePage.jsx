@@ -9,7 +9,7 @@ import SubjectCreateForm from '../components/SubjectCreateForm';
 function HomePage() {
   return (
     <div>
-      <img src={logo} alt="Open Mind" className="h-[180px] w-[456px]" />
+      <img src={logo} alt="Open Mind" />
 
       <Link to="/list" className="btn btn-outline">
         질문하러 가기
