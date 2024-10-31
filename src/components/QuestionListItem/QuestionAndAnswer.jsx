@@ -112,7 +112,7 @@ function QuestionAndAnswer({
           name={name}
         />
       ) : (
-        <answerItem
+        <AnswerContentItem
           name={name}
           imageSource={imageSource}
           answerDate={answerDate}
@@ -128,7 +128,7 @@ function QuestionAndAnswer({
   );
 }
 
-function answerItem({ name, imageSource, answerDate, isRejected, currentAnswer }) {
+function AnswerContentItem({ name, imageSource, answerDate, isRejected, currentAnswer }) {
   return (
     <>
       <div className={`${styles.answerContainer} text-left`}>
