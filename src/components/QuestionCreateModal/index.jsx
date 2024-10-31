@@ -47,14 +47,13 @@ function QuestionCreateModal({ profile, onClick }) {
   /**
    * 모달 외부를 클릭했을 때 모달 애니메이션을 보여주는 핸들러
    * @param {Event} e
-   * @description `e.target`(클릭한 요소)가 modal 노드 내부에 포함되어 있어야 한다. 그렇지 않으면 모달 강조 애니메이션 출
+   * @description `e.target`(클릭한 요소)가 modal 노드 내부에 포함되어 있어야 한다. 그렇지 않으면 모달 강조 애니메이션 출력
    */
   const handleClickModalOutside = (e) => {
     if (!modalRef.current.contains(e.target)) {
-      const modal = document.querySelector('#modal');
-      modal.classList.add(styles.highlight);
-      modal.addEventListener('animationend', () => {
-        modal.classList.remove(styles.highlight);
+      modalRef.current.classList.add(styles.highlight);
+      modalRef.current.addEventListener('animationend', () => {
+        modalRef.current.classList.remove(styles.highlight);
       });
     }
   };
