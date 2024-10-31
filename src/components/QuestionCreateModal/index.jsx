@@ -2,7 +2,7 @@ import icon_message from '../../assets/images/icon-message.svg';
 import icon_close from '../../assets/images/icon-close.svg';
 import test_profile from '../../assets/images/test-profile.svg';
 import styles from './QuestionCreateModal.module.css';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { postQuestion } from '../../api';
 import { useParams } from 'react-router-dom';
 
@@ -29,6 +29,7 @@ function QuestionCreateModal({ profile, onClick }) {
   const [content, setContent] = useState('');
   const { name, imageSource } = profile;
   const { id: subjectId } = useParams();
+  const modalRef = useRef();
 
   const handleChangeContent = (e) => setContent(e.target.value.trim());
   const handleClickClose = () => {
@@ -41,15 +42,6 @@ function QuestionCreateModal({ profile, onClick }) {
    * 애니메이션이 끝나면 클래스를 제거함
    * @param {Event} e
    */
-  const handleClickModalOutside = (e) => {
-    if (e.target.classList.contains(styles.modalBackground)) {
-      const modal = document.querySelector('#modal');
-      modal.classList.add(styles.highlight);
-      modal.addEventListener('animationend', () => {
-        modal.classList.remove(styles.highlight);
-      });
-    }
-  };
 
   const handleSubmitQuestion = async (e) => {
     e.preventDefault();
@@ -59,9 +51,23 @@ function QuestionCreateModal({ profile, onClick }) {
     handleClickClose();
   };
 
+  useEffect(() => {
+    const handleClickModalOutside = (e) => {
+      if (!modalRef.current.contains(e.target)) {
+        const modal = document.querySelector('#modal');
+        modal.classList.add(styles.highlight);
+        modal.addEventListener('animationend', () => {
+          modal.classList.remove(styles.highlight);
+        });
+      }
+    };
+    document.addEventListener('click', handleClickModalOutside);
+    return () => document.removeEventListener('click', handleClickModalOutside);
+  }, []);
+
   return (
-    <div className={styles.modalBackground} onClick={handleClickModalOutside}>
-      <div id="modal" className={styles.modal}>
+    <div className={styles.modalBackground}>
+      <div id="modal" className={styles.modal} ref={modalRef}>
         <div className={styles.header}>
           <div className={styles.text}>
             <img src={icon_message} alt="메세지 아이콘" className="size-7" />
