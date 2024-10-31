@@ -33,7 +33,6 @@ function QuestionCreateModal({ profile, onClick }) {
 
   const handleChangeContent = (e) => setContent(e.target.value.trim());
   const handleClickClose = () => {
-    console.log('click');
     onClick(false);
   };
 
