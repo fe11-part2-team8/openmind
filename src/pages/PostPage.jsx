@@ -126,6 +126,11 @@ function PostPage() {
     window.open(facebookShareUrl, '_blank'); // 새 창으로 페북 열어요, 오픈그래프는 index.html 확인해주세요.
   };
 
+  const handleQuestionUpdate = async () => {
+    const question = await fetchQuestion(id);
+    setResult(question);
+  };
+
   /* div랑 button은 global.css에 있는 유틸 공용 컴포넌트 및 테일윈드 사용 */
   const buttonClassName = 'btn btn-rounded body1 shadow-1 flex w-[208px] justify-center';
 
@@ -184,7 +189,13 @@ function PostPage() {
           <span className={`${styles.toast} caption-medium`}>url이 복사되었습니다.</span>
         )}
       </div>
-      {isCreateQuestion && <QuestionCreateModal profile={profile} onClick={setIsCreateQuestion} />}
+      {isCreateQuestion && (
+        <QuestionCreateModal
+          profile={profile}
+          onClick={setIsCreateQuestion}
+          onUpdate={handleQuestionUpdate}
+        />
+      )}
     </div>
   );
 }

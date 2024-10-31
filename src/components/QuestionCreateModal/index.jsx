@@ -5,6 +5,8 @@ import styles from './QuestionCreateModal.module.css';
 import { useEffect, useRef, useState } from 'react';
 import { postQuestion } from '../../api';
 import { useParams } from 'react-router-dom';
+import useAsync from '../../hooks/useAsync';
+import Loading from '../Loading';
 
 /**
  * 질문 내용의 유효성 검사 함수
@@ -25,10 +27,11 @@ function checkContentValid(content) {
  * @param {function} props.onClick 모달 on/off 상태를 조작할 함수
  * @returns {React.JSX} 질문 입력 모달 컴포넌트
  */
-function QuestionCreateModal({ profile, onClick }) {
+function QuestionCreateModal({ profile, onClick, onUpdate }) {
   const [content, setContent] = useState('');
   const { name, imageSource } = profile;
   const { id: subjectId } = useParams();
+  const { loading, error, wrappedFunction: postQuestionAsync } = useAsync(postQuestion);
   const modalRef = useRef();
 
   const handleChangeContent = (e) => setContent(e.target.value.trim());
@@ -38,9 +41,12 @@ function QuestionCreateModal({ profile, onClick }) {
 
   const handleSubmitQuestion = async (e) => {
     e.preventDefault();
-    await postQuestion(content, subjectId);
-    // 로딩 디자인
-    alert('질문 등록이 완료되었습니다.');
+    await postQuestionAsync(content, subjectId);
+    if (error) {
+      alert(error);
+    } else {
+      onUpdate(subjectId);
+    }
     handleClickClose();
   };
 
@@ -65,6 +71,7 @@ function QuestionCreateModal({ profile, onClick }) {
 
   return (
     <div className={styles.modalBackground}>
+      <Loading isVisible={loading} />
       <div id="modal" className={styles.modal} ref={modalRef}>
         <div className={styles.header}>
           <div className={styles.text}>
@@ -87,13 +94,14 @@ function QuestionCreateModal({ profile, onClick }) {
           isValid={checkContentValid(content)}
           onChange={handleChangeContent}
           onSubmit={handleSubmitQuestion}
+          loading={loading}
         />
       </div>
     </div>
   );
 }
 
-function QuestionCreateForm({ isValid, onChange, onSubmit }) {
+function QuestionCreateForm({ isValid, onChange, onSubmit, loading }) {
   return (
     <form className={styles.questionCreateFrom} onSubmit={onSubmit}>
       <textarea
@@ -103,7 +111,7 @@ function QuestionCreateForm({ isValid, onChange, onSubmit }) {
         required
         onChange={onChange}
       />
-      <button type="submit" disabled={!isValid}>
+      <button type="submit" disabled={!isValid || loading}>
         질문 보내기
       </button>
     </form>
