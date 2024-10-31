@@ -123,20 +123,12 @@ function QuestionAndAnswer({
           questionId={questionId}
         />
       )}
+      <ReactionButtons questionId={questionId} initialLikes={like} initialDislikes={dislike} />
     </div>
   );
 }
 
-function answerItem({
-  name,
-  imageSource,
-  answerDate,
-  isRejected,
-  currentAnswer,
-  like,
-  dislike,
-  questionId,
-}) {
+function answerItem({ name, imageSource, answerDate, isRejected, currentAnswer }) {
   return (
     <>
       <div className={`${styles.answerContainer} text-left`}>
@@ -160,8 +152,6 @@ function answerItem({
           </div>
         </div>
       </div>
-
-      <ReactionButtons questionId={questionId} initialLikes={like} initialDislikes={dislike} />
     </>
   );
 }
