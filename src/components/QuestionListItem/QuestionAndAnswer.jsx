@@ -5,7 +5,7 @@ import 'dayjs/locale/ko'; // 한국어 가져오기
 
 import Dropdown from './Dropdown/index';
 import { deleteQuestion, patchAnswer, postAnswer } from '../../api'; // 답변 수정 및 추가 API 불러오기
-import AnswerCreateAndEdit from './Dropdown/AnswerCreateAndEdit'; // 수정 컴포넌트 가져오기
+import AnswerCreateAndEdit from '../AnswerCreateAndEdit/index'; // 수정 컴포넌트 가져오기
 import ReactionButtons from './ReactionButton'; // 좋아요/싫어요 컴포넌트 불러오기
 
 // 상대적인 시간표기를 위한 시간 계산
@@ -14,31 +14,21 @@ dayjs.locale('ko', {
   relativeTime: {
     future: '%s 후',
     past: '%s 전',
-    s: '몇 초', // 몇 초 전
-    m: '1분', // 1분 전
-    mm: '%d분', // n분 전
-    h: '1시간', // 1시간 전
-    hh: '%d시간', // n시간 전
-    d: '1일', // 1일 전 (하루 대신 1일로 변경)
-    dd: '%d일', // n일 전
-    M: '1달', // 1달 전
-    MM: '%d달', // n달 전
-    y: '1년', // 1년 전
-    yy: '%d년', // n년 전
+    s: '몇 초',
+    m: '1분',
+    mm: '%d분',
+    h: '1시간',
+    hh: '%d시간',
+    d: '1일',
+    dd: '%d일',
+    M: '1달',
+    MM: '%d달',
+    y: '1년',
+    yy: '%d년',
   },
 });
 
-/**
- * 질문과 답변을 표시하는 컴포넌트
- * @param {object} props - 컴포넌트의 props
- * @param {number} props.questionId - 질문 ID
- * @param {string} props.answer - 답변 내용
- * @param {boolean} props.isSubjectOwner - 사용자가 질문의 소유자인지 여부
- * @param {boolean} props.isRejected - 답변이 거절되었는지 여부
- * @param {string} props.imageSource - 답변자 이미지 소스 URL
- * @returns {React.JSX} 질문과 답변을 렌더링하는 컴포넌트
- */
-function QuestionWithAnswer({
+function QuestionAndAnswer({
   question,
   questionDate,
   answer,
@@ -67,9 +57,9 @@ function QuestionWithAnswer({
   };
 
   // 수정 완료 핸들러
-  const handleSave = async (newContent, answerId, isRejected) => {
+  const handleSave = async (newContent, answerId) => {
     try {
-      const updatedAnswer = await patchAnswer(newContent, answerId, isRejected);
+      const updatedAnswer = await patchAnswer(newContent, answerId);
       setCurrentAnswer(updatedAnswer); // 변경된 답변 상태 업데이트
       setIsEditMode(false); // 수정 완료 후 수정 모드 해제
     } catch (error) {
@@ -78,9 +68,9 @@ function QuestionWithAnswer({
   };
 
   // 새 답변 추가 핸들러
-  const handlePostAnswer = async (newContent, questionId, isRejected) => {
+  const handlePostAnswer = async (newContent, questionId) => {
     try {
-      const newAnswer = await postAnswer(newContent, questionId, isRejected); // 새 답변 추가 API 호출
+      const newAnswer = await postAnswer(newContent, questionId); // 새 답변 추가 API 호출
       setCurrentAnswer(newAnswer); // 새로운 답변을 상태에 설정하여 렌더링 업데이트
       setIsEditMode(false); // 답변 추가 후 수정 모드 해제
     } catch (error) {
@@ -92,17 +82,15 @@ function QuestionWithAnswer({
     <div>
       <span>{currentAnswer ? '답변 완료' : '미답변'}</span>
 
-      {/* 피드 주인일 경우에만 드롭다운 표시 */}
       {isSubjectOwner && <Dropdown onEdit={handleEdit} onDelete={handleDelete} />}
 
       {/* 수정 모드일 때 AnswerCreateAndEdit 표시 */}
       {isEditMode ? (
         <AnswerCreateAndEdit
-          answerId={answer?.id || answerId} // 답변 ID 전달
+          answerId={answerId} // 답변 ID 전달
           questionId={questionId} // 질문 ID 전달
-          initialContent={answer?.content || ''} // 답변 내용 전달
-          initialIsRejected={isRejected} // 답변 거절 여부 전달
-          onSave={handleSave} // 저장 핸들러 전달 (수정)
+          initialContent={currentAnswer?.content || ''} // 답변 내용 전달
+          onSave={handleSave} // 수정 핸들러 전달
           postAnswer={handlePostAnswer} // 새 답변 추가 핸들러 전달
         />
       ) : (
@@ -115,7 +103,6 @@ function QuestionWithAnswer({
           {currentAnswer ? (
             <div>
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                {/* 이미지 썸네일 표시 */}
                 <img
                   src={imageSource}
                   alt={`${name}의 프로필 이미지`}
@@ -124,10 +111,9 @@ function QuestionWithAnswer({
                 <p>{name}</p>
                 <p>{dayjs(answerDate).fromNow()}</p>
               </div>
-              <p>{currentAnswer?.content}</p> {/* 답변 내용 표시 */}
+              <p>{currentAnswer?.content}</p>
             </div>
           ) : (
-            // 답변이 없으면 답변하기 버튼 표시
             isSubjectOwner && (
               <div>
                 <button type="submit" onClick={handleEdit}>
@@ -137,9 +123,7 @@ function QuestionWithAnswer({
             )
           )}
 
-          {/* ReactionButtons 컴포넌트를 사용하여 좋아요/싫어요 버튼 렌더링 */}
           <ReactionButtons questionId={questionId} initialLikes={like} initialDislikes={dislike} />
-
           {isRejected && <p>답변 거절</p>}
         </>
       )}
@@ -149,4 +133,4 @@ function QuestionWithAnswer({
   );
 }
 
-export default QuestionWithAnswer;
+export default QuestionAndAnswer;

@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { getQuestionList, getSubject } from '../../api';
-import QuestionWithAnswer from './QuestionAndAnswer';
+import QuestionAndAnswer from './QuestionAndAnswer';
 import useAsync from '../../hooks/useAsync';
 
 function QuestionListItem() {
@@ -61,7 +61,7 @@ function QuestionListItem() {
   return (
     <div>
       {questions.map((question) => (
-        <QuestionWithAnswer
+        <QuestionAndAnswer
           key={question.id}
           questionId={question.id} // 질문 ID 전달
           question={question} // 질문 객체 전달
