@@ -5,7 +5,7 @@ import SubjectCreateForm from './components/SubjectCreateForm';
 import SubjectListPage from './pages/SubjectList.page';
 import PostPage from './pages/PostPage';
 import AnswerPage from './pages/AnswerPage';
-import AnswerCreateForm from './components/AnswerCreateForm';
+// import AnswerCreateForm from './components/AnswerCreateForm';
 import AdminPage from './pages/Admin/Admin.page';
 import NotFound from './pages/NotFound';
 
@@ -17,7 +17,7 @@ function Main() {
           {/* <Route index element={<HomePage />} /> */}
           <Route index element={<SubjectCreateForm />} />
           <Route path="list" element={<SubjectListPage />} />
-          <Route path="answercreateform" element={<AnswerCreateForm />} />
+          {/* <Route path="answercreateform" element={<AnswerCreateForm />} /> */}
           <Route path="admin" element={<AdminPage />} />
           <Route path="post">
             <Route path=":id">
