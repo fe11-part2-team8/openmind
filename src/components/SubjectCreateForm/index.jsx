@@ -1,70 +1,79 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postSubject } from '../../api';
+import useAsync from '../../hooks/useAsync';
+import icon_person from '../../assets/images/icon-person.svg';
+import styles from './SubjectCreateForm.module.css';
+import Loading from '../Loading';
+
+function checkNameValid(name) {
+  if (name.length < 1) return false;
+  return true;
+}
 
 function SubjectCreateForm() {
-  const [inputValue, setInputValue] = useState(''); // 입력된 이름 저장
+  const [name, setName] = useState('');
+  const { loading, error, wrappedFunction: postSubjectAsync } = useAsync(postSubject);
   const navigate = useNavigate();
-
-  // input 값 유효성 검사
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value.trim());
-  };
-
-  // 이름으로 기존 서브젝트 조회
-  /*
-const findSubjectByName = async (name) => {
-  try {
-    // 모든 서브젝트 리스트를 가져옴
-    const subjects = await getSubjectList(); 
-
-    // subjects.results 배열에서 해당 이름을 가진 서브젝트를 찾음
-    const existingSubject = subjects.results.find((subject) => subject.name === name);
-
-    // 이미 존재하는 서브젝트가 있으면 해당 서브젝트의 ID를 반환하고, 없으면 null을 반환
-    return existingSubject ? existingSubject.id : null; 
-  } catch (error) {
-    // 오류가 발생하면 예외를 던짐
-    throw error;
-  }
-};
-*/
 
   // 서브젝트 생성, 페이지 이동
   const handleCreateSubject = async (event) => {
     event.preventDefault(); // 폼 제출 시 페이지 새로고침 방지
 
-    try {
-      // 서브젝트가 함께 새 서브젝트 생성
+    const result = await postSubjectAsync(name);
+    if (error) {
+      alert(error);
+      return;
+    }
+    const subjectId = result.id;
+    localStorage.setItem('SubjectId', subjectId);
+    navigate(`/list`);
+  };
 
-      const result = await postSubject(inputValue);
-      const subjectId = result.id;
+  const handleChangeName = (e) => {
+    setName(e.target.value.trim());
+  };
 
-      // 서브젝트 ID를 localStorage에 저장
-      if (subjectId) {
-        localStorage.setItem('SubjectId', subjectId); // 로컬 스토리지에 저장
+  return (
+    <form className={styles.subjectCreateForm} onSubmit={handleCreateSubject}>
+      <Loading isVisible={loading} />
+      <InputName name={name} onChange={handleChangeName} />
+      <button type="submit" disabled={!checkNameValid(name)}>
+        질문 받기
+      </button>
+    </form>
+  );
+}
 
-        navigate(`/list`); // 서브젝트 ID로 경로 변경
-      } else {
-        console.error('서브젝트 생성 중 오류가 발생했습니다: subjectId가 유효하지 않습니다.');
-      }
-    } catch (error) {
-      console.error('서브젝트 생성 중 오류가 발생했습니다:', error);
+function InputName({ name, onChange }) {
+  const inputRef = useRef();
+
+  const handleToggleFocus = (e) => {
+    if (e.type === 'focus') {
+      inputRef.current.classList.add(styles.focus);
+      return;
+    }
+    if (e.type === 'blur') {
+      inputRef.current.classList.remove(styles.focus);
+      return;
     }
   };
 
   return (
-    <form onSubmit={handleCreateSubject}>
+    <fieldset ref={inputRef} className={styles.inputName}>
+      <label htmlFor="name">
+        <img src={icon_person} alt="아이콘" />
+      </label>
       <input
+        id="name"
         type="text"
-        value={inputValue}
-        onChange={handleInputChange}
+        value={name}
+        onChange={onChange}
+        onFocus={handleToggleFocus}
+        onBlur={handleToggleFocus}
         placeholder="이름을 입력하세요"
       />
-      <button type="submit" disabled={!inputValue}>
-        질문 받기
-      </button>
-    </form>
+    </fieldset>
   );
 }
 
