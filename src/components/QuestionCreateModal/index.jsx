@@ -19,16 +19,15 @@ function checkContentValid(content) {
 /**
  * 피드에 대한 질문 입력 폼을 담고 있는 모달 컴포넌트
  * @param {object} props
- * @param {object} props.subject 피드 정보
- * @param {id} props.subject.id 피드 아이디
- * @param {string} props.subject.name 피드 이름
- * @param {string} props.subject.imageSource 피드 프로필 경로
+ * @param {object} props.profile 피드 프로필 정보
+ * @param {string} props.profile.name 피드 이름
+ * @param {string} props.profile.imageSource 피드 프로필 경로
  * @param {function} props.onClick 모달 on/off 상태를 조작할 함수
  * @returns {React.JSX} 질문 입력 모달 컴포넌트
  */
-function QuestionCreateModal({ subject, onClick }) {
+function QuestionCreateModal({ profile, onClick }) {
   const [content, setContent] = useState('');
-  const { name, imageSource } = subject;
+  const { name, imageSource } = profile;
   const { id: subjectId } = useParams();
 
   const handleChangeContent = (e) => setContent(e.target.value.trim());

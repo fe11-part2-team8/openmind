@@ -184,7 +184,7 @@ function PostPage() {
           <span className={`${styles.toast} caption-medium`}>url이 복사되었습니다.</span>
         )}
       </div>
-      {isCreateQuestion && <QuestionCreateModal subject={profile} onClick={setIsCreateQuestion} />}
+      {isCreateQuestion && <QuestionCreateModal profile={profile} onClick={setIsCreateQuestion} />}
     </div>
   );
 }
