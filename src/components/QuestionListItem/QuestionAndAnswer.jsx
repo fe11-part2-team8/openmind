@@ -8,6 +8,8 @@ import { deleteQuestion, patchAnswer, postAnswer } from '../../api'; // 답변 �
 import AnswerCreateAndEdit from '../AnswerCreateAndEdit/index'; // 수정 컴포넌트 가져오기
 import ReactionButtons from './ReactionButton'; // 좋아요/싫어요 컴포넌트 불러오기
 
+import styles from './QuestionListItem.module.css';
+
 // 상대적인 시간표기를 위한 시간 계산
 dayjs.extend(relativeTime);
 dayjs.locale('ko', {
@@ -54,6 +56,7 @@ function QuestionAndAnswer({
   const handleDelete = async () => {
     await deleteQuestion(questionId);
     setCurrentAnswer(null); // 삭제 후 상태 초기화
+    window.location.reload();
   };
 
   // 수정 완료 핸들러
@@ -79,56 +82,62 @@ function QuestionAndAnswer({
   };
 
   return (
-    <div>
-      <span>{currentAnswer ? '답변 완료' : '미답변'}</span>
+    <div className={styles.select}>
+      <div className={styles.header}>
+        <span
+          className={styles.badge}
+          style={{
+            borderColor: currentAnswer ? '#542f1a' : '#818181',
+            color: currentAnswer ? '#542f1a' : '#818181',
+          }}
+        >
+          {currentAnswer ? '답변 완료' : '미답변'}
+        </span>
+        {isSubjectOwner && <Dropdown onEdit={handleEdit} onDelete={handleDelete} />}
+      </div>
 
-      {isSubjectOwner && <Dropdown onEdit={handleEdit} onDelete={handleDelete} />}
+      <div className={styles.container}>
+        <p className={styles.question}>질문 · {dayjs(questionDate).fromNow()}</p>
+        <p>{question.content}</p>
+      </div>
 
-      {/* 수정 모드일 때 AnswerCreateAndEdit 표시 */}
-      {isEditMode ? (
+      {isEditMode || (isSubjectOwner && !currentAnswer) ? (
         <AnswerCreateAndEdit
-          answerId={answerId} // 답변 ID 전달
-          questionId={questionId} // 질문 ID 전달
-          initialContent={currentAnswer?.content || ''} // 답변 내용 전달
-          onSave={handleSave} // 수정 핸들러 전달
-          postAnswer={handlePostAnswer} // 새 답변 추가 핸들러 전달
+          answerId={answerId}
+          questionId={questionId}
+          initialContent={currentAnswer?.content || ''}
+          onSave={handleSave}
+          postAnswer={handlePostAnswer}
+          imageSource={imageSource}
+          name={name}
         />
       ) : (
         <>
-          <div>
-            <p>질문 · {dayjs(questionDate).fromNow()}</p>
-            <p>{question.content}</p>
+          <div className={`${styles.answerContainer} text-left`}>
+            <div className={styles.profile}>
+              <img
+                src={imageSource}
+                alt={`${name}의 프로필 이미지`}
+                style={{ width: '40px', height: '40px', borderRadius: '50%', marginRight: '8px' }}
+              />
+              <div className={styles.answer}>
+                <div className={styles.nameday}>
+                  <p>{name}</p>
+                  <p className={styles.day}>{dayjs(answerDate).fromNow()}</p>
+                </div>
+
+                {isRejected ? (
+                  <p className="text-base text-[#B93333]">답변 거절</p>
+                ) : currentAnswer ? (
+                  <p className="text-left text-base">{currentAnswer?.content}</p>
+                ) : null}
+              </div>
+            </div>
           </div>
 
-          {currentAnswer ? (
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <img
-                  src={imageSource}
-                  alt={`${name}의 프로필 이미지`}
-                  style={{ width: '40px', height: '40px', borderRadius: '50%', marginRight: '8px' }}
-                />
-                <p>{name}</p>
-                <p>{dayjs(answerDate).fromNow()}</p>
-              </div>
-              <p>{currentAnswer?.content}</p>
-            </div>
-          ) : (
-            isSubjectOwner && (
-              <div>
-                <button type="submit" onClick={handleEdit}>
-                  답변하기
-                </button>
-              </div>
-            )
-          )}
-
           <ReactionButtons questionId={questionId} initialLikes={like} initialDislikes={dislike} />
-          {isRejected && <p>답변 거절</p>}
         </>
       )}
-
-      <br />
     </div>
   );
 }

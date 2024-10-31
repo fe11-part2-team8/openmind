@@ -40,26 +40,19 @@ const Dropdown = ({ onEdit, onDelete }) => {
 
       {/* 드롭다운 */}
       {dropdownOpen && (
-        <div
-          style={{
-            backgroundColor: 'white',
-            border: '1px solid #ccc',
-            borderRadius: '8px',
-            width: '130px',
-          }}
-        >
+        <div className="absolute right-0 flex w-32 flex-col items-center rounded-lg border border-gray-300 bg-white">
           <div
             onClick={handleEditClick}
-            style={{ display: 'flex', alignItems: 'center', padding: '8px', cursor: 'pointer' }}
+            className="flex cursor-pointer items-center justify-center gap-2 p-2 hover:bg-gray-100"
           >
-            <img src={dropDownEdit} alt="수정하기" />
+            <img src={dropDownEdit} alt="수정하기" className="h-3.8 w-3.8" />
             <span>수정하기</span>
           </div>
           <div
             onClick={handleDeleteClick} // 삭제 클릭 핸들러
-            style={{ display: 'flex', alignItems: 'center', padding: '8px', cursor: 'pointer' }}
+            className="flex cursor-pointer items-center justify-center gap-2 p-2 hover:bg-gray-100"
           >
-            <img src={dropDownClose} alt="삭제하기" />
+            <img src={dropDownClose} alt="삭제하기" className="h-3.8 w-3.8" />
             <span>삭제하기</span>
           </div>
         </div>

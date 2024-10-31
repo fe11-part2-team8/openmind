@@ -4,6 +4,8 @@ import { getQuestionList, getSubject } from '../../api';
 import QuestionAndAnswer from './QuestionAndAnswer';
 import useAsync from '../../hooks/useAsync';
 
+import styles from './QuestionListItem.module.css';
+
 function QuestionListItem() {
   const { id } = useParams(); // URL에서 id (subjectId) 받아옴
   const [questions, setQuestions] = useState([]); // 질문 목록 상태
@@ -59,7 +61,7 @@ function QuestionListItem() {
 
   // porp 보내기
   return (
-    <div>
+    <div className={styles.QuestionListItem}>
       {questions.map((question) => (
         <QuestionAndAnswer
           key={question.id}

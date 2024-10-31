@@ -1,44 +1,104 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { postReaction } from '../../api';
-import thumbsUp from '../../assets/images/ic_thumbs-up.svg';
-import thumbsDown from '../../assets/images/ic_thumbs-down.svg';
+import { ReactComponent as ThumbsUpIcon } from '../../assets/images/ic_thumbs-up.svg';
+import { ReactComponent as ThumbsDownIcon } from '../../assets/images/ic_thumbs-down.svg';
 
-/**
- * 좋아요 및 싫어요 버튼을 제공하는 컴포넌트
- * @param {object} props - 컴포넌트의 props
- * @param {number} props.questionId - 질문 ID
- * @param {number} props.initialLikes - 초기 좋아요 수
- * @param {number} props.initialDislikes - 초기 싫어요 수
- * @returns {React.JSX} 좋아요/싫어요 버튼 컴포넌트
- */
+import styles from './QuestionListItem.module.css';
 
 function ReactionButtons({ questionId, initialLikes, initialDislikes }) {
   const [reaction, setReaction] = useState({ like: initialLikes, dislike: initialDislikes });
+  const [likeClicked, setLikeClicked] = useState(false);
+  const [dislikeClicked, setDislikeClicked] = useState(false);
 
-  const handleClickReaction = async (e) => {
-    const btn = e.target.closest('button');
-    if (!btn || btn.hasAttribute('data-checked')) return;
-
-    const type = btn.dataset.type;
-
-    try {
-      setReaction((prev) => ({ ...prev, [type]: prev[type] + 1 }));
-      btn.setAttribute('data-checked', ''); // 중복 방지 속성 추가
-      await postReaction(questionId, type);
-    } catch (error) {
-      console.error(`"${type}" 반영 실패:`, error);
+  useEffect(() => {
+    const storedReaction = localStorage.getItem(`reaction_${questionId}`);
+    if (storedReaction) {
+      const { likeClicked, dislikeClicked, like, dislike } = JSON.parse(storedReaction);
+      setLikeClicked(likeClicked);
+      setDislikeClicked(dislikeClicked);
+      setReaction({ like, dislike });
     }
+  }, [questionId]);
+
+  const handleClickReaction = async (type) => {
+    // 이미 클릭한 상태에서 같은 버튼을 누른 경우 취소
+    if ((type === 'like' && likeClicked) || (type === 'dislike' && dislikeClicked)) {
+      setReaction((prev) => ({
+        ...prev,
+        [type]: prev[type] - 1,
+      }));
+      setLikeClicked(false);
+      setDislikeClicked(false);
+      localStorage.setItem(
+        `reaction_${questionId}`,
+        JSON.stringify({
+          likeClicked: false,
+          dislikeClicked: false,
+          like: type === 'like' ? reaction.like - 1 : reaction.like,
+          dislike: type === 'dislike' ? reaction.dislike - 1 : reaction.dislike,
+        }),
+      );
+      return;
+    }
+
+    // 한쪽 버튼만 클릭 가능하게 설정
+    const newReaction = {
+      like:
+        type === 'like'
+          ? likeClicked
+            ? reaction.like
+            : reaction.like + 1
+          : reaction.like - (likeClicked ? 1 : 0),
+      dislike:
+        type === 'dislike'
+          ? dislikeClicked
+            ? reaction.dislike
+            : reaction.dislike + 1
+          : reaction.dislike - (dislikeClicked ? 1 : 0),
+    };
+
+    setReaction(newReaction);
+    setLikeClicked(type === 'like');
+    setDislikeClicked(type === 'dislike');
+
+    // 로컬 스토리지에 저장
+    localStorage.setItem(
+      `reaction_${questionId}`,
+      JSON.stringify({
+        likeClicked: type === 'like',
+        dislikeClicked: type === 'dislike',
+        like: newReaction.like,
+        dislike: newReaction.dislike,
+      }),
+    );
+
+    // 서버에 리액션 업데이트
+    await postReaction(questionId, type);
   };
 
   return (
-    <div onClick={handleClickReaction} style={{ display: 'flex', gap: '10px' }}>
-      <button data-type="like" style={{ display: 'flex', alignItems: 'center' }}>
-        <img src={thumbsUp} alt="좋아요 아이콘" />
-        좋아요: {reaction.like}
+    <div className={styles.reaction}>
+      <button
+        data-type="like"
+        className={`${styles.thumbsUp} ${likeClicked ? styles.active : ''}`}
+        onClick={() => handleClickReaction('like')}
+      >
+        <ThumbsUpIcon
+          className="h-3.5 w-3.5"
+          style={{ fill: likeClicked ? '#1877f2' : '#818181' }}
+        />
+        <span>좋아요: {reaction.like}</span>
       </button>
-      <button data-type="dislike" style={{ display: 'flex', alignItems: 'center' }}>
-        <img src={thumbsDown} alt="싫어요 아이콘" />
-        싫어요: {reaction.dislike}
+      <button
+        data-type="dislike"
+        className={`${styles.thumbsDown} ${dislikeClicked ? styles.active : ''}`}
+        onClick={() => handleClickReaction('dislike')}
+      >
+        <ThumbsDownIcon
+          className="h-3.5 w-3.5"
+          style={{ fill: dislikeClicked ? '#b93333' : '#818181' }}
+        />
+        <span>싫어요: {reaction.dislike}</span>
       </button>
     </div>
   );

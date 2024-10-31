@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import styles from './AnswerCreateForm.module.css';
+
 function verifyContent(content, originAnswer) {
   if (content === '') return false;
   if (content === originAnswer) return false;
@@ -16,7 +18,15 @@ function verifyContent(content, originAnswer) {
  * @param {function} props.postAnswer - 새 답변 추가 시 호출되는 함수
  * @returns {React.JSX} - AnswerForm 컴포넌트
  */
-function AnswerCreateAndEdit({ questionId, answerId, initialContent = '', onSave, postAnswer }) {
+function AnswerCreateAndEdit({
+  questionId,
+  answerId,
+  initialContent = '',
+  onSave,
+  postAnswer,
+  imageSource,
+  name,
+}) {
   const [answerContent, setAnswerContent] = useState(initialContent);
   const [isEditMode] = useState(Boolean(answerId)); // answerId가 존재하면 수정 모드로 간주
 
@@ -38,22 +48,32 @@ function AnswerCreateAndEdit({ questionId, answerId, initialContent = '', onSave
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmitContent}>
-        <textarea
-          type="text"
-          value={answerContent}
-          placeholder="답변을 입력해주세요"
-          onChange={handleChangeContent}
-        />
-        <button
-          type="submit"
-          className="btn"
-          disabled={!verifyContent(answerContent, initialContent)}
-        >
-          {isEditMode ? '수정 완료' : '답변 완료'}
-        </button>
-      </form>
+    <div className={styles.body}>
+      <img
+        src={imageSource}
+        alt={`${name}의 프로필 이미지`}
+        className="mr-2 mr-3 h-10 w-10 rounded-full"
+      />
+      <div className={styles.container}>
+        <p className="text-left text-lg font-semibold">{name}</p>
+
+        <form onSubmit={handleSubmitContent}>
+          <textarea
+            type="text"
+            value={answerContent}
+            placeholder="답변을 입력해주세요"
+            onChange={handleChangeContent}
+            className="my-2 h-[186px] w-full resize-none rounded-lg border border-gray-300 bg-[#F9F9F9] p-2"
+          />
+          <button
+            type="submit"
+            className="btn"
+            disabled={!verifyContent(answerContent, initialContent)}
+          >
+            {isEditMode ? '수정 완료' : '답변 완료'}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
