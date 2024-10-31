@@ -1,34 +1,27 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import SubjectListPage from './pages/SubjectList.page';
+import PostPage from './pages/PostPage';
+import AdminPage from './pages/Admin/Admin.page';
+import NotFound from './pages/NotFound';
 import './global.css';
 
-import { Link, Outlet } from 'react-router-dom';
-
-function Links() {
+function App() {
   return (
-    <ul className="inline-flex gap-3 border p-1">
-      <li>
-        <Link to="/">Home</Link>
-      </li>
-      <li>
-        <Link to="/list">List</Link>
-      </li>
-      <li>
-        <Link to="/post/1">Post</Link>
-      </li>
-      <li>
-        <Link to="/post/1/answer">Answer</Link>
-      </li>
-      <li>
-        <Link to="/admin">Admin</Link>
-      </li>
-    </ul>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="list" element={<SubjectListPage />} />
+        <Route path="admin" element={<AdminPage />} />
+        <Route path="post">
+          <Route path=":id">
+            <Route index element={<PostPage />} />
+          </Route>
+        </Route>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
-export default function App() {
-  return (
-    <main>
-      <Links />
-      <Outlet />
-    </main>
-  );
-}
+export default App;

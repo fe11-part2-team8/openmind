@@ -1,5 +1,7 @@
+import SubjectCreateForm from '../components/SubjectCreateForm';
+
 function HomePage() {
-  return <h1 className="h1">Home Page</h1>;
+  return <SubjectCreateForm />;
 }
 
 export default HomePage;
