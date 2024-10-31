@@ -67,7 +67,7 @@ function AnswerCreateAndEdit({
           />
           <button
             type="submit"
-            className="btn"
+            className="btn w-full"
             disabled={!verifyContent(answerContent, initialContent)}
           >
             {isEditMode ? '수정 완료' : '답변 완료'}
