@@ -79,10 +79,11 @@
 
   img {
     width: 28px;
+    border-radius: 50%;
   }
 }
 
-form {
+.questionCreateFrom {
   display: flex;
   flex-direction: column;
   base-palette: 8px;

@@ -5,7 +5,6 @@ import SubjectCreateForm from './components/SubjectCreateForm';
 import SubjectListPage from './pages/SubjectList.page';
 import PostPage from './pages/PostPage';
 import AnswerPage from './pages/AnswerPage';
-import QuestionCreateModal from './components/QuestionCreateModal';
 import AnswerCreateForm from './components/AnswerCreateForm';
 import AdminPage from './pages/Admin/Admin.page';
 import NotFound from './pages/NotFound';

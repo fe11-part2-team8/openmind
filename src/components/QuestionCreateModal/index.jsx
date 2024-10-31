@@ -92,7 +92,7 @@ function QuestionCreateModal({ subject, onClick }) {
 
 function QuestionCreateForm({ isValid, onChange, onSubmit }) {
   return (
-    <form onSubmit={onSubmit}>
+    <form className={styles.questionCreateFrom} onSubmit={onSubmit}>
       <textarea
         name="content"
         type="text"
