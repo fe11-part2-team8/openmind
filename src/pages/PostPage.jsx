@@ -39,8 +39,12 @@ const loadKakaoSDK = (appKey) => {
 
 function PostPage() {
   const { id } = useParams();
-  const [result, setResult] = useState({ count: 0 });
-  const [profile, setProfile] = useState({ name: '', imageSource: '' });
+  const [result, setResult] = useState('');
+  const { count = 0 } = result;
+
+  const [profile, setProfile] = useState('');
+  const { name = '', imageSource = '' } = profile;
+
   const [isToastVisible, setIsToastVisible] = useState(false);
   const navigate = useNavigate();
 
@@ -134,8 +138,8 @@ function PostPage() {
         <Link to="/">
           <img src={logo} alt="OpenMind" className={styles.logo} />
         </Link>
-        <img src={profile.imageSource} alt="ProfileImage" className={styles.profile} />
-        <h2 className="h2">{profile.name}</h2>
+        <img src={imageSource} alt="ProfileImage" className={styles.profile} />
+        <h2 className="h2">{name}</h2>
         <div className="flex gap-3">
           <img src={urlShare} alt="url" onClick={handleCopyUrl} className={styles.share} />
           <img
@@ -156,10 +160,10 @@ function PostPage() {
             <div className="flex items-center justify-center gap-2">
               <IconMessage alt="total" className={`${styles.message} text-brown-40`} />
               <p className="body1">
-                {result.count ? `${result.count}개의 질문이 있습니다.` : '아직 질문이 없습니다.'}
+                {count ? `${count}개의 질문이 있습니다.` : '아직 질문이 없습니다.'}
               </p>
             </div>
-            {!result.count && <img src={empty} alt="empty" className={styles.empty} />}
+            {!count && <img src={empty} alt="empty" className={styles.empty} />}
           </div>
         </div>
         <div className="fixed bottom-6 right-6">
