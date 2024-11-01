@@ -1,6 +1,6 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { getQuestionList, getSubject } from '../api';
+import { getQuestionList, getSubject, deleteSubject } from '../api';
 import useAsync from '../hooks/useAsync';
 
 import styles from './PostPage.module.css';
@@ -8,9 +8,9 @@ import '../global.css';
 
 import logo from '../assets/images/logo.svg';
 import banner from '../assets/images/banner.png';
-import urlShare from '../assets/images/urlShare.png';
-import kakaoShare from '../assets/images/kakaoShare.png';
-import facebookShare from '../assets/images/facebookShare.png';
+import urlShare from '../assets/images/urlShare.svg';
+import kakaoShare from '../assets/images/kakaoShare.svg';
+import facebookShare from '../assets/images/facebookShare.svg';
 import { ReactComponent as IconMessage } from '../assets/images/icon-message.svg';
 import empty from '../assets/images/empty.png';
 import QuestionCreateModal from '../components/QuestionCreateModal';
@@ -48,16 +48,18 @@ function PostPage() {
   const [isCreateQuestion, setIsCreateQuestion] = useState(false);
   const navigate = useNavigate();
 
-  const { error: questionError, wrappedFunction: fetchQuestion } = useAsync(getQuestionList);
-  const { error: subjectError, wrappedFunction: fetchSubject } = useAsync(getSubject);
+  const { error: getQuestionError, wrappedFunction: fetchGetQuestion } = useAsync(getQuestionList);
+  const { error: getSubjectError, wrappedFunction: fetchGetSubject } = useAsync(getSubject);
+  const { error: deleteSubjectError, wrappedFunction: fetchDeleteSubject } =
+    useAsync(deleteSubject);
 
   // 카카오 sdk 로드, 초기화
   useEffect(() => {
     const loadContent = async () => {
       try {
         await loadKakaoSDK(process.env.REACT_APP_KAKAO_SHARE_API_KEY);
-        const question = await fetchQuestion(id);
-        const subject = await fetchSubject(id);
+        const question = await fetchGetQuestion(id);
+        const subject = await fetchGetSubject(id);
         setResult(question);
         setProfile(subject);
       } catch (err) {
@@ -66,16 +68,16 @@ function PostPage() {
         navigate('/list');
 
         // 오류가 존재할 경우 콘솔에 출력
-        if (questionError) {
-          console.log('질문 오류:', questionError);
+        if (getQuestionError) {
+          console.log('질문 오류:', getQuestionError);
         }
-        if (subjectError) {
-          console.log('서브젝트 오류:', subjectError);
+        if (getSubjectError) {
+          console.log('서브젝트 오류:', getSubjectError);
         }
       }
     };
     loadContent();
-  }, [id, fetchQuestion, fetchSubject, questionError, subjectError, navigate]);
+  }, [id, fetchGetQuestion, fetchGetSubject, getQuestionError, getSubjectError, navigate]);
 
   // url 복사
   const handleCopyUrl = async () => {
@@ -129,8 +131,23 @@ function PostPage() {
   };
 
   const handleQuestionUpdate = async () => {
-    const question = await fetchQuestion(id);
+    const question = await fetchGetQuestion(id);
     setResult(question);
+  };
+
+  const handleDeleteSubject = async () => {
+    const confirmDelete = window.confirm('삭제하시겠습니까?'); // 확인 창 표시
+    if (confirmDelete) {
+      try {
+        await fetchDeleteSubject(id);
+        alert('삭제되었습니다.');
+      } catch (err) {
+        alert('삭제하는데 실패했습니다.');
+        console.log('서브젝트 오류:', deleteSubjectError);
+      } finally {
+        navigate('/list');
+      }
+    }
   };
 
   /* div랑 button은 global.css에 있는 유틸 공용 컴포넌트 및 테일윈드 사용 */
@@ -160,6 +177,13 @@ function PostPage() {
             className={styles.share}
           />
         </div>
+        <div className="flex w-full justify-end">
+          {isMysubject(id) && (
+            <button className="btn btn-rounded absolute" onClick={handleDeleteSubject}>
+              삭제하기
+            </button>
+          )}
+        </div>
         <div className="bg-brown-10 border-brown-30 text-brown-40 font-actor body1 mt-12 w-full rounded-[16px] border p-4 text-center">
           <div className="flex flex-col items-center">
             <div className="flex items-center justify-center gap-2">
@@ -178,11 +202,7 @@ function PostPage() {
               목록으로 이동
             </button>
           </Link>
-          {isMysubject(id) ? (
-            <Link to={`/post/${id}/answer`}>
-              <button className={buttonClassName}>답변 작성하기</button>
-            </Link>
-          ) : (
+          {!isMysubject(id) && (
             <button onClick={() => setIsCreateQuestion(true)} className={buttonClassName}>
               질문 작성하기
             </button>
