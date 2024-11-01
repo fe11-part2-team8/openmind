@@ -1,11 +1,9 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import App from './App';
-// import HomePage from './pages/HomePage';
-import SubjectCreateForm from './components/SubjectCreateForm';
+import HomePage from './pages/HomePage';
 import SubjectListPage from './pages/SubjectList.page';
 import PostPage from './pages/PostPage';
 import AnswerPage from './pages/AnswerPage';
-// import AnswerCreateForm from './components/AnswerCreateForm';
 import AdminPage from './pages/Admin/Admin.page';
 import NotFound from './pages/NotFound';
 
@@ -14,10 +12,8 @@ function Main() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
-          {/* <Route index element={<HomePage />} /> */}
-          <Route index element={<SubjectCreateForm />} />
+          <Route index element={<HomePage />} />
           <Route path="list" element={<SubjectListPage />} />
-          {/* <Route path="answercreateform" element={<AnswerCreateForm />} /> */}
           <Route path="admin" element={<AdminPage />} />
           <Route path="post">
             <Route path=":id">
