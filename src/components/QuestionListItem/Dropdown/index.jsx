@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import more from '../../../assets/images/ic_More.svg'; // "더보기" 아이콘
 import dropDownEdit from '../../../assets/images/ic_Edit.svg'; // 수정하기 아이콘
 import dropDownClose from '../../../assets/images/icon-close.svg'; // 삭제하기 아이콘
@@ -13,11 +13,26 @@ import dropDownClose from '../../../assets/images/icon-close.svg'; // 삭제하�
 
 const Dropdown = ({ onEdit, onDelete }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false); // 드롭다운 상태 관리
+  const dropdownRef = useRef(null); // 드롭다운 영역
 
   // 드롭다운 토글
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
+
+  // 클릭 감지, 드롭다운 닫기
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false); // 외부 클릭 시 드롭다운 닫기
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
 
   // 수정 클릭 핸들러
   const handleEditClick = () => {
@@ -32,7 +47,7 @@ const Dropdown = ({ onEdit, onDelete }) => {
   };
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div ref={dropdownRef} style={{ position: 'relative' }}>
       {/* 더보기 버튼 */}
       <button onClick={toggleDropdown} style={{ border: 'none', background: 'none' }}>
         <img src={more} alt="더보기" />
