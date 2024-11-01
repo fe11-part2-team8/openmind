@@ -6,9 +6,8 @@ import useAsync from '../../hooks/useAsync';
 
 import styles from './QuestionListItem.module.css';
 
-function QuestionListItem() {
+function QuestionListItem({ questions, onUpdate }) {
   const { id } = useParams(); // URL에서 id (subjectId) 받아옴
-  const [questions, setQuestions] = useState([]); // 질문 목록 상태
   const [subjectData, setSubjectData] = useState(null); // 서브젝트 데이터 상태
   const [isSubjectOwner, setIsSubjectOwner] = useState(false); // 서브젝트 주인 여부
 
@@ -28,7 +27,7 @@ function QuestionListItem() {
     async function getData() {
       try {
         const questionsResponse = await fetchQuestions(id);
-        setQuestions(questionsResponse.results);
+        setSubjectData(questionsResponse.results);
 
         const subjectResponse = await fetchSubject(id);
         setSubjectData(subjectResponse);
@@ -75,9 +74,10 @@ function QuestionListItem() {
           dislike={question.dislike} // 싫어요 전달
           isRejected={question.answer ? question.answer.isRejected : false} // 답변 거절 상태 전달
           isSubjectOwner={isSubjectOwner} // 주인 여부 전달
-          setQuestions={setQuestions}
+          // setQuestions={setQuestions}
           answerId={question.answer ? question.answer.id : null} // 답변 ID (답변수정을 위해)
           imageSource={subjectData.imageSource} // 프로필 이미지 URL 전달
+          onUpdate={onUpdate} // onUpdate를 prop으로 전달
         />
       ))}
     </div>

@@ -44,6 +44,7 @@ function PostPage() {
   const { id } = useParams();
   const [result, setResult] = useState({ count: 0 });
   const [profile, setProfile] = useState({ name: '', imageSource: '' });
+  const [questions, setQuestions] = useState([]);
   const [isToastVisible, setIsToastVisible] = useState(false);
   const [isCreateQuestion, setIsCreateQuestion] = useState(false);
   const navigate = useNavigate();
@@ -57,7 +58,8 @@ function PostPage() {
         await loadKakaoSDK(process.env.REACT_APP_KAKAO_SHARE_API_KEY);
         const question = await fetchQuestion(id);
         const subject = await fetchSubject(id);
-        setResult(question);
+        setQuestions(question.results);
+        setResult({ count: question.results.length });
         setProfile(subject);
       } catch (err) {
         alert('결과를 불러올 수 없습니다.');
@@ -127,9 +129,15 @@ function PostPage() {
     window.open(facebookShareUrl, '_blank'); // 새 창으로 페북 열어요, 오픈그래프는 index.html 확인해주세요.
   };
 
+  // porp으로 전달되며 함수가 바로 적용되지 않는 문제 때문에 수정
   const handleQuestionUpdate = async () => {
-    const question = await fetchQuestion(id);
-    setResult(question);
+    try {
+      const question = await fetchQuestion(id);
+      setQuestions(question.results); // 질문 리스트 상태 업데이트
+      setResult({ count: question.results.length }); // 질문 개수 상태 업데이트
+    } catch (err) {
+      console.log('질문 업데이트 중 오류 발생:', err);
+    }
   };
 
   /* div랑 button은 global.css에 있는 유틸 공용 컴포넌트 및 테일윈드 사용 */
@@ -168,7 +176,7 @@ function PostPage() {
               </p>
             </div>
             {!result.count && <img src={empty} alt="empty" className={styles.empty} />}
-            <QuestionListItem />
+            <QuestionListItem questions={questions} onUpdate={handleQuestionUpdate} />
           </div>
         </div>
         <div className="fixed bottom-6 right-6">

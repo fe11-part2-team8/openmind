@@ -51,7 +51,7 @@ function QuestionAndAnswer({
   // 답변 거절 핸들러
   const handleRefuse = async () => {
     try {
-      await patchAnswer('거절한 답변', answerId, true); // isRejected를 true로 설정
+      await patchAnswer('거절한 답변', answerId, true);
       setCurrentAnswer({ ...currentAnswer, isRejected: true, content: '거절된 답변입니다.' });
       onUpdate();
     } catch (error) {
