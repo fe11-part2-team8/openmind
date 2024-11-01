@@ -1,24 +1,23 @@
 import React from 'react';
-// import styles from './HomePage.module.css';
+import styles from './HomePage.module.css';
 import { Link } from 'react-router-dom';
 import { ReactComponent as IconArrowRight } from '../assets/images/icon-arrow-right.svg';
 import logo from '../assets/images/logo.svg'; // 이미지 가져오기
-import homeImg from '../assets/images/main-background.png'; // 이미지 가져오기
 import SubjectCreateForm from '../components/SubjectCreateForm';
 
 function HomePage() {
   return (
-    <div>
-      <img src={logo} alt="Open Mind" />
+    <div className={styles.wrap}>
+      <div className="container mx-auto flex flex-col items-center">
+        <Link to="/list" className="btn btn-outline self-end">
+          질문하러 가기
+          <IconArrowRight width="18" height="18" />
+        </Link>
 
-      <Link to="/list" className="btn btn-outline">
-        질문하러 가기
-        <IconArrowRight width="18" height="18" />
-      </Link>
+        <img src={logo} className={styles.logo} alt="Open Mind" />
 
-      <SubjectCreateForm />
-
-      <img src={homeImg} alt="HomePage bottom img" />
+        <SubjectCreateForm />
+      </div>
     </div>
   );
 }
