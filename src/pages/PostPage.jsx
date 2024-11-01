@@ -142,8 +142,8 @@ function PostPage() {
   };
 
   const handleQuestionUpdate = async () => {
-    const question = await fetchGetQuestion(id);
-    setResult(question);
+    const questions = await fetchGetQuestion(id);
+    setResult(questions);
   };
 
   const handleDeleteSubject = async () => {

@@ -45,7 +45,7 @@ function QuestionCreateModal({ profile, onClick, onUpdate }) {
     if (error) {
       alert(error);
     } else {
-      onUpdate(subjectId);
+      onUpdate();
     }
     handleClickClose();
   };
