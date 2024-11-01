@@ -56,7 +56,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    font-family: actor;
+    font-family: 'Actor', var(--base-font);
     font-size: 24px;
     color: var(--gray-60);
   }
@@ -73,7 +73,7 @@
   gap: 4px;
 
   .to {
-    font-family: actor;
+    font-family: 'Actor', var(--base-font);
     font-size: 18px;
   }
 
