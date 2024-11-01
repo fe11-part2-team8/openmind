@@ -13,6 +13,9 @@ import kakaoShare from '../assets/images/kakaoShare.png';
 import facebookShare from '../assets/images/facebookShare.png';
 import { ReactComponent as IconMessage } from '../assets/images/icon-message.svg';
 import empty from '../assets/images/empty.png';
+import QuestionCreateModal from '../components/QuestionCreateModal';
+
+import QuestionListItem from '../components/QuestionListItem';
 
 // 로컬 id랑 현재 접속한 질문 id랑 같은지 검사
 const isMysubject = (id) => {
@@ -40,12 +43,9 @@ const loadKakaoSDK = (appKey) => {
 function PostPage() {
   const { id } = useParams();
   const [result, setResult] = useState('');
-  const { count = 0 } = result;
-
   const [profile, setProfile] = useState('');
-  const { name = '', imageSource = '' } = profile;
-
   const [isToastVisible, setIsToastVisible] = useState(false);
+  const [isCreateQuestion, setIsCreateQuestion] = useState(false);
   const navigate = useNavigate();
 
   const { error: questionError, wrappedFunction: fetchQuestion } = useAsync(getQuestionList);
@@ -74,7 +74,6 @@ function PostPage() {
         }
       }
     };
-
     loadContent();
   }, [id, fetchQuestion, fetchSubject, questionError, subjectError, navigate]);
 
@@ -129,6 +128,11 @@ function PostPage() {
     window.open(facebookShareUrl, '_blank'); // 새 창으로 페북 열어요, 오픈그래프는 index.html 확인해주세요.
   };
 
+  const handleQuestionUpdate = async () => {
+    const question = await fetchQuestion(id);
+    setResult(question);
+  };
+
   /* div랑 button은 global.css에 있는 유틸 공용 컴포넌트 및 테일윈드 사용 */
   const buttonClassName = 'btn btn-rounded body1 shadow-1 flex w-[208px] justify-center';
 
@@ -139,8 +143,8 @@ function PostPage() {
         <Link to="/">
           <img src={logo} alt="OpenMind" className={styles.logo} />
         </Link>
-        <img src={imageSource} alt="ProfileImage" className={styles.profile} />
-        <h2 className="h2">{name}</h2>
+        <img src={profile.imageSource} alt="ProfileImage" className={styles.profile} />
+        <h2 className="h2">{profile.name}</h2>
         <div className="flex gap-3">
           <img src={urlShare} alt="url" onClick={handleCopyUrl} className={styles.share} />
           <img
@@ -161,10 +165,11 @@ function PostPage() {
             <div className="flex items-center justify-center gap-2">
               <IconMessage alt="total" className={`${styles.message} text-brown-40`} />
               <p className="body1">
-                {count ? `${count}개의 질문이 있습니다.` : '아직 질문이 없습니다.'}
+                {result.count ? `${result.count}개의 질문이 있습니다.` : '아직 질문이 없습니다.'}
               </p>
             </div>
-            {!count && <img src={empty} alt="empty" className={styles.empty} />}
+            {!result.count && <img src={empty} alt="empty" className={styles.empty} />}
+            <QuestionListItem />
           </div>
         </div>
         <div className="fixed bottom-6 right-6">
@@ -178,15 +183,22 @@ function PostPage() {
               <button className={buttonClassName}>답변 작성하기</button>
             </Link>
           ) : (
-            <Link to={`/modal`}>
-              <button className={buttonClassName}>질문 작성하기</button>
-            </Link>
+            <button onClick={() => setIsCreateQuestion(true)} className={buttonClassName}>
+              질문 작성하기
+            </button>
           )}
         </div>
         {isToastVisible && (
           <span className={`${styles.toast} caption-medium`}>url이 복사되었습니다.</span>
         )}
       </div>
+      {isCreateQuestion && (
+        <QuestionCreateModal
+          profile={profile}
+          onClick={setIsCreateQuestion}
+          onUpdate={handleQuestionUpdate}
+        />
+      )}
     </div>
   );
 }

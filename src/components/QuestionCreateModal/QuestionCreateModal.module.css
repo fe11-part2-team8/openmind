@@ -8,6 +8,7 @@
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.56);
+  z-index: 10;
 }
 
 .modal {
@@ -55,7 +56,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    /* font-family: actor; <- 추가 해야함*/
+    font-family: 'Actor', var(--base-font);
     font-size: 24px;
     color: var(--gray-60);
   }
@@ -72,16 +73,17 @@
   gap: 4px;
 
   .to {
-    /* font-family: actor; <- 추가 해야함*/
+    font-family: 'Actor', var(--base-font);
     font-size: 18px;
   }
 
   img {
     width: 28px;
+    border-radius: 50%;
   }
 }
 
-form {
+.questionCreateFrom {
   display: flex;
   flex-direction: column;
   base-palette: 8px;

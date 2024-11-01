@@ -16,7 +16,7 @@ import Loading from '../components/Loading';
  * @return {React.JSX}
  */
 function Header() {
-  const id = window.localStorage.getItem('SubjectId');
+  const id = window.localStorage.getItem('subjectId');
 
   return (
     <div className="flex flex-col items-center justify-between py-10 sm:flex-row">
@@ -26,7 +26,7 @@ function Header() {
         </Link>
       </h2>
 
-      <Link to={id ? `/post/${id}/answer` : '/'} className="btn btn-outline">
+      <Link to={id ? `/post/${id}` : '/'} className="btn btn-outline">
         내 피드로 이동
         <IconArrowRight />
       </Link>
