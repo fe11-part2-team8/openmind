@@ -84,6 +84,15 @@ function PostPage() {
     loadContent();
   }, [id, fetchGetQuestion, fetchGetSubject, getQuestionError, getSubjectError, navigate]);
 
+  useEffect(() => {
+    updateButtonText(); // 초기값 설정
+    window.addEventListener('resize', updateButtonText);
+
+    return () => {
+      window.removeEventListener('resize', updateButtonText); // 클린업
+    };
+  }, []);
+
   // url 복사
   const handleCopyUrl = async () => {
     const urlToCopy = window.location.href; // 현재 페이지 URL
@@ -161,15 +170,6 @@ function PostPage() {
       setListButton('목록으로 이동');
     }
   };
-
-  useEffect(() => {
-    updateButtonText(); // 초기값 설정
-    window.addEventListener('resize', updateButtonText);
-
-    return () => {
-      window.removeEventListener('resize', updateButtonText); // 클린업
-    };
-  }, []);
 
   /* div랑 button은 global.css에 있는 유틸 공용 컴포넌트 및 테일윈드 사용 */
 
