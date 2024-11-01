@@ -4,14 +4,15 @@ import { Helmet } from 'react-helmet';
 import Pagination from 'react-js-pagination';
 //
 import { getSubjectList } from '../api';
+import useAsync from '../hooks/useAsync';
+import Loading from '../components/Loading';
 //
 import snsLink from '../assets/images/snsLink.png';
 import logo from '../assets/images/logo.svg';
 import styles from './SubjectList.page.module.css';
+import logo from '../assets/images/logo.svg';
 import { ReactComponent as IconArrowRight } from '../assets/images/icon-arrow-right.svg';
 import { ReactComponent as IconMessage } from '../assets/images/icon-message.svg';
-import useAsync from '../hooks/useAsync';
-import Loading from '../components/Loading';
 
 /**
  * 서브젝트 리스트 페이지 상단 컴포넌트
@@ -21,7 +22,7 @@ function Header() {
   const id = window.localStorage.getItem('subjectId');
 
   return (
-    <div className="flex flex-col items-center justify-between py-10 sm:flex-row">
+    <div className="flex flex-col items-center justify-between gap-5 py-10 sm:flex-row">
       <h2>
         <Link to="/">
           <img src={logo} alt="Open Mind" width="146" height="57" />
@@ -29,7 +30,7 @@ function Header() {
       </h2>
 
       <Link to={id ? `/post/${id}` : '/'} className="btn btn-outline">
-        내 피드로 이동
+        답변하러 가기
         <IconArrowRight />
       </Link>
     </div>
@@ -51,7 +52,8 @@ function Subject({ id, name, imageSource, questionCount }) {
       <figure className={styles.thumbnail}>
         <img src={imageSource} alt={`${name} 썸네일`} />
       </figure>
-      <Link to={`/post/${id}`} className="stretched-link body1 mt-3 block truncate">
+
+      <Link to={`/post/${id}`} className={styles.name}>
         {name}
       </Link>
 
