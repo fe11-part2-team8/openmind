@@ -1,8 +1,8 @@
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
+// import dayjs from 'dayjs';
+// import relativeTime from 'dayjs/plugin/relativeTime';
 import { useState } from 'react';
-import 'dayjs/locale/ko'; // 한국어 가져오기
-
+// import 'dayjs/locale/ko'; // 한국어 가져오기
+import { date } from '../../utils/day';
 import Dropdown from './Dropdown/index';
 import { deleteQuestion, patchAnswer, postAnswer } from '../../api'; // 답변 수정 및 추가 API 불러오기
 import AnswerCreateAndEdit from '../AnswerCreateAndEdit/index'; // 수정 컴포넌트 가져오기
@@ -10,25 +10,25 @@ import ReactionButtons from './ReactionButton'; // 좋아요/싫어요 컴포넌
 
 import styles from './QuestionListItem.module.css';
 
-// 상대적인 시간표기를 위한 시간 계산
-dayjs.extend(relativeTime);
-dayjs.locale('ko', {
-  relativeTime: {
-    future: '%s 후',
-    past: '%s 전',
-    s: '몇 초',
-    m: '1분',
-    mm: '%d분',
-    h: '1시간',
-    hh: '%d시간',
-    d: '1일',
-    dd: '%d일',
-    M: '1달',
-    MM: '%d달',
-    y: '1년',
-    yy: '%d년',
-  },
-});
+// // 상대적인 시간표기를 위한 시간 계산
+// dayjs.extend(relativeTime);
+// dayjs.locale('ko', {
+//   relativeTime: {
+//     future: '%s 후',
+//     past: '%s 전',
+//     s: '몇 초',
+//     m: '1분',
+//     mm: '%d분',
+//     h: '1시간',
+//     hh: '%d시간',
+//     d: '1일',
+//     dd: '%d일',
+//     M: '1달',
+//     MM: '%d달',
+//     y: '1년',
+//     yy: '%d년',
+//   },
+// });
 
 function QuestionAndAnswer({
   question,
@@ -97,7 +97,7 @@ function QuestionAndAnswer({
       </div>
 
       <div className={styles.container}>
-        <p className={styles.question}>질문 · {dayjs(questionDate).fromNow()}</p>
+        <p className={styles.question}>질문 · {date(questionDate)}</p>
         <p>{question.content}</p>
       </div>
 
@@ -141,7 +141,7 @@ function AnswerContentItem({ name, imageSource, answerDate, isRejected, currentA
           <div className={styles.answer}>
             <div className={styles.nameday}>
               <p>{name}</p>
-              <p className={styles.day}>{dayjs(answerDate).fromNow()}</p>
+              <p className={styles.day}>{date(answerDate)}</p>
             </div>
 
             {isRejected ? (
