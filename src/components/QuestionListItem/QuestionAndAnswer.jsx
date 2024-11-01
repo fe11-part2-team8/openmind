@@ -1,7 +1,5 @@
-// import dayjs from 'dayjs';
-// import relativeTime from 'dayjs/plugin/relativeTime';
 import { useState } from 'react';
-// import 'dayjs/locale/ko'; // 한국어 가져오기
+
 import { date } from '../../utils/day';
 import Dropdown from './Dropdown/index';
 import { deleteQuestion, patchAnswer, postAnswer } from '../../api'; // 답변 수정 및 추가 API 불러오기
@@ -9,26 +7,6 @@ import AnswerCreateAndEdit from '../AnswerCreateAndEdit/index'; // 수정 컴포
 import ReactionButtons from './ReactionButton'; // 좋아요/싫어요 컴포넌트 불러오기
 
 import styles from './QuestionListItem.module.css';
-
-// // 상대적인 시간표기를 위한 시간 계산
-// dayjs.extend(relativeTime);
-// dayjs.locale('ko', {
-//   relativeTime: {
-//     future: '%s 후',
-//     past: '%s 전',
-//     s: '몇 초',
-//     m: '1분',
-//     mm: '%d분',
-//     h: '1시간',
-//     hh: '%d시간',
-//     d: '1일',
-//     dd: '%d일',
-//     M: '1달',
-//     MM: '%d달',
-//     y: '1년',
-//     yy: '%d년',
-//   },
-// });
 
 function QuestionAndAnswer({
   question,
@@ -43,9 +21,10 @@ function QuestionAndAnswer({
   answerId,
   isSubjectOwner,
   imageSource,
+  onUpdate,
 }) {
   const [isEditMode, setIsEditMode] = useState(false); // 수정 모드 상태
-  const [currentAnswer, setCurrentAnswer] = useState(answer); // 현재 답변 상태 관리
+  // const [currentAnswer, setCurrentAnswer] = useState(answer); // 현재 답변 상태 관리
 
   // 수정하기 핸들러
   const handleEdit = () => {
@@ -55,16 +34,15 @@ function QuestionAndAnswer({
   // 삭제하기 핸들러
   const handleDelete = async () => {
     await deleteQuestion(questionId);
-    setCurrentAnswer(null); // 삭제 후 상태 초기화
-    window.location.reload();
+    onUpdate();
   };
 
   // 수정 완료 핸들러
   const handleSave = async (newContent, answerId) => {
     try {
-      const updatedAnswer = await patchAnswer(newContent, answerId);
-      setCurrentAnswer(updatedAnswer); // 변경된 답변 상태 업데이트
+      await patchAnswer(newContent, answerId);
       setIsEditMode(false); // 수정 완료 후 수정 모드 해제
+      onUpdate();
     } catch (error) {
       alert('답변 수정에 실패했습니다.');
     }
@@ -73,9 +51,9 @@ function QuestionAndAnswer({
   // 새 답변 추가 핸들러
   const handlePostAnswer = async (newContent, questionId) => {
     try {
-      const newAnswer = await postAnswer(newContent, questionId); // 새 답변 추가 API 호출
-      setCurrentAnswer(newAnswer); // 새로운 답변을 상태에 설정하여 렌더링 업데이트
+      await postAnswer(newContent, questionId); // 새 답변 추가 API 호출
       setIsEditMode(false); // 답변 추가 후 수정 모드 해제
+      onUpdate();
     } catch (error) {
       alert('답변 추가에 실패했습니다.');
     }
@@ -87,11 +65,11 @@ function QuestionAndAnswer({
         <span
           className={styles.badge}
           style={{
-            borderColor: currentAnswer ? '#542f1a' : '#818181',
-            color: currentAnswer ? '#542f1a' : '#818181',
+            borderColor: answer ? '#542f1a' : '#818181',
+            color: answer ? '#542f1a' : '#818181',
           }}
         >
-          {currentAnswer ? '답변 완료' : '미답변'}
+          {answer ? '답변 완료' : '미답변'}
         </span>
         {isSubjectOwner && <Dropdown onEdit={handleEdit} onDelete={handleDelete} />}
       </div>
@@ -101,11 +79,11 @@ function QuestionAndAnswer({
         <p>{question.content}</p>
       </div>
 
-      {isEditMode || (isSubjectOwner && !currentAnswer) ? (
+      {isEditMode || (isSubjectOwner && !answer) ? (
         <AnswerCreateAndEdit
           answerId={answerId}
           questionId={questionId}
-          initialContent={currentAnswer?.content || ''}
+          initialContent={answer?.content || ''}
           onSave={handleSave}
           postAnswer={handlePostAnswer}
           imageSource={imageSource}
@@ -117,7 +95,7 @@ function QuestionAndAnswer({
           imageSource={imageSource}
           answerDate={answerDate}
           isRejected={isRejected}
-          currentAnswer={currentAnswer}
+          currentAnswer={answer}
           like={like}
           dislike={dislike}
           questionId={questionId}
