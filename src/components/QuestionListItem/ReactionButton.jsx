@@ -11,68 +11,37 @@ function ReactionButtons({ questionId, initialLikes, initialDislikes }) {
   const [dislikeClicked, setDislikeClicked] = useState(false);
 
   useEffect(() => {
-    const storedReaction = localStorage.getItem(`reaction_${questionId}`);
-    if (storedReaction) {
-      const { likeClicked, dislikeClicked, like, dislike } = JSON.parse(storedReaction);
-      setLikeClicked(likeClicked);
-      setDislikeClicked(dislikeClicked);
-      setReaction({ like, dislike });
+    const storedReactions = JSON.parse(localStorage.getItem('reactions')) || {};
+    const questionReaction = storedReactions[questionId];
+    if (questionReaction) {
+      setLikeClicked(questionReaction.likeClicked);
+      setDislikeClicked(questionReaction.dislikeClicked);
+      setReaction({ like: questionReaction.like, dislike: questionReaction.dislike });
     }
   }, [questionId]);
 
   const handleClickReaction = async (type) => {
-    // 이미 클릭한 상태에서 같은 버튼을 누른 경우 취소
-    if ((type === 'like' && likeClicked) || (type === 'dislike' && dislikeClicked)) {
-      setReaction((prev) => ({
-        ...prev,
-        [type]: prev[type] - 1,
-      }));
-      setLikeClicked(false);
-      setDislikeClicked(false);
-      localStorage.setItem(
-        `reaction_${questionId}`,
-        JSON.stringify({
-          likeClicked: false,
-          dislikeClicked: false,
-          like: type === 'like' ? reaction.like - 1 : reaction.like,
-          dislike: type === 'dislike' ? reaction.dislike - 1 : reaction.dislike,
-        }),
-      );
-      return;
-    }
-
-    // 한쪽 버튼만 클릭 가능하게 설정
-    const newReaction = {
+    const updatedReaction = {
       like:
-        type === 'like'
-          ? likeClicked
-            ? reaction.like
-            : reaction.like + 1
-          : reaction.like - (likeClicked ? 1 : 0),
+        type === 'like' && !likeClicked ? reaction.like + 1 : reaction.like - (likeClicked ? 1 : 0),
       dislike:
-        type === 'dislike'
-          ? dislikeClicked
-            ? reaction.dislike
-            : reaction.dislike + 1
+        type === 'dislike' && !dislikeClicked
+          ? reaction.dislike + 1
           : reaction.dislike - (dislikeClicked ? 1 : 0),
     };
 
-    setReaction(newReaction);
-    setLikeClicked(type === 'like');
-    setDislikeClicked(type === 'dislike');
+    setReaction(updatedReaction);
+    setLikeClicked(type === 'like' && !likeClicked);
+    setDislikeClicked(type === 'dislike' && !dislikeClicked);
 
-    // 로컬 스토리지에 저장
-    localStorage.setItem(
-      `reaction_${questionId}`,
-      JSON.stringify({
-        likeClicked: type === 'like',
-        dislikeClicked: type === 'dislike',
-        like: newReaction.like,
-        dislike: newReaction.dislike,
-      }),
-    );
+    const storedReactions = JSON.parse(localStorage.getItem('reactions')) || {};
+    storedReactions[questionId] = {
+      likeClicked: type === 'like' && !likeClicked,
+      dislikeClicked: type === 'dislike' && !dislikeClicked,
+      ...updatedReaction,
+    };
+    localStorage.setItem('reactions', JSON.stringify(storedReactions));
 
-    // 서버에 리액션 업데이트
     await postReaction(questionId, type);
   };
 
