@@ -1,5 +1,6 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import { getQuestionList, getSubject, deleteSubject } from '../api';
 import useAsync from '../hooks/useAsync';
 
@@ -46,12 +47,16 @@ function PostPage() {
   const [profile, setProfile] = useState('');
   const [isToastVisible, setIsToastVisible] = useState(false);
   const [isCreateQuestion, setIsCreateQuestion] = useState(false);
+  const [questionButton, setQuestionButton] = useState('');
+  const [listButton, setListButton] = useState('');
   const navigate = useNavigate();
 
   const { error: getQuestionError, wrappedFunction: fetchGetQuestion } = useAsync(getQuestionList);
   const { error: getSubjectError, wrappedFunction: fetchGetSubject } = useAsync(getSubject);
   const { error: deleteSubjectError, wrappedFunction: fetchDeleteSubject } =
     useAsync(deleteSubject);
+
+  const urlToShare = window.location.href;
 
   // 카카오 sdk 로드, 초기화
   useEffect(() => {
@@ -98,8 +103,6 @@ function PostPage() {
       return;
     }
 
-    const urlToShare = window.location.href; // 현재 페이지 URL
-
     window.Kakao.Link.sendDefault({
       objectType: 'feed',
       content: {
@@ -125,7 +128,6 @@ function PostPage() {
 
   // 페북 공유
   const handleFacebookShare = () => {
-    const urlToShare = window.location.href;
     const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(urlToShare)}`;
     window.open(facebookShareUrl, '_blank'); // 새 창으로 페북 열어요, 오픈그래프는 index.html 확인해주세요.
   };
@@ -150,75 +152,100 @@ function PostPage() {
     }
   };
 
+  const updateButtonText = () => {
+    if (window.innerWidth < 768) {
+      setQuestionButton('질문 작성');
+      setListButton('목록으로');
+    } else {
+      setQuestionButton('질문 작성하기');
+      setListButton('목록으로 이동');
+    }
+  };
+
+  useEffect(() => {
+    updateButtonText(); // 초기값 설정
+    window.addEventListener('resize', updateButtonText);
+
+    return () => {
+      window.removeEventListener('resize', updateButtonText); // 클린업
+    };
+  }, []);
+
   /* div랑 button은 global.css에 있는 유틸 공용 컴포넌트 및 테일윈드 사용 */
-  const buttonClassName = 'btn btn-rounded body1 shadow-1 flex w-[208px] justify-center';
 
   return (
-    <div className="container mx-auto">
-      <img src={banner} alt="Background_Banner" className={styles.banner} />
-      <div className="relative z-10 mt-12 flex flex-col items-center gap-3">
-        <Link to="/">
-          <img src={logo} alt="OpenMind" className={styles.logo} />
-        </Link>
-        <img src={profile.imageSource} alt="ProfileImage" className={styles.profile} />
-        <h2 className="h2">{profile.name}</h2>
-        <div className="flex gap-3">
-          <img src={urlShare} alt="url" onClick={handleCopyUrl} className={styles.share} />
-          <img
-            src={kakaoShare}
-            alt="kakaotalk"
-            onClick={handleKakaoShare}
-            className={styles.share}
-          />
-          <img
-            src={facebookShare}
-            alt="facebook"
-            onClick={handleFacebookShare}
-            className={styles.share}
-          />
-        </div>
-        <div className="flex w-full justify-end">
-          {isMysubject(id) && (
-            <button className="btn btn-rounded absolute" onClick={handleDeleteSubject}>
-              삭제하기
-            </button>
-          )}
-        </div>
-        <div className="bg-brown-10 border-brown-30 text-brown-40 font-actor body1 mt-12 w-full rounded-[16px] border p-4 text-center">
-          <div className="flex flex-col items-center">
-            <div className="flex items-center justify-center gap-2">
-              <IconMessage alt="total" className={`${styles.message} text-brown-40`} />
-              <p className="body1">
-                {result.count ? `${result.count}개의 질문이 있습니다.` : '아직 질문이 없습니다.'}
-              </p>
-            </div>
-            {!result.count && <img src={empty} alt="empty" className={styles.empty} />}
-            <QuestionListItem />
-          </div>
-        </div>
-        <div className="fixed bottom-6 right-6">
-          <Link to="/list">
-            <button className={`${buttonClassName} btn-outline mb-3 font-semibold`}>
-              목록으로 이동
-            </button>
+    <div>
+      <Helmet>
+        <meta property="og:url" content={urlToShare} />
+        <meta property="og:title" content={`Open Mind - ${profile.name}`} />
+        <meta property="og:description" content={`${profile.name}님의 피드입니다.`} />
+        <meta property="og:image" content={profile.imageSource} />
+      </Helmet>
+
+      <div className="container mx-auto">
+        <img src={banner} alt="Background_Banner" className={styles.banner} />
+        <div className="relative z-10 mt-12 flex flex-col items-center gap-3">
+          <Link to="/">
+            <img src={logo} alt="OpenMind" className={styles.logo} />
           </Link>
-          {!isMysubject(id) && (
-            <button onClick={() => setIsCreateQuestion(true)} className={buttonClassName}>
-              질문 작성하기
-            </button>
+          <img src={profile.imageSource} alt="ProfileImage" className={styles.profile} />
+          <h2 className="h2">{profile.name}</h2>
+          <div className="flex gap-3">
+            <img src={urlShare} alt="url" onClick={handleCopyUrl} className={styles.share} />
+            <img
+              src={kakaoShare}
+              alt="kakaotalk"
+              onClick={handleKakaoShare}
+              className={styles.share}
+            />
+            <img
+              src={facebookShare}
+              alt="facebook"
+              onClick={handleFacebookShare}
+              className={styles.share}
+            />
+          </div>
+          <div className="flex w-full justify-end">
+            {isMysubject(id) && (
+              <button className={`${styles.button} absolute`} onClick={handleDeleteSubject}>
+                삭제하기
+              </button>
+            )}
+          </div>
+          <div className="bg-brown-10 border-brown-30 text-brown-40 font-actor body1 mt-12 w-full rounded-[16px] border p-4 text-center">
+            <div className="flex flex-col items-center">
+              <div className="flex items-center justify-center gap-2">
+                <IconMessage alt="total" className={`${styles.message} text-brown-40`} />
+                <p className="body1">
+                  {result.count ? `${result.count}개의 질문이 있습니다.` : '아직 질문이 없습니다.'}
+                </p>
+              </div>
+              {!result.count && <img src={empty} alt="empty" className={styles.empty} />}
+              <QuestionListItem />
+            </div>
+          </div>
+          <div className="fixed bottom-6 right-6 flex flex-col gap-2">
+            <Link to="/list">
+              <button className={styles.button}>{listButton}</button>
+            </Link>
+            {!isMysubject(id) && (
+              <button onClick={() => setIsCreateQuestion(true)} className={styles.button}>
+                {questionButton}
+              </button>
+            )}
+          </div>
+          {isToastVisible && (
+            <span className={`${styles.toast} caption-medium`}>url이 복사되었습니다.</span>
           )}
         </div>
-        {isToastVisible && (
-          <span className={`${styles.toast} caption-medium`}>url이 복사되었습니다.</span>
+        {isCreateQuestion && (
+          <QuestionCreateModal
+            profile={profile}
+            onClick={setIsCreateQuestion}
+            onUpdate={handleQuestionUpdate}
+          />
         )}
       </div>
-      {isCreateQuestion && (
-        <QuestionCreateModal
-          profile={profile}
-          onClick={setIsCreateQuestion}
-          onUpdate={handleQuestionUpdate}
-        />
-      )}
     </div>
   );
 }
