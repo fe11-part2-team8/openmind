@@ -10,7 +10,6 @@ import Loading from '../components/Loading';
 import snsLink from '../assets/images/snsLink.png';
 import logo from '../assets/images/logo.svg';
 import styles from './SubjectList.page.module.css';
-import logo from '../assets/images/logo.svg';
 import { ReactComponent as IconArrowRight } from '../assets/images/icon-arrow-right.svg';
 import { ReactComponent as IconMessage } from '../assets/images/icon-message.svg';
 
