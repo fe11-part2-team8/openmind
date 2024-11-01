@@ -16,7 +16,7 @@ import empty from '../assets/images/empty.png';
 
 // 로컬 id랑 현재 접속한 질문 id랑 같은지 검사
 const isMysubject = (id) => {
-  const myId = localStorage.getItem('SubjectId');
+  const myId = localStorage.getItem('subjectId');
   return myId === id;
 };
 
