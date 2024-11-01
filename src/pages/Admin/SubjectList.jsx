@@ -102,7 +102,7 @@ function SubjectListItem({ selected, subject, onDelete, questions }) {
   const { id, name, createdAt, questionCount } = subject;
 
   const handleClickLoginButton = () => {
-    localStorage.setItem('SubjectId', id);
+    localStorage.setItem('subjectId', id);
   };
 
   const handleClickDeleteButton = () => {

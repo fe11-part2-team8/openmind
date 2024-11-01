@@ -73,7 +73,6 @@ function PostPage() {
         }
       }
     };
-
     loadContent();
   }, [id, fetchQuestion, fetchSubject, questionError, subjectError, navigate]);
 

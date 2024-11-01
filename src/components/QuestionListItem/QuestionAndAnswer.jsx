@@ -112,33 +112,47 @@ function QuestionAndAnswer({
           name={name}
         />
       ) : (
-        <>
-          <div className={`${styles.answerContainer} text-left`}>
-            <div className={styles.profile}>
-              <img
-                src={imageSource}
-                alt={`${name}의 프로필 이미지`}
-                style={{ width: '40px', height: '40px', borderRadius: '50%', marginRight: '8px' }}
-              />
-              <div className={styles.answer}>
-                <div className={styles.nameday}>
-                  <p>{name}</p>
-                  <p className={styles.day}>{dayjs(answerDate).fromNow()}</p>
-                </div>
-
-                {isRejected ? (
-                  <p className="text-base text-[#B93333]">답변 거절</p>
-                ) : currentAnswer ? (
-                  <p className="text-left text-base">{currentAnswer?.content}</p>
-                ) : null}
-              </div>
-            </div>
-          </div>
-
-          <ReactionButtons questionId={questionId} initialLikes={like} initialDislikes={dislike} />
-        </>
+        <AnswerContentItem
+          name={name}
+          imageSource={imageSource}
+          answerDate={answerDate}
+          isRejected={isRejected}
+          currentAnswer={currentAnswer}
+          like={like}
+          dislike={dislike}
+          questionId={questionId}
+        />
       )}
+      <ReactionButtons questionId={questionId} initialLikes={like} initialDislikes={dislike} />
     </div>
+  );
+}
+
+function AnswerContentItem({ name, imageSource, answerDate, isRejected, currentAnswer }) {
+  return (
+    <>
+      <div className={`${styles.answerContainer} text-left`}>
+        <div className={styles.profile}>
+          <img
+            src={imageSource}
+            alt={`${name}의 프로필 이미지`}
+            style={{ width: '40px', height: '40px', borderRadius: '50%', marginRight: '8px' }}
+          />
+          <div className={styles.answer}>
+            <div className={styles.nameday}>
+              <p>{name}</p>
+              <p className={styles.day}>{dayjs(answerDate).fromNow()}</p>
+            </div>
+
+            {isRejected ? (
+              <p className="text-base text-[#B93333]">답변 거절</p>
+            ) : currentAnswer ? (
+              <p className="text-left text-base">{currentAnswer?.content}</p>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 
