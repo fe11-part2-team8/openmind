@@ -148,7 +148,7 @@ function AnswerContentItem({ name, imageSource, answerDate, isRejected, currentA
               {isRejected ? (
                 <p className="text-base text-[#B93333]">답변 거절</p>
               ) : (
-                <p className="text-left text-base">{currentAnswer.content}</p>
+                <p className="break-words text-left text-base">{currentAnswer.content}</p>
               )}
             </div>
           </div>
