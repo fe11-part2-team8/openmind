@@ -1,12 +1,11 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { getQuestionList, getSubject } from '../../api';
 import QuestionAndAnswer from './QuestionAndAnswer';
 import useAsync from '../../hooks/useAsync';
 
 import styles from './QuestionListItem.module.css';
 
-function QuestionListItem({ questions, onUpdate }) {
+function QuestionListItem({ getQuestionList, getSubject, questions, onUpdate }) {
   const { id } = useParams(); // URL에서 id (subjectId) 받아옴
   const [subjectData, setSubjectData] = useState(null); // 서브젝트 데이터 상태
   const [isSubjectOwner, setIsSubjectOwner] = useState(false); // 서브젝트 주인 여부

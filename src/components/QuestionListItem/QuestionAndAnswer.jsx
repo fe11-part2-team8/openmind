@@ -50,9 +50,20 @@ function QuestionAndAnswer({
 
   // 답변 거절 핸들러
   const handleRefuse = async () => {
+    const content = '거절된 답변입니다.';
+    const isRejected = true;
+
     try {
-      await patchAnswer('거절한 답변', answerId, true);
-      setCurrentAnswer({ ...currentAnswer, isRejected: true, content: '거절된 답변입니다.' });
+      if (currentAnswer) {
+        // 답변이 이미 있을 때는 거절 상태로 업데이트
+        await patchAnswer(content, question.answer.id, isRejected);
+      } else {
+        // 답변이 없을 때는 거절된 기본 답변 생성
+        await postAnswer(content, question.id, isRejected);
+      }
+
+      // 로컬 상태와 UI 업데이트
+      setCurrentAnswer({ content, isRejected });
       onUpdate();
     } catch (error) {
       alert('답변 거절에 실패했습니다.');

@@ -50,7 +50,7 @@ const Dropdown = ({ onEdit, onDelete, onRefuse }) => {
   // 딥뱐거부 클릭 핸들러
   const handleRefusalClick = () => {
     onRefuse();
-    setDropdownOpen(false);
+    setDropdownOpen(false); //거절 클릭 시 드롭다운 닫기
   };
 
   return (

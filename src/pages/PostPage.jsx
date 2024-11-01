@@ -176,7 +176,12 @@ function PostPage() {
               </p>
             </div>
             {!result.count && <img src={empty} alt="empty" className={styles.empty} />}
-            <QuestionListItem questions={questions} onUpdate={handleQuestionUpdate} />
+            <QuestionListItem
+              getQuestionList={getQuestionList}
+              getSubject={getSubject}
+              questions={questions}
+              onUpdate={handleQuestionUpdate}
+            />
           </div>
         </div>
         <div className="fixed bottom-6 right-6">
