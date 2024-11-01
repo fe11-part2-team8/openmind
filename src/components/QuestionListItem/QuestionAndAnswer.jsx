@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { date } from '../../utils/day';
 import Dropdown from './Dropdown/index';
@@ -25,6 +25,10 @@ function QuestionAndAnswer({
 }) {
   const [isEditMode, setIsEditMode] = useState(false); // 수정 모드 상태
   const [currentAnswer, setCurrentAnswer] = useState(answer); // 현재 답변 상태 관리
+
+  useEffect(() => {
+    setCurrentAnswer(answer); // answer가 변경되면 상태 업데이트
+  }, [answer]);
 
   // 수정하기 핸들러
   const handleEdit = () => {
