@@ -42,7 +42,6 @@ const loadKakaoSDK = (appKey) => {
 
 function PostPage() {
   const { id } = useParams();
-  const [result, setResult] = useState({ count: 0 });
   const [profile, setProfile] = useState({ name: '', imageSource: '' });
   const [questions, setQuestions] = useState([]);
   const [isToastVisible, setIsToastVisible] = useState(false);
@@ -59,7 +58,6 @@ function PostPage() {
         const question = await fetchQuestion(id);
         const subject = await fetchSubject(id);
         setQuestions(question.results);
-        setResult({ count: question.results.length });
         setProfile(subject);
       } catch (err) {
         alert('결과를 불러올 수 없습니다.');
@@ -133,8 +131,7 @@ function PostPage() {
   const handleQuestionUpdate = async () => {
     try {
       const question = await fetchQuestion(id);
-      setQuestions(question.results); // 질문 리스트 상태 업데이트
-      setResult({ count: question.results.length }); // 질문 개수 상태 업데이트
+      setQuestions(question.results);
     } catch (err) {
       console.log('질문 업데이트 중 오류 발생:', err);
     }
@@ -172,10 +169,12 @@ function PostPage() {
             <div className="flex items-center justify-center gap-2">
               <IconMessage alt="total" className={`${styles.message} text-brown-40`} />
               <p className="body1">
-                {result.count ? `${result.count}개의 질문이 있습니다.` : '아직 질문이 없습니다.'}
+                {questions.length
+                  ? `${questions.length}개의 질문이 있습니다.`
+                  : '아직 질문이 없습니다.'}
               </p>
             </div>
-            {!result.count && <img src={empty} alt="empty" className={styles.empty} />}
+            {!questions.length && <img src={empty} alt="empty" className={styles.empty} />}
             <QuestionListItem
               getQuestionList={getQuestionList}
               getSubject={getSubject}
