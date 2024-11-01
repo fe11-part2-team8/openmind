@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import more from '../../../assets/images/ic_More.svg'; // "더보기" 아이콘
 import dropDownEdit from '../../../assets/images/ic_Edit.svg'; // 수정하기 아이콘
 import dropDownClose from '../../../assets/images/icon-close.svg'; // 삭제하기 아이콘
+import dropDownRefusal from '../../../assets/images/ic-refusal.svg'; // 답변 거절 아이콘
 
 /**
  * 답변 수정 및 삭제 옵션을 제공하는 드롭다운 컴포넌트
@@ -11,7 +12,7 @@ import dropDownClose from '../../../assets/images/icon-close.svg'; // 삭제하�
  * @returns {React.JSX} 수정/삭제 드롭다운 컴포넌트
  */
 
-const Dropdown = ({ onEdit, onDelete }) => {
+const Dropdown = ({ onEdit, onDelete, onRefuse }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false); // 드롭다운 상태 관리
   const dropdownRef = useRef(null); // 드롭다운 영역
 
@@ -46,6 +47,12 @@ const Dropdown = ({ onEdit, onDelete }) => {
     setDropdownOpen(false); // 삭제 클릭 시 드롭다운 닫기
   };
 
+  // 딥뱐거부 클릭 핸들러
+  const handleRefusalClick = () => {
+    onRefuse();
+    setDropdownOpen(false);
+  };
+
   return (
     <div ref={dropdownRef} style={{ position: 'relative' }}>
       {/* 더보기 버튼 */}
@@ -62,6 +69,13 @@ const Dropdown = ({ onEdit, onDelete }) => {
           >
             <img src={dropDownEdit} alt="수정하기" className="h-3.8 w-3.8" />
             <span>수정하기</span>
+          </div>
+          <div
+            onClick={handleRefusalClick}
+            className="flex cursor-pointer items-center justify-center gap-2 p-2 hover:bg-gray-100"
+          >
+            <img src={dropDownRefusal} alt="거절하기" className="h-3.8 w-3.8" />
+            <span>거절하기</span>
           </div>
           <div
             onClick={handleDeleteClick} // 삭제 클릭 핸들러

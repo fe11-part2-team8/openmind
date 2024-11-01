@@ -24,7 +24,7 @@ function QuestionAndAnswer({
   onUpdate,
 }) {
   const [isEditMode, setIsEditMode] = useState(false); // 수정 모드 상태
-  // const [currentAnswer, setCurrentAnswer] = useState(answer); // 현재 답변 상태 관리
+  const [currentAnswer, setCurrentAnswer] = useState(answer); // 현재 답변 상태 관리
 
   // 수정하기 핸들러
   const handleEdit = () => {
@@ -45,6 +45,17 @@ function QuestionAndAnswer({
       onUpdate();
     } catch (error) {
       alert('답변 수정에 실패했습니다.');
+    }
+  };
+
+  // 답변 거절 핸들러
+  const handleRefuse = async () => {
+    try {
+      await patchAnswer('거절한 답변', answerId, true); // isRejected를 true로 설정
+      setCurrentAnswer({ ...currentAnswer, isRejected: true, content: '거절된 답변입니다.' });
+      onUpdate();
+    } catch (error) {
+      alert('답변 거절에 실패했습니다.');
     }
   };
 
@@ -71,7 +82,9 @@ function QuestionAndAnswer({
         >
           {answer ? '답변 완료' : '미답변'}
         </span>
-        {isSubjectOwner && <Dropdown onEdit={handleEdit} onDelete={handleDelete} />}
+        {isSubjectOwner && (
+          <Dropdown onEdit={handleEdit} onDelete={handleDelete} onRefuse={handleRefuse} />
+        )}
       </div>
 
       <div className={styles.container}>
