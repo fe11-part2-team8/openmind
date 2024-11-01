@@ -9,12 +9,12 @@ function HomePage() {
   return (
     <div className={styles.wrap}>
       <div className="container mx-auto flex flex-col items-center">
-        <Link to="/list" className="btn btn-outline self-end">
+        <img src={logo} className={styles.logo} alt="Open Mind" />
+
+        <Link to="/list" className="btn btn-outline sm:order-first sm:self-end">
           질문하러 가기
           <IconArrowRight width="18" height="18" />
         </Link>
-
-        <img src={logo} className={styles.logo} alt="Open Mind" />
 
         <SubjectCreateForm />
       </div>

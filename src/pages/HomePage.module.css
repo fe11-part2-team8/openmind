@@ -1,9 +1,12 @@
+/* 기본 pc */
 .wrap {
   padding: 45px 0;
   height: 100vh;
   background-position: center bottom;
   background-repeat: no-repeat;
   background-image: url('../assets/images/main-background.png');
+  width: 100%;
+  background-size: contain;
 }
 
 .logo {
@@ -11,16 +14,24 @@
   width: 456px;
 }
 
-/* @media (max-width: 768px) {
+/* 반응형 태블릿 사이즈 h832*/
+@media (max-width: 1200px) {
   .wrap {
-    padding: 45px 0;
-    height: 100vh;
-    background-position: center bottom;
-    background-repeat: no-repeat;
-    background-image: url('../assets/images/main-background.png');
+    padding: 67px 0;
   }
-  
+}
+
+/* 반응형 모바일 사이즈 h611*/
+@media (max-width: 767px) {
+  .wrap {
+    background-image: url('../assets/images/main-background-m.png');
+    padding: 47px 0;
+    width: auto;
+    background-size: contain;
+  }
+
   .logo {
-    margin: 70px 0 24px;
+    margin: 80px 0 24px;
     width: 248px;
-  } */
+  }
+}
