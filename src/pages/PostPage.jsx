@@ -142,8 +142,8 @@ function PostPage() {
 
   // porp으로 전달되며 함수가 바로 적용되지 않는 문제 때문에 수정
   const handleQuestionUpdate = async () => {
-    const question = await fetchGetQuestion(id);
-    setResult(question);
+    const response = await fetchGetQuestion(id);
+    setResult(response);
   };
 
   const handleDeleteSubject = async () => {
@@ -221,7 +221,7 @@ function PostPage() {
                 </p>
               </div>
               {!result.count && <img src={empty} alt="empty" className={styles.empty} />}
-              <QuestionListItem />
+              <QuestionListItem isOwner={true} subject={profile} questions={result} onUpdate={handleQuestionUpdate} />
             </div>
           </div>
           <div className="fixed bottom-6 right-6 flex flex-col gap-2">
