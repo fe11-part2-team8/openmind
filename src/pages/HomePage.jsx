@@ -26,7 +26,9 @@ function HomePage() {
 
       <div className={styles.wrap}>
         <div className="container mx-auto flex flex-col items-center">
-          <img src={logo} className={styles.logo} alt="Open Mind" />
+          <h1>
+            <img src={logo} className={styles.logo} alt="Open Mind" />
+          </h1>
 
           <Link to="/list" className="btn btn-outline md:order-first md:self-end">
             질문하러 가기
