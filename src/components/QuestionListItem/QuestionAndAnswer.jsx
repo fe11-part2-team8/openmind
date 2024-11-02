@@ -1,20 +1,18 @@
 import { useState } from 'react';
-
 import { date } from '../../utils/day';
+import { deleteQuestion, patchAnswer, postAnswer } from '../../api';
 import Dropdown from './Dropdown/index';
-import { deleteQuestion, patchAnswer, postAnswer } from '../../api'; // 답변 수정 및 추가 API 불러오기
-import AnswerCreateAndEdit from '../AnswerCreateAndEdit/index'; // 수정 컴포넌트 가져오기
-import ReactionButtons from './ReactionButton'; // 좋아요/싫어요 컴포넌트 불러오기
-
+import AnswerCreateAndEdit from '../AnswerCreateAndEdit/index';
+import ReactionButtons from './ReactionButton';
 import styles from './QuestionListItem.module.css';
 
-// 상수 추가
 const IS_REJECTED = true;
-const REJECTED_CONTENT = '거절된 답변입니다.';
 
 function QuestionAndAnswer({ question, name, isSubjectOwner, imageSource, onUpdate }) {
   const { like, dislike, answer } = question;
   const [isEditMode, setIsEditMode] = useState(false); // 수정 모드 상태
+
+  console.log(isSubjectOwner);
 
   // 수정하기 핸들러
   const handleEdit = () => {
@@ -32,10 +30,10 @@ function QuestionAndAnswer({ question, name, isSubjectOwner, imageSource, onUpda
     try {
       if (answer) {
         // 답변이 이미 있을 때는 거절 상태로 업데이트
-        await patchAnswer(REJECTED_CONTENT, answer.id, IS_REJECTED);
+        await patchAnswer('', answer.id, IS_REJECTED);
       } else {
         // 답변이 없을 때는 거절된 기본 답변 생성
-        await postAnswer(REJECTED_CONTENT, question.id, IS_REJECTED);
+        await postAnswer('', question.id, IS_REJECTED);
       }
       onUpdate();
     } catch (error) {
@@ -67,7 +65,7 @@ function QuestionAndAnswer({ question, name, isSubjectOwner, imageSource, onUpda
         <p>{question.content}</p>
       </div>
 
-      {isEditMode || !answer ? (
+      {isEditMode || (!answer && isSubjectOwner) ? (
         <AnswerCreateAndEdit
           questionId={question.id}
           answer={answer}

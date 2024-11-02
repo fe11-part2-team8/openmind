@@ -223,7 +223,7 @@ function PostPage() {
               </div>
               {!result.count && <img src={empty} alt="empty" className={styles.empty} />}
               <QuestionListItem
-                isOwner={true}
+                isSubjectOwner={isMysubject(id)}
                 subject={profile}
                 questions={result}
                 onUpdate={handleQuestionUpdate}
@@ -246,7 +246,6 @@ function PostPage() {
         </div>
         {isCreateQuestion && (
           <QuestionCreateModal
-            isOwner={isMysubject(id)}
             profile={profile}
             onClick={setIsCreateQuestion}
             onUpdate={handleQuestionUpdate}
