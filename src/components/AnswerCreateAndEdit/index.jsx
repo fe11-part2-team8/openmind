@@ -1,6 +1,9 @@
 import { useState } from 'react';
 
-import styles from './AnswerCreateForm.module.css';
+import styles from './AnswerCreateAndEdit.module.css';
+import useAsync from '../../hooks/useAsync';
+import { patchAnswer, postAnswer } from '../../api';
+import Loading from '../Loading';
 
 function verifyContent(content, originAnswer) {
   if (content === '') return false;
@@ -11,48 +14,53 @@ function verifyContent(content, originAnswer) {
 /**
  * AnswerForm 컴포넌트
  * 사용자가 답변을 작성하거나 수정할 수 있도록 하는 답변 폼 컴포넌트입니다.
- * @param {object} props - 컴포넌트에 전달된 속성
- * @param {string} props.type - create 또는 edit로 답변 폼의 작동 방식을 결정합니다
- * @param {string} props.questionId - 질문의 ID
- * @param {function} props.onSave - 수정 시 호출되는 함수
- * @param {function} props.postAnswer - 새 답변 추가 시 호출되는 함수
+ * @param {object} props
+ * @param {number} props.questionId question id
+ * @param {{id : number, content : string, createdAt : string, isRejected : boolean} | null} props.answer answer 객체
+ * @param {string} props.name subject 이름
+ * @param {string} props.imageSource subject 프로필 이미지 경로
+ * @param {function} props.onUpdate question 리스트 업데이트 핸들러
+ * @param {function} props.setIsEditMode isEditMode의 setter 함수
  * @returns {React.JSX} - AnswerForm 컴포넌트
+ * @todo 에러 발생 시 UI 디자인 추가
  */
-function AnswerCreateAndEdit({
-  questionId,
-  answerId,
-  initialContent = '',
-  onSave,
-  postAnswer,
-  imageSource,
-  name,
-}) {
-  const [answerContent, setAnswerContent] = useState(initialContent);
-  const [isEditMode] = useState(Boolean(answerId)); // answerId가 존재하면 수정 모드로 간주
+function AnswerCreateAndEdit({ questionId, answer, imageSource, name, onUpdate, setIsEditMode }) {
+  const [answerContent, setAnswerContent] = useState(answer ? answer.content : '');
+  const {
+    loading: loadingPost,
+    error: errorPost,
+    wrappedFunction: postAnswerAsync,
+  } = useAsync(postAnswer);
+  const {
+    loading: loadingPatch,
+    error: errorPatch,
+    wrappedFunction: patchAnswerAsync,
+  } = useAsync(patchAnswer);
 
   const handleChangeContent = (e) => {
-    setAnswerContent(e.target.value);
+    setAnswerContent(e.target.value.trim());
   };
 
   const handleSubmitContent = async (e) => {
     e.preventDefault();
-    try {
-      if (isEditMode) {
-        await onSave(answerContent, answerId);
-      } else {
-        await postAnswer(answerContent, questionId);
-      }
-    } catch (error) {
-      console.error('답변 처리 중 오류가 발생했습니다.', error);
+    if (answer) {
+      await patchAnswerAsync(answerContent, answer.id);
+      if (errorPatch) alert(errorPatch);
+      setIsEditMode(false);
+    } else {
+      await postAnswerAsync(answerContent, questionId);
+      if (errorPost) alert(errorPost);
     }
+    onUpdate();
   };
 
   return (
     <div className={styles.body}>
+      <Loading isVisible={loadingPatch || loadingPost} />
       <img
         src={imageSource}
         alt={`${name}의 프로필 이미지`}
-        className="mr-2 mr-3 h-10 w-10 rounded-full"
+        className="mr-2 h-10 w-10 rounded-full"
       />
       <div className={styles.container}>
         <p className="text-left text-lg font-semibold">{name}</p>
@@ -68,9 +76,9 @@ function AnswerCreateAndEdit({
           <button
             type="submit"
             className="btn w-full"
-            disabled={!verifyContent(answerContent, initialContent)}
+            disabled={!verifyContent(answerContent, answer?.content)}
           >
-            {isEditMode ? '수정 완료' : '답변 완료'}
+            {answer ? '수정 완료' : '답변 완료'}
           </button>
         </form>
       </div>
