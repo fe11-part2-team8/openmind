@@ -4,25 +4,26 @@ import { deleteQuestion, patchAnswer, postAnswer } from '../../api';
 import Dropdown from './Dropdown/index';
 import AnswerCreateAndEdit from '../AnswerCreateAndEdit/index';
 import ReactionButtons from './ReactionButton';
-import styles from './QuestionListItem.module.css';
+import styles from './QuestionList.module.css';
 import useAsync from '../../hooks/useAsync';
 
 const IS_REJECTED = true;
 const REJECTED_CONTENT = '거절된 답변입니다.';
 
+/**
+ *
+ * @param {object} props
+ * @param {{id : number, content : string, createdAt : string, like : number, dislike : number, answer : {id : number, content : string, createdAt : string, isRejected : boolean} | null}} props.question question 객체
+ * @param {string} name subejct 이름
+ * @param {string} imageSource subject 프로필 이미지 경로
+ * @param {function} onUpdate question 리스트 업데이트 핸들러
+ * @returns
+ */
 function QuestionAndAnswer({ question, name, isSubjectOwner, imageSource, onUpdate }) {
   const { like, dislike, answer } = question;
   const [isEditMode, setIsEditMode] = useState(false); // 수정 모드 상태
-  const {
-    loading: loadingPost,
-    error: errorPost,
-    wrappedFunction: postAnswerAsync,
-  } = useAsync(postAnswer);
-  const {
-    loading: loadingPatch,
-    error: errorPatch,
-    wrappedFunction: patchAnswerAsync,
-  } = useAsync(patchAnswer);
+  const { error: errorPost, wrappedFunction: postAnswerAsync } = useAsync(postAnswer);
+  const { error: errorPatch, wrappedFunction: patchAnswerAsync } = useAsync(patchAnswer);
 
   console.log(isSubjectOwner);
 

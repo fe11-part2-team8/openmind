@@ -16,7 +16,7 @@ import { ReactComponent as IconMessage } from '../assets/images/icon-message.svg
 import empty from '../assets/images/empty.png';
 import QuestionCreateModal from '../components/QuestionCreateModal';
 
-import QuestionListItem from '../components/QuestionListItem';
+import QuestionList from '../components/QuestionList';
 
 // 로컬 id랑 현재 접속한 질문 id랑 같은지 검사
 const isMysubject = (id) => {
@@ -222,7 +222,7 @@ function PostPage() {
                 </p>
               </div>
               {!result.count && <img src={empty} alt="empty" className={styles.empty} />}
-              <QuestionListItem
+              <QuestionList
                 isSubjectOwner={isMysubject(id)}
                 subject={profile}
                 questions={result}

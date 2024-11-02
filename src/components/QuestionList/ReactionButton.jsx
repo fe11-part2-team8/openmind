@@ -3,7 +3,7 @@ import { postReaction } from '../../api';
 import { ReactComponent as ThumbsUpIcon } from '../../assets/images/ic_thumbs-up.svg';
 import { ReactComponent as ThumbsDownIcon } from '../../assets/images/ic_thumbs-down.svg';
 
-import styles from './QuestionListItem.module.css';
+import styles from './QuestionList.module.css';
 
 function ReactionButtons({ questionId, initialLikes, initialDislikes }) {
   const [reaction, setReaction] = useState({ like: initialLikes, dislike: initialDislikes });
