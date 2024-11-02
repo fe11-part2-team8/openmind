@@ -27,17 +27,6 @@ function QuestionAndAnswer({ question, name, isSubjectOwner, imageSource, onUpda
     onUpdate();
   };
 
-  // 수정 완료 핸들러
-  // const handleSave = async (newContent, answerId) => {
-  //   try {
-  //     await patchAnswer(newContent, answerId);
-  //     setIsEditMode(false); // 수정 완료 후 수정 모드 해제
-  //     onUpdate();
-  //   } catch (error) {
-  //     alert('답변 수정에 실패했습니다.');
-  //   }
-  // };
-
   // 답변 거절 핸들러
   const handleRefuse = async () => {
     try {
@@ -55,15 +44,6 @@ function QuestionAndAnswer({ question, name, isSubjectOwner, imageSource, onUpda
   };
 
   // 새 답변 추가 핸들러
-  // const handlePostAnswer = async (newContent, questionId) => {
-  //   try {
-  //     await postAnswer(newContent, questionId); // 새 답변 추가 API 호출
-  //     setIsEditMode(false); // 답변 추가 후 수정 모드 해제
-  //     onUpdate();
-  //   } catch (error) {
-  //     alert('답변 추가에 실패했습니다.');
-  //   }
-  // };
 
   return (
     <div className={styles.select}>
@@ -87,27 +67,19 @@ function QuestionAndAnswer({ question, name, isSubjectOwner, imageSource, onUpda
         <p>{question.content}</p>
       </div>
 
-      {isEditMode || (isSubjectOwner && !answer) ? (
-        // <AnswerCreateAndEdit
-        //   answerId={answer.id}
-        //   questionId={question.id}
-        //   initialContent={answer?.content || ''}
-        //   onSave={handleSave}
-        //   postAnswer={handlePostAnswer}
-        //   imageSource={imageSource}
-        //   name={name}
-        // />
-        <></>
+      {isEditMode || !answer ? (
+        <AnswerCreateAndEdit answer={answer} name={name} imageSource={imageSource} />
       ) : (
         <AnswerContentItem
           name={name}
           imageSource={imageSource}
-          answerDate={answer.createdAt}
-          isRejected={answer.isRejected}
+          answerDate={answer?.createdAt}
+          isRejected={answer?.isRejected}
           currentAnswer={answer}
           questionId={question.id}
         />
       )}
+
       <ReactionButtons questionId={question.id} initialLikes={like} initialDislikes={dislike} />
     </div>
   );
