@@ -246,7 +246,7 @@ function PostPage() {
         </div>
         {isCreateQuestion && (
           <QuestionCreateModal
-            isOwner={true}
+            isOwner={isMysubject(id)}
             profile={profile}
             onClick={setIsCreateQuestion}
             onUpdate={handleQuestionUpdate}

@@ -3,9 +3,9 @@ import { useState } from 'react';
 import styles from './AnswerCreateForm.module.css';
 import useAsync from '../../hooks/useAsync';
 import { patchAnswer, postAnswer } from '../../api';
+import Loading from '../Loading';
 
 function verifyContent(content, originAnswer) {
-  console.log(originAnswer);
   if (content === '') return false;
   if (content === originAnswer) return false;
   return true;
@@ -29,15 +29,18 @@ function AnswerCreateAndEdit({ questionId, answer, imageSource, name, onUpdate, 
     e.preventDefault();
     if (answer) {
       await patchAnswerAsync(answerContent, answer.id);
+      if (errorPatch) alert(errorPatch);
       setIsEditMode(false);
     } else {
       await postAnswerAsync(answerContent, questionId);
+      if (errorPost) alert(errorPost);
     }
     onUpdate();
   };
 
   return (
     <div className={styles.body}>
+      <Loading isVisible={loadingPatch || loadingPost} />
       <img
         src={imageSource}
         alt={`${name}의 프로필 이미지`}
