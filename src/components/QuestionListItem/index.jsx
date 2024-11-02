@@ -1,17 +1,13 @@
 import QuestionAndAnswer from './QuestionAndAnswer';
-
 import styles from './QuestionListItem.module.css';
 
-// API 함수 props에서 제거
-// subject는 새롭게 요청하기 보단 상위 컴포넌트에서 받아온다.
+// # API 함수 props에서 제거
+// # subject는 새롭게 요청하기 보단 상위 컴포넌트에서 받아온다.
 function QuestionListItem({ isOwner, subject, questions, onUpdate }) {
+  // # subject를 직접 받아오니 id를 url param에서 얻을 필요가 없음
+  // # 상태값과 이를 정의하기 위한 useEffet 제거
 
-  // subject를 직접 받아오니 id를 url param에서 얻을 필요가 없음
-  // 상태값과 이를 정의하기 위한 useEffet 제거
-
-  console.log(questions)
-
-  if(!questions) return;
+  if (!questions) return;
 
   // porp 보내기
   return (

@@ -53,7 +53,8 @@ function PostPage() {
 
   const { error: getQuestionError, wrappedFunction: fetchGetQuestion } = useAsync(getQuestionList);
   const { error: getSubjectError, wrappedFunction: fetchGetSubject } = useAsync(getSubject);
-  const { error: deleteSubjectError, wrappedFunction: fetchDeleteSubject } = useAsync(deleteSubject);
+  const { error: deleteSubjectError, wrappedFunction: fetchDeleteSubject } =
+    useAsync(deleteSubject);
 
   const urlToShare = window.location.href;
 
@@ -221,7 +222,12 @@ function PostPage() {
                 </p>
               </div>
               {!result.count && <img src={empty} alt="empty" className={styles.empty} />}
-              <QuestionListItem isOwner={true} subject={profile} questions={result} onUpdate={handleQuestionUpdate} />
+              <QuestionListItem
+                isOwner={true}
+                subject={profile}
+                questions={result}
+                onUpdate={handleQuestionUpdate}
+              />
             </div>
           </div>
           <div className="fixed bottom-6 right-6 flex flex-col gap-2">
@@ -240,7 +246,7 @@ function PostPage() {
         </div>
         {isCreateQuestion && (
           <QuestionCreateModal
-            isOwner = {true}
+            isOwner={true}
             profile={profile}
             onClick={setIsCreateQuestion}
             onUpdate={handleQuestionUpdate}
