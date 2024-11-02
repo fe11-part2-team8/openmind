@@ -11,7 +11,10 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="list" element={<SubjectListPage />} />
+        {/* TODO param을 옵션으로 받는 더 좋은 방법? */}
+        <Route path="list" element={<SubjectListPage />}>
+          <Route path=":pageNum" element={<SubjectListPage />} />
+        </Route>
         <Route path="admin" element={<AdminPage />} />
         <Route path="post">
           <Route path=":id">
