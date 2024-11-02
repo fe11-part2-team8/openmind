@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import styles from './AnswerCreateForm.module.css';
+import styles from './AnswerCreateAndEdit.module.css';
 import useAsync from '../../hooks/useAsync';
 import { patchAnswer, postAnswer } from '../../api';
 import Loading from '../Loading';
