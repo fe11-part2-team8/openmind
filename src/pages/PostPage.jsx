@@ -207,7 +207,10 @@ function PostPage() {
           </div>
           <div className="flex w-full justify-end">
             {isMysubject(id) && (
-              <button className={`${styles.button} absolute`} onClick={handleDeleteSubject}>
+              <button
+                className={`${styles.deleteButton} shadow-2 absolute`}
+                onClick={handleDeleteSubject}
+              >
                 삭제하기
               </button>
             )}
@@ -226,10 +229,13 @@ function PostPage() {
           </div>
           <div className="fixed bottom-6 right-6 flex flex-col gap-2">
             <Link to="/list">
-              <button className={styles.button}>{listButton}</button>
+              <button className={`${styles.menuButton} shadow-2`}>{listButton}</button>
             </Link>
             {!isMysubject(id) && (
-              <button onClick={() => setIsCreateQuestion(true)} className={styles.button}>
+              <button
+                onClick={() => setIsCreateQuestion(true)}
+                className={`${styles.menuButton} shadow-2`}
+              >
                 {questionButton}
               </button>
             )}
