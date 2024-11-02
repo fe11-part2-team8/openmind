@@ -11,21 +11,19 @@ const IS_REJECTED = true;
 const REJECTED_CONTENT = '거절된 답변입니다.';
 
 /**
- *
+ * 질문 아이템 컴포넌트. 내부에는 답변과 관련된 컴포넌트도 포함된다.
  * @param {object} props
  * @param {{id : number, content : string, createdAt : string, like : number, dislike : number, answer : {id : number, content : string, createdAt : string, isRejected : boolean} | null}} props.question question 객체
  * @param {string} name subejct 이름
  * @param {string} imageSource subject 프로필 이미지 경로
  * @param {function} onUpdate question 리스트 업데이트 핸들러
- * @returns
+ * @returns {React.JSX} 질문 아이템 컴포넌트
  */
 function QuestionItem({ question, name, isSubjectOwner, imageSource, onUpdate }) {
   const { like, dislike, answer } = question;
   const [isEditMode, setIsEditMode] = useState(false); // 수정 모드 상태
   const { error: errorPost, wrappedFunction: postAnswerAsync } = useAsync(postAnswer);
   const { error: errorPatch, wrappedFunction: patchAnswerAsync } = useAsync(patchAnswer);
-
-  console.log(isSubjectOwner);
 
   // 수정하기 핸들러
   const handleEdit = () => {
@@ -50,8 +48,6 @@ function QuestionItem({ question, name, isSubjectOwner, imageSource, onUpdate })
     }
     onUpdate();
   };
-
-  // 새 답변 추가 핸들러
 
   return (
     <div className={styles.select}>
@@ -93,6 +89,14 @@ function QuestionItem({ question, name, isSubjectOwner, imageSource, onUpdate })
   );
 }
 
+/**
+ * 답변을 보여주기 위한 컴포넌트
+ * @param {object} props
+ * @param {{id : number, content : string, createdAt : string, isRejected : boolean}} props.answer answer 객체
+ * @param {string} props.name subject 이름
+ * @param {string} props.imageSource subject 프로필 이미지 경로
+ * @returns {React.JSX} 답변 컴포넌트
+ */
 function AnswerItem({ answer, name, imageSource }) {
   if (!answer) return <></>;
 
