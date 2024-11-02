@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { date } from '../../utils/day';
 import { deleteQuestion, patchAnswer, postAnswer } from '../../api';
-import Dropdown from './Dropdown/index';
 import AnswerCreateAndEdit from '../AnswerCreateAndEdit/index';
 import ReactionButtons from './ReactionButton';
 import styles from './QuestionList.module.css';
 import useAsync from '../../hooks/useAsync';
+import Dropdown from './Dropdown';
 
 const IS_REJECTED = true;
 const REJECTED_CONTENT = '거절된 답변입니다.';
