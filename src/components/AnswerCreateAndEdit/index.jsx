@@ -5,6 +5,7 @@ import useAsync from '../../hooks/useAsync';
 import { patchAnswer, postAnswer } from '../../api';
 
 function verifyContent(content, originAnswer) {
+  console.log(originAnswer);
   if (content === '') return false;
   if (content === originAnswer) return false;
   return true;
@@ -26,15 +27,13 @@ function AnswerCreateAndEdit({ questionId, answer, imageSource, name, onUpdate, 
 
   const handleSubmitContent = async (e) => {
     e.preventDefault();
-    try {
-      answer
-        ? await patchAnswerAsync(answerContent, answer.id)
-        : await postAnswerAsync(answerContent, questionId);
+    if (answer) {
+      await patchAnswerAsync(answerContent, answer.id);
       setIsEditMode(false);
-      onUpdate();
-    } catch (error) {
-      console.error('답변 처리 중 오류가 발생했습니다.', error);
+    } else {
+      await postAnswerAsync(answerContent, questionId);
     }
+    onUpdate();
   };
 
   return (
