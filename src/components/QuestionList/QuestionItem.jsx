@@ -37,7 +37,7 @@ function QuestionItem({ question, name, isSubjectOwner, imageSource, onUpdate })
   };
 
   // 답변 거절 핸들러
-  const handleRefuse = async () => {
+  const handleReject = async () => {
     if (answer) {
       console.log(answer);
       await patchAnswerAsync(REJECTED_CONTENT, answer.id, IS_REJECTED);
@@ -62,7 +62,7 @@ function QuestionItem({ question, name, isSubjectOwner, imageSource, onUpdate })
           {answer ? '답변 완료' : '미답변'}
         </span>
         {isSubjectOwner && (
-          <Dropdown onEdit={handleEdit} onDelete={handleDelete} onRefuse={handleRefuse} />
+          <Dropdown onEdit={handleEdit} onDelete={handleDelete} onReject={handleReject} />
         )}
       </div>
 

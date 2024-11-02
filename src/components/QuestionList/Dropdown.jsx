@@ -12,7 +12,7 @@ import dropDownRejected from '../../assets/images/ic-rejected.svg';
  * @returns {React.JSX} 수정/삭제 드롭다운 컴포넌트
  */
 
-const Dropdown = ({ onEdit, onDelete, onRefuse }) => {
+const Dropdown = ({ onEdit, onDelete, onReject }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false); // 드롭다운 상태 관리
   const dropdownRef = useRef(null); // 드롭다운 영역
 
@@ -48,8 +48,8 @@ const Dropdown = ({ onEdit, onDelete, onRefuse }) => {
   };
 
   // 딥뱐거부 클릭 핸들러
-  const handleRefusalClick = () => {
-    onRefuse();
+  const handleRejectClick = () => {
+    onReject();
     setDropdownOpen(false); //거절 클릭 시 드롭다운 닫기
   };
 
@@ -71,7 +71,7 @@ const Dropdown = ({ onEdit, onDelete, onRefuse }) => {
             <span>수정하기</span>
           </div>
           <div
-            onClick={handleRefusalClick}
+            onClick={handleRejectClick}
             className="flex cursor-pointer items-center justify-center gap-2 p-2 hover:bg-gray-100"
           >
             <img src={dropDownRejected} alt="거절하기" className="h-3.8 w-3.8" />
