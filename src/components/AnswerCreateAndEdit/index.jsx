@@ -14,12 +14,27 @@ function verifyContent(content, originAnswer) {
 /**
  * AnswerForm 컴포넌트
  * 사용자가 답변을 작성하거나 수정할 수 있도록 하는 답변 폼 컴포넌트입니다.
+ * @param {object} props
+ * @param {number} props.questionId question id
+ * @param {{id : number, content : string, createdAt : string, isRejected : boolean} | null} props.answer answer 객체
+ * @param {string} props.name subject 이름
+ * @param {string} props.imageSource subject 프로필 이미지 경로
+ * @param {function} props.onUpdate question 리스트 업데이트 핸들러
+ * @param {function} props.setIsEditMode isEditMode의 setter 함수
  * @returns {React.JSX} - AnswerForm 컴포넌트
  */
 function AnswerCreateAndEdit({ questionId, answer, imageSource, name, onUpdate, setIsEditMode }) {
   const [answerContent, setAnswerContent] = useState(answer ? answer.content : '');
-  const { loadingPost, errorPost, wrappedFunction: postAnswerAsync } = useAsync(postAnswer);
-  const { loadingPatch, errorPatch, wrappedFunction: patchAnswerAsync } = useAsync(patchAnswer);
+  const {
+    loading: loadingPost,
+    error: errorPost,
+    wrappedFunction: postAnswerAsync,
+  } = useAsync(postAnswer);
+  const {
+    loading: loadingPatch,
+    error: errorPatch,
+    wrappedFunction: patchAnswerAsync,
+  } = useAsync(patchAnswer);
 
   const handleChangeContent = (e) => {
     setAnswerContent(e.target.value.trim());

@@ -14,9 +14,9 @@ const REJECTED_CONTENT = '거절된 답변입니다.';
  * 질문 아이템 컴포넌트. 내부에는 답변과 관련된 컴포넌트도 포함된다.
  * @param {object} props
  * @param {{id : number, content : string, createdAt : string, like : number, dislike : number, answer : {id : number, content : string, createdAt : string, isRejected : boolean} | null}} props.question question 객체
- * @param {string} name subejct 이름
- * @param {string} imageSource subject 프로필 이미지 경로
- * @param {function} onUpdate question 리스트 업데이트 핸들러
+ * @param {string} props.name subejct 이름
+ * @param {string} props.imageSource subject 프로필 이미지 경로
+ * @param {function} props.onUpdate question 리스트 업데이트 핸들러
  * @returns {React.JSX} 질문 아이템 컴포넌트
  */
 function QuestionItem({ question, name, isSubjectOwner, imageSource, onUpdate }) {
