@@ -1,4 +1,4 @@
-import QuestionAndAnswer from './QuestionAndAnswer';
+import QuestionItem from './QuestionItem';
 import styles from './QuestionList.module.css';
 
 // # API 함수 props에서 제거
@@ -25,7 +25,7 @@ function QuestionList({ isSubjectOwner, subject, questions, onUpdate }) {
   return (
     <div className={styles.QuestionListItem}>
       {questions.results.map((question) => (
-        <QuestionAndAnswer
+        <QuestionItem
           key={question.id}
           question={question} // 질문 객체 전달
           name={subject.name} // 이름 전달

@@ -19,7 +19,7 @@ const REJECTED_CONTENT = '거절된 답변입니다.';
  * @param {function} onUpdate question 리스트 업데이트 핸들러
  * @returns
  */
-function QuestionAndAnswer({ question, name, isSubjectOwner, imageSource, onUpdate }) {
+function QuestionItem({ question, name, isSubjectOwner, imageSource, onUpdate }) {
   const { like, dislike, answer } = question;
   const [isEditMode, setIsEditMode] = useState(false); // 수정 모드 상태
   const { error: errorPost, wrappedFunction: postAnswerAsync } = useAsync(postAnswer);
@@ -85,7 +85,7 @@ function QuestionAndAnswer({ question, name, isSubjectOwner, imageSource, onUpda
           setIsEditMode={setIsEditMode}
         />
       ) : (
-        <AnswerContentItem answer={answer} name={name} imageSource={imageSource} />
+        <AnswerItem answer={answer} name={name} imageSource={imageSource} />
       )}
 
       <ReactionButtons questionId={question.id} initialLikes={like} initialDislikes={dislike} />
@@ -93,7 +93,7 @@ function QuestionAndAnswer({ question, name, isSubjectOwner, imageSource, onUpda
   );
 }
 
-function AnswerContentItem({ answer, name, imageSource }) {
+function AnswerItem({ answer, name, imageSource }) {
   if (!answer) return <></>;
 
   return (
@@ -121,4 +121,4 @@ function AnswerContentItem({ answer, name, imageSource }) {
   );
 }
 
-export default QuestionAndAnswer;
+export default QuestionItem;
