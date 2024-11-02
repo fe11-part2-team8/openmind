@@ -6,6 +6,7 @@ import ReactionButtons from './ReactionButton';
 import styles from './QuestionList.module.css';
 import useAsync from '../../hooks/useAsync';
 import Dropdown from './Dropdown';
+import Loading from '../Loading';
 
 const IS_REJECTED = true;
 const REJECTED_CONTENT = '거절된 답변입니다.';
@@ -22,8 +23,16 @@ const REJECTED_CONTENT = '거절된 답변입니다.';
 function QuestionItem({ question, name, isSubjectOwner, imageSource, onUpdate }) {
   const { like, dislike, answer } = question;
   const [isEditMode, setIsEditMode] = useState(false); // 수정 모드 상태
-  const { error: errorPost, wrappedFunction: postAnswerAsync } = useAsync(postAnswer);
-  const { error: errorPatch, wrappedFunction: patchAnswerAsync } = useAsync(patchAnswer);
+  const {
+    loading: loadingPost,
+    error: errorPost,
+    wrappedFunction: postAnswerAsync,
+  } = useAsync(postAnswer);
+  const {
+    loading: loadingPatch,
+    error: errorPatch,
+    wrappedFunction: patchAnswerAsync,
+  } = useAsync(patchAnswer);
 
   // 수정하기 핸들러
   const handleEdit = () => {
@@ -51,6 +60,7 @@ function QuestionItem({ question, name, isSubjectOwner, imageSource, onUpdate })
 
   return (
     <div className={styles.select}>
+      <Loading isVisible={loadingPost || loadingPatch} />
       <div className={styles.header}>
         <span
           className={styles.badge}
@@ -98,7 +108,7 @@ function QuestionItem({ question, name, isSubjectOwner, imageSource, onUpdate })
  * @returns {React.JSX} 답변 컴포넌트
  */
 function AnswerItem({ answer, name, imageSource }) {
-  if (!answer) return <></>;
+  if (!answer) return;
 
   return (
     <div className={`${styles.answerContainer} text-left`}>

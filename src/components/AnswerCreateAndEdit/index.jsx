@@ -22,6 +22,7 @@ function verifyContent(content, originAnswer) {
  * @param {function} props.onUpdate question 리스트 업데이트 핸들러
  * @param {function} props.setIsEditMode isEditMode의 setter 함수
  * @returns {React.JSX} - AnswerForm 컴포넌트
+ * @todo 에러 발생 시 UI 디자인 추가
  */
 function AnswerCreateAndEdit({ questionId, answer, imageSource, name, onUpdate, setIsEditMode }) {
   const [answerContent, setAnswerContent] = useState(answer ? answer.content : '');
