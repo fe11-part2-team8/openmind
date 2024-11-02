@@ -68,7 +68,14 @@ function QuestionAndAnswer({ question, name, isSubjectOwner, imageSource, onUpda
       </div>
 
       {isEditMode || !answer ? (
-        <AnswerCreateAndEdit answer={answer} name={name} imageSource={imageSource} />
+        <AnswerCreateAndEdit
+          questionId={question.id}
+          answer={answer}
+          name={name}
+          imageSource={imageSource}
+          onUpdate={onUpdate}
+          setIsEditMode={setIsEditMode}
+        />
       ) : (
         <AnswerContentItem
           name={name}

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 
 import styles from './AnswerCreateForm.module.css';
+import useAsync from '../../hooks/useAsync';
+import { patchAnswer, postAnswer } from '../../api';
 
 function verifyContent(content, originAnswer) {
   if (content === '') return false;
@@ -13,26 +15,27 @@ function verifyContent(content, originAnswer) {
  * 사용자가 답변을 작성하거나 수정할 수 있도록 하는 답변 폼 컴포넌트입니다.
  * @returns {React.JSX} - AnswerForm 컴포넌트
  */
-function AnswerCreateAndEdit({ answer, imageSource, name }) {
+function AnswerCreateAndEdit({ questionId, answer, imageSource, name, onUpdate, setIsEditMode }) {
   const [answerContent, setAnswerContent] = useState(answer ? answer.content : '');
-  // const { questionId } = answer;
+  const { loadingPost, errorPost, wrappedFunction: postAnswerAsync } = useAsync(postAnswer);
+  const { loadingPatch, errorPatch, wrappedFunction: patchAnswerAsync } = useAsync(patchAnswer);
 
   const handleChangeContent = (e) => {
-    setAnswerContent(e.target.value);
+    setAnswerContent(e.target.value.trim());
   };
 
-  // const handleSubmitContent = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     if (isEditMode) {
-  //       await onSave(answerContent, answer.id);
-  //     } else {
-  //       await postAnswer(answerContent, questionId);
-  //     }
-  //   } catch (error) {
-  //     console.error('답변 처리 중 오류가 발생했습니다.', error);
-  //   }
-  // };
+  const handleSubmitContent = async (e) => {
+    e.preventDefault();
+    try {
+      answer
+        ? await patchAnswerAsync(answerContent, answer.id)
+        : await postAnswerAsync(answerContent, questionId);
+      setIsEditMode(false);
+      onUpdate();
+    } catch (error) {
+      console.error('답변 처리 중 오류가 발생했습니다.', error);
+    }
+  };
 
   return (
     <div className={styles.body}>
@@ -44,7 +47,7 @@ function AnswerCreateAndEdit({ answer, imageSource, name }) {
       <div className={styles.container}>
         <p className="text-left text-lg font-semibold">{name}</p>
 
-        <form>
+        <form onSubmit={handleSubmitContent}>
           <textarea
             type="text"
             value={answerContent}
