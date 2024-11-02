@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { date } from '../../utils/day';
 import Dropdown from './Dropdown/index';
@@ -8,27 +8,13 @@ import ReactionButtons from './ReactionButton'; // 좋아요/싫어요 컴포넌
 
 import styles from './QuestionListItem.module.css';
 
-function QuestionAndAnswer({
-  question,
-  questionDate,
-  answer,
-  answerDate,
-  name,
-  like,
-  dislike,
-  isRejected,
-  questionId,
-  answerId,
-  isSubjectOwner,
-  imageSource,
-  onUpdate,
-}) {
-  const [isEditMode, setIsEditMode] = useState(false); // 수정 모드 상태
-  const [currentAnswer, setCurrentAnswer] = useState(answer); // 현재 답변 상태 관리
+// 상수 추가
+const IS_REJECTED = true;
+const REJECTED_CONTENT = '거절된 답변입니다.';
 
-  useEffect(() => {
-    setCurrentAnswer(answer); // answer가 변경되면 상태 업데이트
-  }, [answer]);
+function QuestionAndAnswer({ question, name, isSubjectOwner, imageSource, onUpdate }) {
+  const { like, dislike, answer } = question;
+  const [isEditMode, setIsEditMode] = useState(false); // 수정 모드 상태
 
   // 수정하기 핸들러
   const handleEdit = () => {
@@ -37,37 +23,31 @@ function QuestionAndAnswer({
 
   // 삭제하기 핸들러
   const handleDelete = async () => {
-    await deleteQuestion(questionId);
+    await deleteQuestion(question.id);
     onUpdate();
   };
 
   // 수정 완료 핸들러
-  const handleSave = async (newContent, answerId) => {
-    try {
-      await patchAnswer(newContent, answerId);
-      setIsEditMode(false); // 수정 완료 후 수정 모드 해제
-      onUpdate();
-    } catch (error) {
-      alert('답변 수정에 실패했습니다.');
-    }
-  };
+  // const handleSave = async (newContent, answerId) => {
+  //   try {
+  //     await patchAnswer(newContent, answerId);
+  //     setIsEditMode(false); // 수정 완료 후 수정 모드 해제
+  //     onUpdate();
+  //   } catch (error) {
+  //     alert('답변 수정에 실패했습니다.');
+  //   }
+  // };
 
   // 답변 거절 핸들러
   const handleRefuse = async () => {
-    const content = '거절된 답변입니다.';
-    const isRejected = true;
-
     try {
-      if (currentAnswer) {
+      if (answer) {
         // 답변이 이미 있을 때는 거절 상태로 업데이트
-        await patchAnswer(content, question.answer.id, isRejected);
+        await patchAnswer(REJECTED_CONTENT, answer.id, IS_REJECTED);
       } else {
         // 답변이 없을 때는 거절된 기본 답변 생성
-        await postAnswer(content, question.id, isRejected);
+        await postAnswer(REJECTED_CONTENT, question.id, IS_REJECTED);
       }
-
-      // 로컬 상태와 UI 업데이트
-      setCurrentAnswer({ content, isRejected });
       onUpdate();
     } catch (error) {
       alert('답변 거절에 실패했습니다.');
@@ -75,15 +55,15 @@ function QuestionAndAnswer({
   };
 
   // 새 답변 추가 핸들러
-  const handlePostAnswer = async (newContent, questionId) => {
-    try {
-      await postAnswer(newContent, questionId); // 새 답변 추가 API 호출
-      setIsEditMode(false); // 답변 추가 후 수정 모드 해제
-      onUpdate();
-    } catch (error) {
-      alert('답변 추가에 실패했습니다.');
-    }
-  };
+  // const handlePostAnswer = async (newContent, questionId) => {
+  //   try {
+  //     await postAnswer(newContent, questionId); // 새 답변 추가 API 호출
+  //     setIsEditMode(false); // 답변 추가 후 수정 모드 해제
+  //     onUpdate();
+  //   } catch (error) {
+  //     alert('답변 추가에 실패했습니다.');
+  //   }
+  // };
 
   return (
     <div className={styles.select}>
@@ -103,38 +83,43 @@ function QuestionAndAnswer({
       </div>
 
       <div className={styles.container}>
-        <p className={styles.question}>질문 · {date(questionDate)}</p>
+        <p className={styles.question}>질문 · {date(question.createAt)}</p>
         <p>{question.content}</p>
       </div>
 
       {isEditMode || (isSubjectOwner && !answer) ? (
-        <AnswerCreateAndEdit
-          answerId={answerId}
-          questionId={questionId}
-          initialContent={answer?.content || ''}
-          onSave={handleSave}
-          postAnswer={handlePostAnswer}
-          imageSource={imageSource}
-          name={name}
-        />
+        // <AnswerCreateAndEdit
+        //   answerId={answer.id}
+        //   questionId={question.id}
+        //   initialContent={answer?.content || ''}
+        //   onSave={handleSave}
+        //   postAnswer={handlePostAnswer}
+        //   imageSource={imageSource}
+        //   name={name}
+        // />
+        <></>
       ) : (
         <AnswerContentItem
           name={name}
           imageSource={imageSource}
-          answerDate={answerDate}
-          isRejected={isRejected}
+          answerDate={answer.createdAt}
+          isRejected={answer.isRejected}
           currentAnswer={answer}
-          like={like}
-          dislike={dislike}
-          questionId={questionId}
+          questionId={question.id}
         />
       )}
-      <ReactionButtons questionId={questionId} initialLikes={like} initialDislikes={dislike} />
+      <ReactionButtons questionId={question.id} initialLikes={like} initialDislikes={dislike} />
     </div>
   );
 }
 
-function AnswerContentItem({ name, imageSource, answerDate, isRejected, currentAnswer }) {
+function AnswerContentItem({
+  name,
+  imageSource,
+  answerDate = null,
+  isRejected = false,
+  currentAnswer,
+}) {
   return (
     <>
       {currentAnswer && (
