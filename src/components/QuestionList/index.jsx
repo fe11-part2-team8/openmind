@@ -5,7 +5,7 @@ import styles from './QuestionList.module.css';
 // # subject는 새롭게 요청하기 보단 상위 컴포넌트에서 받아온다.
 
 /**
- * 질문 리스트 아이템을 보여주기 위한 컴포넌트. 질문에 대한 답변 생성, 수정 혹은 질문 삭제가 가능하다.
+ * 질문 아이템을 보여주기 위한 리스트 컴포넌트.
  * @param {object} props
  * @param {boolean} props.isSubjectOwner 피드 주인 여부
  * @param {{name : string, imageSource : string}} props.subject subject 객체
@@ -13,7 +13,7 @@ import styles from './QuestionList.module.css';
  * @param {number} props.questions.count question 개수
  * @param {{id : number, content : string, like : number, dislike : number, createdAt : string, answer : { id : number, content : string, isRejected : boolean, createdAt : string} | null}[]} props.questions.results
  * @param {function} props.onUpdate question 리스트 업데이트 핸들러
- * @returns {React.JSX} 질문 리스트 아이템 컴포넌트
+ * @returns {React.JSX} 질문 리스트 컴포넌트
  */
 function QuestionList({ isSubjectOwner, subject, questions, onUpdate }) {
   // # subject를 직접 받아오니 id를 url param에서 얻을 필요가 없음
