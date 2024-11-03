@@ -3,12 +3,24 @@
     transform: rotate(1turn);
   }
 }
+@keyframes blur {
+  to {
+    background-color: #ddd9;
+    backdrop-filter: blur(4px);
+  }
+}
 
 .loading {
-  @apply fixed inset-0 z-30 flex h-svh w-full items-center justify-center bg-gray-100 bg-opacity-70;
+  @apply fixed inset-0 z-30 flex h-svh w-full items-center justify-center;
+  animation: blur 1s linear forwards;
+  background-color: #ddd0;
+  backdrop-filter: blur(0);
 
   &::after {
-    @apply h-7 w-7 animate-spin rounded-full border-4 border-gray-500 border-x-gray-300 shadow-lg;
+    @apply h-7 w-7 rounded-full border-4 border-neutral-700 border-x-neutral-300;
+    animation: spin 1s ease infinite;
+    background-color: transparent;
+    box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.2);
     content: '';
   }
 }
