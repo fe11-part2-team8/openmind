@@ -2,7 +2,7 @@ import icon_message from '../../assets/images/icon-message.svg';
 import icon_close from '../../assets/images/icon-close.svg';
 import test_profile from '../../assets/images/test-profile.svg';
 import styles from './QuestionCreateModal.module.css';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { postQuestion } from '../../api';
 import { useParams } from 'react-router-dom';
 import useAsync from '../../hooks/useAsync';
@@ -55,19 +55,23 @@ function QuestionCreateModal({ profile, onClick, onUpdate }) {
    * @param {Event} e
    * @description `e.target`(클릭한 요소)가 modal 노드 내부에 포함되어 있어야 한다. 그렇지 않으면 모달 강조 애니메이션 출력
    */
-  const handleClickModalOutside = (e) => {
-    if (!modalRef.current.contains(e.target)) {
-      modalRef.current.classList.add(styles.highlight);
-      modalRef.current.addEventListener('animationend', () => {
-        modalRef.current.classList.remove(styles.highlight);
-      });
-    }
-  };
+  const handleClickModalOutside = useCallback(
+    (e) => {
+      if (loading) return;
+      if (!modalRef.current.contains(e.target)) {
+        modalRef.current.classList.add(styles.highlight);
+        modalRef.current.addEventListener('animationend', () => {
+          modalRef.current.classList.remove(styles.highlight);
+        });
+      }
+    },
+    [loading],
+  );
 
   useEffect(() => {
     document.addEventListener('click', handleClickModalOutside);
     return () => document.removeEventListener('click', handleClickModalOutside);
-  }, []);
+  }, [handleClickModalOutside]);
 
   return (
     <div className={styles.modalBackground}>

@@ -48,7 +48,6 @@ function QuestionItem({ question, name, isSubjectOwner, imageSource, onUpdate })
   // 답변 거절 핸들러
   const handleReject = async () => {
     if (answer) {
-      console.log(answer);
       await patchAnswerAsync(REJECTED_CONTENT, answer.id, IS_REJECTED);
       if (errorPatch) alert(errorPatch);
     } else {
