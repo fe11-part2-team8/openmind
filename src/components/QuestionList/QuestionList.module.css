@@ -94,3 +94,7 @@
   flex-direction: column;
   gap: 5px;
 }
+
+.answerValue {
+  overflow-wrap: anywhere;
+}
