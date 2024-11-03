@@ -34,6 +34,10 @@ function QuestionCreateModal({ profile, onClick, onUpdate }) {
   const { loading, error, wrappedFunction: postQuestionAsync } = useAsync(postQuestion);
   const modalRef = useRef();
 
+  /**
+   * 모달 닫기를 하기 위한 이벤트 핸들러
+   * @param {Event} e
+   */
   const handleChangeContent = (e) => setContent(e.target.value.trim());
   const handleClickClose = () => {
     onClick(false);
@@ -53,7 +57,7 @@ function QuestionCreateModal({ profile, onClick, onUpdate }) {
   /**
    * 모달 외부를 클릭했을 때 모달 애니메이션을 보여주는 핸들러
    * @param {Event} e
-   * @description `e.target`(클릭한 요소)가 modal 노드 내부에 포함되어 있어야 한다. 그렇지 않으면 모달 강조 애니메이션 출력
+   * @description `e.target`(클릭한 요소)가 modal 노드 내부에 포함되어 있어야 한다. 그렇지 않으면 모달 강조 애니메이션 출력. 로딩 중일 경우 동작하지 않는다.
    */
   const handleClickModalOutside = useCallback(
     (e) => {
@@ -105,6 +109,15 @@ function QuestionCreateModal({ profile, onClick, onUpdate }) {
   );
 }
 
+/**
+ * 질문 생성을 위한 폼 컴포넌트
+ * @param {object} props
+ * @param {boolean} props.isValid 입력값 유효성 여부
+ * @param {function} props.onChange 입력값 setter 함수
+ * @param {function} props.onSubmit 폼 제출 이벤트 핸들러
+ * @param {boolean} props.loading 질문 생성 응답 대기 로딩
+ * @returns {React.JSX} 질문 생성 폼
+ */
 function QuestionCreateForm({ isValid, onChange, onSubmit, loading }) {
   return (
     <form className={styles.questionCreateFrom} onSubmit={onSubmit}>
