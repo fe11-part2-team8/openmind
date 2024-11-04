@@ -121,6 +121,12 @@ function QuestionCreateModal({ profile, onClick, onUpdate }) {
  * @returns {React.JSX} 질문 생성 폼
  */
 function QuestionCreateForm({ isValid, onChange, onSubmit, loading }) {
+  const inputRef = useRef();
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
   return (
     <form className={styles.questionCreateFrom} onSubmit={onSubmit}>
       <textarea
@@ -129,6 +135,7 @@ function QuestionCreateForm({ isValid, onChange, onSubmit, loading }) {
         placeholder="질문을 입력하세요"
         required
         onChange={onChange}
+        ref={inputRef}
       />
       <button type="submit" disabled={!isValid || loading}>
         질문 보내기
