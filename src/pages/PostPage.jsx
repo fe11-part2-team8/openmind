@@ -74,7 +74,7 @@ function PostPage() {
         setResult(question);
         setProfile(subject);
       } catch (err) {
-        alert('결과를 불러올 수 없습니다. 다시 실행해주세요.');
+        alert('결과를 불러올 수 없습니다.');
         console.log(err);
         navigate('/list');
 
