@@ -37,6 +37,7 @@ function QuestionItem({ question, name, isSubjectOwner, imageSource, onUpdate })
   // 수정하기 핸들러
   const handleEdit = () => {
     setIsEditMode(true); // 수정 모드로 전환
+    onUpdate();
   };
 
   // 삭제하기 핸들러
@@ -54,6 +55,7 @@ function QuestionItem({ question, name, isSubjectOwner, imageSource, onUpdate })
       await postAnswerAsync(REJECTED_CONTENT, question.id, IS_REJECTED);
       if (errorPost) alert(errorPost);
     }
+    setIsEditMode(false); // 수정 모드 해제
     onUpdate();
   };
 
