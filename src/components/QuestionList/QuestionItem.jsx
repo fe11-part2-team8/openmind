@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { formatRelativeTime } from '../../utils/day'; // 수정된 함수 이름으로 import
+import { date } from '../../utils/day'; // 수정된 함수 이름으로 import
 import { deleteQuestion, patchAnswer, postAnswer } from '../../api';
 import AnswerCreateAndEdit from '../AnswerCreateAndEdit/index';
 import ReactionButtons from './ReactionButton';
@@ -83,7 +83,7 @@ function QuestionItem({ question, name, isSubjectOwner, imageSource, onUpdate })
       </div>
 
       <div className={styles.container}>
-        <p className={styles.question}>질문 · {formatRelativeTime(question.createdAt)}</p>
+        <p className={styles.question}>질문 · {date(question.createdAt)}</p>
         <p>{question.content}</p>
       </div>
 
@@ -127,7 +127,7 @@ function AnswerItem({ answer, name, imageSource }) {
         <div className={styles.answer}>
           <div className={styles.nameday}>
             <p>{name}</p>
-            <p className={styles.day}>{formatRelativeTime(answer.createdAt)}</p>
+            <p className={styles.day}>{date(answer.createdAt)}</p>
           </div>
 
           {answer.isRejected ? (

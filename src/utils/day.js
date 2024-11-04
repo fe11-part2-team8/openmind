@@ -22,7 +22,7 @@ dayjs.locale('ko', {
 });
 
 // 상대 시간을 포맷팅하는 함수
-export const formatRelativeTime = (date) => dayjs(date).fromNow();
+export const date = (date) => dayjs(date).fromNow();
 
 // 특정 포맷으로 날짜를 포맷팅하는 함수 (기본 포맷: YYYY-MM-DD)
 export const formatDate = (date, format = 'YYYY-MM-DD') => dayjs(date).format(format);
