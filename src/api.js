@@ -83,7 +83,7 @@ async function postQuestion(content, subjectId) {
  * @param {string} subjectId - 관련된 서브젝트의 ID
  * @returns {Promise<Object>} - 모든 질문의 데이터
  */
-async function getQuestionList(subjectId, limit = 10, offset = 0) {
+async function getQuestionList(subjectId, limit = 5000, offset = 0) {
   const query = new URLSearchParams({ limit, offset }).toString();
   const path = `${PATHS.SUBJECT}${subjectId}${PATHS.QUESTION}?${query}`;
 
