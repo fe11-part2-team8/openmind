@@ -30,7 +30,7 @@ function HomePage() {
             <img src={logo} className={styles.logo} alt="Open Mind" />
           </h1>
 
-          <Link to="/list" className="btn btn-outline md:order-first md:self-end">
+          <Link to="/list" className="btn btn-outline mb-6 mt-6 md:order-first md:self-end">
             질문하러 가기
             <IconArrowRight width="18" height="18" />
           </Link>

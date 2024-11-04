@@ -40,3 +40,15 @@
 .focus {
   outline: 2px solid var(--brown-30);
 }
+
+/* 반응형 모바일 사이즈 */
+@media (max-width: 767px) and (min-width: 375px) {
+  .subjectCreateForm {
+    width: 305px;
+    height: 156px;
+  }
+
+  .inputName {
+    width: 100%;
+  }
+}

@@ -7,7 +7,7 @@ import styles from './SubjectCreateForm.module.css';
 import Loading from '../Loading';
 
 function checkNameValid(name) {
-  if (name.length < 1) return false;
+  if (name.length < 1 || name.length > 30) return false;
   return true;
 }
 
