@@ -128,8 +128,10 @@ function SubjectListPage() {
       setSubjects(result.results);
       total = result.count;
 
+      // 총 페이지 숫자
       const totalPageCount = Math.ceil(total / LIMIT);
       // console.log('v:totalPageCount', total, totalPageCount);
+      // 총 페이지 숫자보다 큰 숫자를 파라미터로 받았을 경우
       if (page > totalPageCount) {
         navigate('/list/' + totalPageCount);
         setPage(totalPageCount);
