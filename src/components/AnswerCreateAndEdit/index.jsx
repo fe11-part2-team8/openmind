@@ -26,9 +26,12 @@ function verifyContent(content, originAnswer) {
  */
 function AnswerCreateAndEdit({ questionId, answer, imageSource, name, onUpdate, setIsEditMode }) {
   //답변 거절상태인 경우 빈 배열로 초기화
-  const [answerContent, setAnswerContent] = useState(
-    answer && answer.isRejected ? '' : answer ? answer.content : '',
-  );
+  const [answerContent, setAnswerContent] = useState(() => {
+    if (answer) {
+      return answer.isRejected ? '' : answer.content;
+    }
+    return '';
+  });
 
   // const [answerContent, setAnswerContent] = useState(answer ? answer.content : '');
   const {
