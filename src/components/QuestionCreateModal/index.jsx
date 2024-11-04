@@ -81,29 +81,31 @@ function QuestionCreateModal({ profile, onClick, onUpdate }) {
     <div className={styles.modalBackground}>
       <Loading isVisible={loading} />
       <div id="modal" className={styles.modal} ref={modalRef}>
-        <div className={styles.header}>
-          <div className={styles.text}>
-            <img src={icon_message} alt="메세지 아이콘" className="size-7" />
-            <span>질문을 작성해 주세요</span>
+        <div className={styles.wrap}>
+          <div className={styles.header}>
+            <div className={styles.text}>
+              <img src={icon_message} alt="메세지 아이콘" className="size-7" />
+              <span>질문을 작성해 주세요</span>
+            </div>
+            <img
+              className={styles.btnClose}
+              src={icon_close}
+              alt="닫기 버튼"
+              onClick={handleClickClose}
+            />
           </div>
-          <img
-            className={styles.btnClose}
-            src={icon_close}
-            alt="닫기 버튼"
-            onClick={handleClickClose}
+          <div className={styles.destination}>
+            <span className="to">To.</span>
+            <img src={imageSource || test_profile} alt={name} />
+            <span>{name}</span>
+          </div>
+          <QuestionCreateForm
+            isValid={checkContentValid(content)}
+            onChange={handleChangeContent}
+            onSubmit={handleSubmitQuestion}
+            loading={loading}
           />
         </div>
-        <div className={styles.destination}>
-          <span className="to">To.</span>
-          <img src={imageSource || test_profile} alt={name} />
-          <span>{name}</span>
-        </div>
-        <QuestionCreateForm
-          isValid={checkContentValid(content)}
-          onChange={handleChangeContent}
-          onSubmit={handleSubmitQuestion}
-          loading={loading}
-        />
       </div>
     </div>
   );
