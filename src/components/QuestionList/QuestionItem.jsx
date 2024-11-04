@@ -71,7 +71,12 @@ function QuestionItem({ question, name, isSubjectOwner, imageSource, onUpdate })
           {answer ? '답변 완료' : '미답변'}
         </span>
         {isSubjectOwner && (
-          <Dropdown onEdit={handleEdit} onDelete={handleDelete} onReject={handleReject} />
+          <Dropdown
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            onReject={handleReject}
+            hasAnswer={!!answer}
+          />
         )}
       </div>
 
