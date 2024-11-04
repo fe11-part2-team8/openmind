@@ -25,7 +25,16 @@ function verifyContent(content, originAnswer) {
  * @todo 에러 발생 시 UI 디자인 추가
  */
 function AnswerCreateAndEdit({ questionId, answer, imageSource, name, onUpdate, setIsEditMode }) {
-  const [answerContent, setAnswerContent] = useState(answer ? answer.content : '');
+  //답변이 "거절된 답변입니다. (63214597839)"일 경우 빈 문자열로 초기화
+  const [answerContent, setAnswerContent] = useState(
+    answer && answer.content === '거절된 답변입니다. (63214597839)'
+      ? ''
+      : answer
+        ? answer.content
+        : '',
+  );
+
+  // const [answerContent, setAnswerContent] = useState(answer ? answer.content : '');
   const {
     loading: loadingPost,
     error: errorPost,

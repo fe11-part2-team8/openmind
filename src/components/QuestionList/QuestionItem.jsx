@@ -9,7 +9,7 @@ import Dropdown from './Dropdown';
 import Loading from '../Loading';
 
 const IS_REJECTED = true;
-const REJECTED_CONTENT = '거절된 답변입니다.';
+const REJECTED_CONTENT = '거절된 답변입니다. (63214597839)';
 
 /**
  * 질문 아이템 컴포넌트. 내부에는 답변과 관련된 컴포넌트도 포함된다.
