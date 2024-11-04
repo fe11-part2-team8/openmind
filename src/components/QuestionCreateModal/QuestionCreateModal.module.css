@@ -64,6 +64,7 @@
     font-family: 'Actor', var(--base-font);
     font-size: 24px;
     color: var(--gray-60);
+    transition: 100ms;
   }
 
   .btnClose {
@@ -96,11 +97,12 @@
   width: 100%;
 
   textarea[name='content'] {
-    min-height: 180px;
+    height: 180px;
     padding: 16px;
     border-radius: 8px;
     background-color: var(--gray-20);
     resize: none;
+    transition: 100ms;
 
     &::placeholder {
       color: var(--gray-40);
@@ -126,6 +128,12 @@
   .header {
     .text {
       font-size: 20px;
+    }
+  }
+
+  .questionCreateFrom {
+    textarea[name='content'] {
+      height: 360px;
     }
   }
 }
