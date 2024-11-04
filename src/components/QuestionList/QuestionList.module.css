@@ -98,3 +98,94 @@
 .answerValue {
   overflow-wrap: anywhere;
 }
+
+.Dropdown {
+  width: 8rem;
+  position: absolute;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  background-color: #ffffff;
+}
+
+.Dropdown span {
+  font-size: 16px;
+  gap: 8px;
+}
+
+.Dropdown img {
+  width: 16px;
+}
+
+.Dropdown div {
+  width: 100%;
+}
+
+.Dropdown {
+  width: 8rem;
+  position: absolute;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  background-color: #ffffff;
+  align-items: center;
+  text-align: center;
+}
+
+.Dropdown span {
+  font-size: 16px;
+  gap: 8px;
+}
+
+.Dropdown img {
+  width: 16px;
+}
+
+.Dropdown div {
+  width: 100%;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px;
+  cursor: pointer;
+  position: relative;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.dropdownItem:hover {
+  background-color: #f9f9f9;
+}
+
+.dropdownItem span::after {
+  content: '하기';
+}
+
+/* 반응형 모바일 사이즈 */
+@media (max-width: 767px) and (min-width: 375px) {
+  .Dropdown {
+    width: 5rem;
+  }
+
+  .Dropdown span {
+    font-size: 14px;
+    gap: 2px;
+  }
+
+  .Dropdown img {
+    width: 14px;
+  }
+
+  .dropdownItem span::after {
+    display: none;
+  }
+}
