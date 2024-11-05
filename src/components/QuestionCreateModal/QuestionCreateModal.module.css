@@ -12,8 +12,9 @@
 }
 
 .modal {
-  width: fit-content;
-  padding: 40px;
+  width: 80%;
+  max-width: 612px;
+  min-width: 327px;
   border-radius: 24px;
   background-color: var(--gray-10);
   box-shadow: var(--shadow-2pt);
@@ -45,11 +46,15 @@
   }
 }
 
+.wrap {
+  padding: 6%;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 532px;
+  width: 100%;
   margin-bottom: 40px;
 
   .text {
@@ -59,6 +64,7 @@
     font-family: 'Actor', var(--base-font);
     font-size: 24px;
     color: var(--gray-60);
+    transition: 100ms;
   }
 
   .btnClose {
@@ -88,14 +94,15 @@
   flex-direction: column;
   base-palette: 8px;
   gap: 8px;
+  width: 100%;
 
   textarea[name='content'] {
-    width: 532px;
-    min-height: 180px;
+    height: 180px;
     padding: 16px;
     border-radius: 8px;
     background-color: var(--gray-20);
     resize: none;
+    transition: 100ms;
 
     &::placeholder {
       color: var(--gray-40);
@@ -113,6 +120,20 @@
     color: var(--gray-10);
     &:disabled {
       background-color: var(--brown-30);
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .header {
+    .text {
+      font-size: 20px;
+    }
+  }
+
+  .questionCreateFrom {
+    textarea[name='content'] {
+      height: 360px;
     }
   }
 }
