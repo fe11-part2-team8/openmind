@@ -18,7 +18,7 @@
 }
 
 .inputContainer {
-  position: relative; /* 추가: 에러 메시지 위치 조정을 위한 상대 위치 */
+  position: relative;
 }
 
 .inputName {
@@ -30,7 +30,7 @@
   width: 336px;
   border: 1px solid var(--gray-40);
   border-radius: 8px;
-  position: relative; /* 추가: 에러 메시지를 이 요소 안에 배치 */
+  position: relative;
 
   input {
     background: inherit;
@@ -46,13 +46,13 @@
   outline: 2px solid var(--brown-30);
 }
 
-/* 추가: 에러 메시지 스타일 */
+/* 추가: 이름 30자 이상 입력 시 에러 메시지 스타일 */
 .errorMessage {
-  color: rgb(255, 0, 0); /* 빨간색을 위한 CSS 변수 사용 */
+  color: rgb(255, 0, 0);
   font-size: 12px;
-  position: absolute; /* 에러 메시지를 절대 위치로 설정 */
-  top: -20px; /* 입력 필드 바로 위에 위치 */
-  left: 0; /* 입력 필드 시작 부분에 맞추기 */
+  position: absolute;
+  top: -20px;
+  left: 0;
 }
 
 /* 반응형 모바일 사이즈 */

@@ -42,7 +42,7 @@ function SubjectCreateForm() {
   const handleChangeName = (e) => {
     setName(e.target.value);
     if (e.target.value.length > 30) {
-      setNameError('이름은 30자 이내로 적어주세요.'); // 추가: 입력 중 에러 메시지 설정
+      setNameError('이름은 30자 이내로 적어주세요.');
     } else {
       setNameError('');
     }
@@ -53,9 +53,7 @@ function SubjectCreateForm() {
       <Loading isVisible={loading} />
       <div className={styles.inputContainer}>
         {' '}
-        {/* 추가: 에러 메시지를 포함할 div */}
         {nameError && <p className={styles.errorMessage}>{nameError}</p>}{' '}
-        {/* 추가: 에러 메시지 표시 */}
         <InputName name={name} onChange={handleChangeName} />
       </div>
       <button type="submit" disabled={!checkNameValid(name)}>
