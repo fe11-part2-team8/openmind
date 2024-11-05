@@ -6,14 +6,14 @@ import icon_person from '../../assets/images/icon-person.svg';
 import styles from './SubjectCreateForm.module.css';
 import Loading from '../Loading';
 
+const nameLengthError = '이름은 30자 이내로 적어주세요.';
+
 function checkNameValid(name) {
-  if (name.length < 1 || name.length > 30) return false;
-  return true;
+  return name.length > 0 && name.length <= 30;
 }
 
 function SubjectCreateForm() {
   const [name, setName] = useState('');
-  const [nameError, setNameError] = useState('');
   const { loading, error, wrappedFunction: postSubjectAsync } = useAsync(postSubject);
   const navigate = useNavigate();
 
@@ -21,12 +21,8 @@ function SubjectCreateForm() {
   const handleCreateSubject = async (event) => {
     event.preventDefault(); // 폼 제출 시 페이지 새로고침 방지
 
-    // 이름 입력 폼 30자 이상 오류 메시지 출력
     if (!checkNameValid(name)) {
-      setNameError('이름은 30자 이내로 적어주세요.');
-      return;
-    } else {
-      setNameError('');
+      return; // 유효하지 않은 경우 폼 제출 방지
     }
 
     const result = await postSubjectAsync(name);
@@ -41,19 +37,13 @@ function SubjectCreateForm() {
 
   const handleChangeName = (e) => {
     setName(e.target.value);
-    if (e.target.value.length > 30) {
-      setNameError('이름은 30자 이내로 적어주세요.');
-    } else {
-      setNameError('');
-    }
   };
 
   return (
     <form className={styles.subjectCreateForm} onSubmit={handleCreateSubject}>
       <Loading isVisible={loading} />
       <div className={styles.inputContainer}>
-        {' '}
-        {nameError && <p className={styles.errorMessage}>{nameError}</p>}{' '}
+        {name.length > 30 && <p className={styles.errorMessage}>{nameLengthError}</p>}
         <InputName name={name} onChange={handleChangeName} />
       </div>
       <button type="submit" disabled={!checkNameValid(name)}>
