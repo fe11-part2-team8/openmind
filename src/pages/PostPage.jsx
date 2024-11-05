@@ -87,16 +87,17 @@ function PostPage() {
         setProfile(subject);
       } catch (err) {
         alert('결과를 불러올 수 없습니다.');
-        console.log(err);
-        navigate('/list');
+        console.error(err);
 
         // 오류가 존재할 경우 콘솔에 출력
         if (getQuestionError) {
-          console.log('질문 오류:', getQuestionError);
+          console.error('질문 오류:', getQuestionError);
         }
         if (getSubjectError) {
-          console.log('서브젝트 오류:', getSubjectError);
+          console.error('서브젝트 오류:', getSubjectError);
         }
+
+        navigate('/list');
       }
     };
     loadContent();
@@ -164,7 +165,7 @@ function PostPage() {
         alert('삭제되었습니다.');
       } catch (err) {
         alert('삭제하는데 실패했습니다.');
-        console.log('서브젝트 오류:', deleteSubjectError);
+        console.error('서브젝트 오류:', deleteSubjectError);
       } finally {
         navigate('/list');
       }
