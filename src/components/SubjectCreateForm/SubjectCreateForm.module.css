@@ -58,8 +58,8 @@
 /* 반응형 모바일 사이즈 */
 @media (max-width: 767px) {
   .subjectCreateForm {
-    width: 305px;
-    height: 156px;
+    max-width: 400px;
+    width: 100%;
   }
 
   .inputName {
