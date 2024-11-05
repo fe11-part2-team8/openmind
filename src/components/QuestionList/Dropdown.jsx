@@ -4,6 +4,8 @@ import dropDownEdit from '../../assets/images/ic_Edit.svg';
 import dropDownClose from '../../assets/images/icon-close.svg';
 import dropDownRejected from '../../assets/images/ic-rejected.svg';
 
+import styles from './QuestionList.module.css';
+
 /**
  * 답변 수정 및 삭제 옵션을 제공하는 드롭다운 컴포넌트
  * @param {object} props - 컴포넌트의 props
@@ -12,7 +14,7 @@ import dropDownRejected from '../../assets/images/ic-rejected.svg';
  * @returns {React.JSX} 수정/삭제 드롭다운 컴포넌트
  */
 
-const Dropdown = ({ onEdit, onDelete, onReject }) => {
+const Dropdown = ({ onEdit, onDelete, onReject, hasAnswer }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false); // 드롭다운 상태 관리
   const dropdownRef = useRef(null); // 드롭다운 영역
 
@@ -62,27 +64,20 @@ const Dropdown = ({ onEdit, onDelete, onReject }) => {
 
       {/* 드롭다운 */}
       {dropdownOpen && (
-        <div className="absolute right-0 flex w-32 flex-col items-center rounded-lg border border-gray-300 bg-white">
-          <div
-            onClick={handleEditClick}
-            className="flex cursor-pointer items-center justify-center gap-2 p-2 hover:bg-gray-100"
-          >
-            <img src={dropDownEdit} alt="수정하기" className="h-3.8 w-3.8" />
-            <span>수정하기</span>
+        <div className={styles.Dropdown}>
+          {hasAnswer && (
+            <div onClick={handleEditClick} className={`${styles.dropdownItem} text-main`}>
+              <img src={dropDownEdit} alt="수정하기" />
+              <span>수정</span>
+            </div>
+          )}
+          <div onClick={handleRejectClick} className={`${styles.dropdownItem} text-main`}>
+            <img src={dropDownRejected} alt="거절하기" />
+            <span>거절</span>
           </div>
-          <div
-            onClick={handleRejectClick}
-            className="flex cursor-pointer items-center justify-center gap-2 p-2 hover:bg-gray-100"
-          >
-            <img src={dropDownRejected} alt="거절하기" className="h-3.8 w-3.8" />
-            <span>거절하기</span>
-          </div>
-          <div
-            onClick={handleDeleteClick} // 삭제 클릭 핸들러
-            className="flex cursor-pointer items-center justify-center gap-2 p-2 hover:bg-gray-100"
-          >
-            <img src={dropDownClose} alt="삭제하기" className="h-3.8 w-3.8" />
-            <span>삭제하기</span>
+          <div onClick={handleDeleteClick} className={`${styles.dropdownItem} text-main`}>
+            <img src={dropDownClose} alt="삭제하기" />
+            <span>삭제</span>
           </div>
         </div>
       )}

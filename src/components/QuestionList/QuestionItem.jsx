@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { date } from '../../utils/day';
+import { date } from '../../utils/day'; // 수정된 함수 이름으로 import
 import { deleteQuestion, patchAnswer, postAnswer } from '../../api';
 import AnswerCreateAndEdit from '../AnswerCreateAndEdit/index';
 import ReactionButtons from './ReactionButton';
@@ -9,7 +9,7 @@ import Dropdown from './Dropdown';
 import Loading from '../Loading';
 
 const IS_REJECTED = true;
-const REJECTED_CONTENT = '거절된 답변입니다.';
+const REJECTED_CONTENT = '거절된 답변입니다. (63214597839)';
 
 /**
  * 질문 아이템 컴포넌트. 내부에는 답변과 관련된 컴포넌트도 포함된다.
@@ -37,6 +37,7 @@ function QuestionItem({ question, name, isSubjectOwner, imageSource, onUpdate })
   // 수정하기 핸들러
   const handleEdit = () => {
     setIsEditMode(true); // 수정 모드로 전환
+    onUpdate();
   };
 
   // 삭제하기 핸들러
@@ -48,13 +49,13 @@ function QuestionItem({ question, name, isSubjectOwner, imageSource, onUpdate })
   // 답변 거절 핸들러
   const handleReject = async () => {
     if (answer) {
-      console.log(answer);
       await patchAnswerAsync(REJECTED_CONTENT, answer.id, IS_REJECTED);
       if (errorPatch) alert(errorPatch);
     } else {
       await postAnswerAsync(REJECTED_CONTENT, question.id, IS_REJECTED);
       if (errorPost) alert(errorPost);
     }
+    setIsEditMode(false); // 수정 모드 해제
     onUpdate();
   };
 
@@ -72,12 +73,17 @@ function QuestionItem({ question, name, isSubjectOwner, imageSource, onUpdate })
           {answer ? '답변 완료' : '미답변'}
         </span>
         {isSubjectOwner && (
-          <Dropdown onEdit={handleEdit} onDelete={handleDelete} onReject={handleReject} />
+          <Dropdown
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            onReject={handleReject}
+            hasAnswer={!!answer}
+          />
         )}
       </div>
 
       <div className={styles.container}>
-        <p className={styles.question}>질문 · {date(question.createAt)}</p>
+        <p className={styles.question}>질문 · {date(question.createdAt)}</p>
         <p>{question.content}</p>
       </div>
 
@@ -121,7 +127,7 @@ function AnswerItem({ answer, name, imageSource }) {
         <div className={styles.answer}>
           <div className={styles.nameday}>
             <p>{name}</p>
-            <p className={styles.day}>{date(answer.createAt)}</p>
+            <p className={styles.day}>{date(answer.createdAt)}</p>
           </div>
 
           {answer.isRejected ? (

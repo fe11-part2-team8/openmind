@@ -7,9 +7,9 @@ import { getSubjectList } from '../api';
 import useAsync from '../hooks/useAsync';
 import Loading from '../components/Loading';
 //
+import styles from './SubjectList.page.module.css';
 import snsLink from '../assets/images/snsLink.png';
 import logo from '../assets/images/logo.svg';
-import styles from './SubjectList.page.module.css';
 import { ReactComponent as IconArrowRight } from '../assets/images/icon-arrow-right.svg';
 import { ReactComponent as IconMessage } from '../assets/images/icon-message.svg';
 
@@ -18,7 +18,7 @@ import { ReactComponent as IconMessage } from '../assets/images/icon-message.svg
  * @return {React.JSX}
  */
 function Header() {
-  const id = window.localStorage.getItem('subjectId');
+  const subjectId = window.localStorage.getItem('subjectId');
 
   return (
     <div className="flex flex-col items-center justify-between gap-5 py-10 sm:flex-row">
@@ -28,7 +28,7 @@ function Header() {
         </Link>
       </h2>
 
-      <Link to={id ? `/post/${id}` : '/'} className="btn btn-outline">
+      <Link to={subjectId ? `/post/${subjectId}` : '/'} className="btn btn-outline">
         답변하러 가기
         <IconArrowRight />
       </Link>
@@ -84,7 +84,7 @@ const sorting = {
 function SubjectListPage() {
   const { pageNum } = useParams();
   const [subjects, setSubjects] = useState([]);
-  const [page, setPage] = useState(Number(pageNum ?? 1));
+  const [page, setPage] = useState(Number(pageNum) || 1);
   const { loading, error, wrappedFunction: getSubjectListAsync } = useAsync(getSubjectList);
   const navigate = useNavigate();
   const urlToShare = window.location.href;
@@ -101,11 +101,15 @@ function SubjectListPage() {
     setSubjects([...sorting[value](subjects)]);
   };
 
-  const handlePagination = (page) => {
+  /**
+   * 페이지네이션 onChange 콜백함수
+   * @param {number} num 페이지네이션 클릭한 숫자 받음
+   */
+  const handlePagination = (num) => {
     // console.log('fn:handlePagination');
     // TODO 이동하면 다시 그릴줄 알았더니 안그려서 페이지 값을 바꿔줌
-    navigate('/list/' + page);
-    setPage(page);
+    navigate('/list/' + num);
+    setPage(num);
   };
 
   useEffect(() => {
@@ -115,7 +119,7 @@ function SubjectListPage() {
      * @returns {object} 서브젝트 리스트 객체
      */
     const handleLoadSubjectList = async () => {
-      // console.log('fn:handleLoadSubjectList');
+      // console.log('fn:handleLoadSubjectList', page);
       const offset = (page - 1) * LIMIT;
 
       const result = await getSubjectListAsync(LIMIT, offset);
@@ -123,10 +127,19 @@ function SubjectListPage() {
 
       setSubjects(result.results);
       total = result.count;
+
+      // 총 페이지 숫자
+      const totalPageCount = Math.ceil(total / LIMIT);
+      // console.log('v:totalPageCount', total, totalPageCount);
+      // 총 페이지 숫자보다 큰 숫자를 파라미터로 받았을 경우
+      if (page > totalPageCount) {
+        navigate('/list/' + totalPageCount);
+        setPage(totalPageCount);
+      }
     };
 
     handleLoadSubjectList();
-  }, [page, getSubjectListAsync]);
+  }, [page, navigate, getSubjectListAsync]);
 
   return (
     <div className="container mx-auto">
@@ -153,7 +166,7 @@ function SubjectListPage() {
         </select>
       </div>
 
-      <ul className={styles.cards}>
+      <ul className={styles.cards + (subjects?.length === 0 ? ' grid-cols-1' : '')}>
         {subjects?.length > 0 ? (
           subjects.map(({ id, name, imageSource, questionCount }) => (
             <Subject

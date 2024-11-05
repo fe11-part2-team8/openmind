@@ -24,7 +24,15 @@ function verifyContent(content, originAnswer) {
  * @todo 에러 발생 시 UI 디자인 추가
  */
 function AnswerCreateAndEdit({ questionId, answer, imageSource, name, onUpdate, setIsEditMode }) {
-  const [answerContent, setAnswerContent] = useState(answer ? answer.content : '');
+  //답변 거절상태인 경우 빈 배열로 초기화
+  const [answerContent, setAnswerContent] = useState(() => {
+    if (answer) {
+      return answer.isRejected ? '' : answer.content;
+    }
+    return '';
+  });
+
+  // const [answerContent, setAnswerContent] = useState(answer ? answer.content : '');
   const {
     loading: loadingPost,
     error: errorPost,
