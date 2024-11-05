@@ -65,6 +65,12 @@ function PostPage() {
         await loadKakaoSDK(process.env.REACT_APP_KAKAO_SHARE_API_KEY);
         const question = await fetchGetQuestion(id);
         const subject = await fetchGetSubject(id);
+
+        if (!subject || !question) {
+          navigate('/notFound');
+          return;
+        }
+
         setResult(question);
         setProfile(subject);
       } catch (err) {
@@ -183,13 +189,17 @@ function PostPage() {
         <meta property="og:image" content={profile.imageSource} />
       </Helmet>
 
-      <div className="container mx-auto">
+      <div className="container m-[80px] mx-auto">
         <img src={banner} alt="Background_Banner" className={styles.banner} />
         <div className="relative z-10 mt-12 flex flex-col items-center gap-3">
           <Link to="/">
             <img src={logo} alt="OpenMind" className={styles.logo} />
           </Link>
-          <img src={profile.imageSource} alt="ProfileImage" className={styles.profile} />
+          <img
+            src={profile.imageSource}
+            alt="Profile"
+            className={`${styles.profile} text-center`}
+          />
           <h2 className="h2">{profile.name}</h2>
           <div className="flex gap-3">
             <img src={urlShare} alt="url" onClick={handleCopyUrl} className={styles.share} />
