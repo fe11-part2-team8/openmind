@@ -10,8 +10,8 @@ const NAME_LENGTH_ERROR = '이름은 30자 이내로 적어주세요.';
 const NAME_LENGTH_LIMIT = 30;
 
 function checkNameValid(name) {
-  const _name = name.trim();
-  return _name.length > 0 && _name.length <= NAME_LENGTH_LIMIT;
+  if (name.length < 1 || name.length > 30) return false;
+  return true;
 }
 
 function SubjectCreateForm() {
