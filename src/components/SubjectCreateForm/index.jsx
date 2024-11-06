@@ -7,10 +7,11 @@ import styles from './SubjectCreateForm.module.css';
 import Loading from '../Loading';
 
 const NAME_LENGTH_ERROR = '이름은 30자 이내로 적어주세요.';
+const NAME_LENGTH_LIMIT = 30;
 
 function checkNameValid(name) {
   const _name = name.trim();
-  return _name.length > 0 && _name.length <= 30;
+  return _name.length > 0 && _name.length <= NAME_LENGTH_LIMIT;
 }
 
 function SubjectCreateForm() {
@@ -44,7 +45,9 @@ function SubjectCreateForm() {
     <form className={styles.subjectCreateForm} onSubmit={handleCreateSubject}>
       <Loading isVisible={loading} />
       <div className={styles.inputContainer}>
-        {name.length > 30 && <p className={styles.errorMessage}>{NAME_LENGTH_ERROR}</p>}
+        {name.length > NAME_LENGTH_LIMIT && (
+          <p className={styles.errorMessage}>{NAME_LENGTH_ERROR}</p>
+        )}
         <InputName name={name} onChange={handleChangeName} />
       </div>
       <button type="submit" disabled={!checkNameValid(name)}>
