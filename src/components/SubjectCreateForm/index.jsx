@@ -10,7 +10,7 @@ const NAME_LENGTH_ERROR = '이름은 30자 이내로 적어주세요.';
 const NAME_LENGTH_LIMIT = 30;
 
 function checkNameValid(name) {
-  if (name.length < 1 || name.length > 30) return false;
+  if (name.length < 1 || name.length > NAME_LENGTH_LIMIT) return false;
   return true;
 }
 
