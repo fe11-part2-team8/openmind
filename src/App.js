@@ -19,9 +19,7 @@ function App() {
           </Route>
           <Route path="admin" element={<AdminPage />} />
           <Route path="post">
-            <Route path=":id">
-              <Route index element={<PostPage />} />
-            </Route>
+            <Route path=":id" element={<PostPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

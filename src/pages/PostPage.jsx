@@ -17,9 +17,22 @@ import empty from '../assets/images/empty.png';
 import QuestionCreateModal from '../components/QuestionCreateModal';
 
 import QuestionList from '../components/QuestionList';
+import { useDeviceType } from '../contexts/DeviceTypeContext';
+
+const QUESTION_BUTTON_TEXT = {
+  desktop: '질문 작성하기',
+  tablet: '질문 작성하기',
+  mobile: '질문 작성',
+};
+
+const LIST_BUTTON_TEXT = {
+  desktop: '목록으로 이동',
+  tablet: '목록으로 이동',
+  mobile: '목록으로',
+};
 
 // 로컬 id랑 현재 접속한 질문 id랑 같은지 검사
-const isMysubject = (id) => {
+const isMySubject = (id) => {
   const myId = localStorage.getItem('subjectId');
   return myId === id;
 };
@@ -47,9 +60,8 @@ function PostPage() {
   const [profile, setProfile] = useState('');
   const [isToastVisible, setIsToastVisible] = useState(false);
   const [isCreateQuestion, setIsCreateQuestion] = useState(false);
-  const [questionButton, setQuestionButton] = useState('');
-  const [listButton, setListButton] = useState('');
   const navigate = useNavigate();
+  const deviceType = useDeviceType();
 
   const { error: getQuestionError, wrappedFunction: fetchGetQuestion } = useAsync(getQuestionList);
   const { error: getSubjectError, wrappedFunction: fetchGetSubject } = useAsync(getSubject);
@@ -75,29 +87,21 @@ function PostPage() {
         setProfile(subject);
       } catch (err) {
         alert('결과를 불러올 수 없습니다.');
-        console.log(err);
-        navigate('/list');
+        console.error(err);
 
         // 오류가 존재할 경우 콘솔에 출력
         if (getQuestionError) {
-          console.log('질문 오류:', getQuestionError);
+          console.error('질문 오류:', getQuestionError);
         }
         if (getSubjectError) {
-          console.log('서브젝트 오류:', getSubjectError);
+          console.error('서브젝트 오류:', getSubjectError);
         }
+
+        navigate('/list');
       }
     };
     loadContent();
   }, [id, fetchGetQuestion, fetchGetSubject, getQuestionError, getSubjectError, navigate]);
-
-  useEffect(() => {
-    updateButtonText(); // 초기값 설정
-    window.addEventListener('resize', updateButtonText);
-
-    return () => {
-      window.removeEventListener('resize', updateButtonText); // 클린업
-    };
-  }, []);
 
   // url 복사
   const handleCopyUrl = async () => {
@@ -161,20 +165,10 @@ function PostPage() {
         alert('삭제되었습니다.');
       } catch (err) {
         alert('삭제하는데 실패했습니다.');
-        console.log('서브젝트 오류:', deleteSubjectError);
+        console.error('서브젝트 오류:', deleteSubjectError);
       } finally {
         navigate('/list');
       }
-    }
-  };
-
-  const updateButtonText = () => {
-    if (window.innerWidth < 768) {
-      setQuestionButton('질문 작성');
-      setListButton('목록으로');
-    } else {
-      setQuestionButton('질문 작성하기');
-      setListButton('목록으로 이동');
     }
   };
 
@@ -217,7 +211,7 @@ function PostPage() {
             />
           </div>
           <div className="flex w-full justify-end">
-            {isMysubject(id) && (
+            {isMySubject(id) && (
               <button
                 className={`${styles.deleteButton} shadow-2 absolute`}
                 onClick={handleDeleteSubject}
@@ -236,7 +230,7 @@ function PostPage() {
               </div>
               {!result.count && <img src={empty} alt="empty" className={styles.empty} />}
               <QuestionList
-                isSubjectOwner={isMysubject(id)}
+                isSubjectOwner={isMySubject(id)}
                 subject={profile}
                 questions={result}
                 onUpdate={handleQuestionUpdate}
@@ -245,14 +239,16 @@ function PostPage() {
           </div>
           <div className="fixed bottom-6 right-6 flex flex-col gap-2">
             <Link to="/list">
-              <button className={`${styles.menuButton} shadow-2`}>{listButton}</button>
+              <button className={`${styles.menuButton} shadow-2`}>
+                {LIST_BUTTON_TEXT[deviceType]}
+              </button>
             </Link>
-            {!isMysubject(id) && (
+            {!isMySubject(id) && (
               <button
                 onClick={() => setIsCreateQuestion(true)}
                 className={`${styles.menuButton} shadow-2`}
               >
-                {questionButton}
+                {QUESTION_BUTTON_TEXT[deviceType]}
               </button>
             )}
           </div>
