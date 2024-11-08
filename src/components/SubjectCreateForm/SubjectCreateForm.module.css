@@ -1,0 +1,71 @@
+.subjectCreateForm {
+  background-color: var(--gray-10);
+  width: fit-content;
+  padding: 32px;
+  border-radius: 16px;
+
+  button[type='submit'] {
+    width: 100%;
+    padding: 12px 24px;
+    margin-top: 10px;
+    border-radius: 8px;
+    background-color: var(--brown-40);
+    color: var(--gray-10);
+    &:disabled {
+      background-color: var(--brown-30);
+    }
+  }
+}
+
+.inputContainer {
+  position: relative;
+}
+
+.inputName {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 16px;
+  background-color: var(--gray-10);
+  width: 336px;
+  border: 1px solid var(--gray-40);
+  border-radius: 8px;
+  position: relative;
+
+  input {
+    background: inherit;
+    flex-grow: 1;
+
+    &:focus-visible {
+      outline: none;
+    }
+  }
+}
+
+.focus {
+  outline: 2px solid var(--brown-30);
+}
+
+/* 추가: 이름 30자 이상 입력 시 에러 메시지 스타일 */
+.errorMessage {
+  color: rgb(255, 0, 0);
+  font-size: 12px;
+  position: absolute;
+  top: -20px;
+  left: 0;
+}
+
+/* 반응형 모바일 사이즈 */
+@media (max-width: 767px) {
+  .subjectCreateForm {
+    max-width: 400px;
+    width: 100%;
+  }
+
+  .inputName {
+    width: 100%;
+    input {
+      width: 100%;
+    }
+  }
+}

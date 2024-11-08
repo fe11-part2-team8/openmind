@@ -6,7 +6,29 @@
   --base-font: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
     Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic',
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
-  /* color and more */
+
+  /* color */
+  --gray-10: #fff;
+  --gray-20: #f9f9f9;
+  --gray-30: #cfcfcf;
+  --gray-40: #818181;
+  --gray-50: #515151;
+  --gray-60: #000;
+
+  --brown-10: #f5f1ee;
+  --brown-20: #e4d5c9;
+  --brown-30: #c7bbb5;
+  --brown-40: #542f1a;
+  --brown-50: #341909;
+
+  --blue: #1877f2;
+  --yellow: #fee500;
+  --red: #b93333;
+
+  /* shadow */
+  --shadow-1pt: 0px 4px 4px 0px #8c8c8c40;
+  --shadow-2pt: 0px 4px 4px 0px #00000040;
+  --shadow-3pt: 0px 16px 20px 0px #3030309e;
 }
 
 @layer base {
@@ -15,7 +37,7 @@
     font-size: 16px;
   }
   body {
-    background-color: #fcfcfc;
+    background-color: var(--gray-20);
   }
   input,
   button,
@@ -32,12 +54,48 @@
   }
 }
 
+/* 공용 컴포넌트 속성 정의 */
 @layer components {
-  /* 공용 컴포넌트 속성 정의 */
+  /* 버튼 - button */
+  .btn {
+    @apply flex items-center justify-center gap-2 rounded-lg border-2 px-3 py-1 text-sm transition-all sm:px-6 sm:py-3 sm:text-base;
+    color: var(--gray-10);
+    border-color: var(--brown-40);
+    background-color: var(--brown-40);
+
+    &:active {
+      @apply scale-95;
+    }
+    &:hover {
+      border-color: var(--brown-50);
+      background-color: var(--brown-50);
+    }
+    &.disabled,
+    &:disabled {
+      @apply pointer-events-none opacity-50;
+    }
+  }
+  .btn-outline {
+    color: var(--brown-40);
+    background-color: var(--brown-10);
+
+    &:hover {
+      background-color: var(--brown-20);
+      border-color: var(--brown-50);
+    }
+  }
+
+  .btn-sm {
+    @apply px-3 py-1 text-sm;
+  }
+  .btn-lg {
+    @apply text-xl;
+  }
 }
 
+/* 유틸 성격의 클래스 정의 */
 @layer utilities {
-  /* 유틸 성격의 클래스 정의 */
+  /* 제목 */
   .h1 {
     font-size: 40px;
   }
@@ -47,4 +105,158 @@
   .h3 {
     font-size: 24px;
   }
+
+  /* 본문 텍스트 */
+  .body1 {
+    font-size: 20px;
+  }
+
+  .body2 {
+    font-size: 18px;
+  }
+
+  .body3 {
+    font-size: 16px;
+  }
+
+  /* 캡션 */
+  .caption-regular,
+  .caption-medium {
+    font-size: 14px;
+  }
+
+  .caption-regular {
+    font-weight: 400;
+  }
+
+  .caption-medium {
+    font-weight: 500;
+  }
+
+  /* 배경 색상 */
+  .bg-brown-10 {
+    background-color: var(--brown-10);
+  }
+  .bg-brown-20 {
+    background-color: var(--brown-20);
+  }
+  .bg-brown-30 {
+    background-color: var(--brown-30);
+  }
+  .bg-brown-40 {
+    background-color: var(--brown-40);
+  }
+  .bg-brown-50 {
+    background-color: var(--brown-50);
+  }
+
+  .bg-blue {
+    background-color: var(--blue);
+  }
+  .bg-yellow {
+    background-color: var(--yellow);
+  }
+  .bg-red {
+    background-color: var(--red);
+  }
+
+  /* 선 색상 */
+  .border-brown-10 {
+    border: 1px solid var(--brown-10);
+  }
+
+  .border-brown-20 {
+    border: 1px solid var(--brown-20);
+  }
+
+  .border-brown-30 {
+    border: 1px solid var(--brown-30);
+  }
+
+  .border-brown-40 {
+    border: 1px solid var(--brown-40);
+  }
+
+  .border-brown-50 {
+    border: 1px solid var(--brown-50);
+  }
+
+  /* 색상 */
+  .text-brown-10 {
+    color: var(--brown-10);
+  }
+
+  .text-brown-20 {
+    color: var(--brown-20);
+  }
+
+  .text-brown-30 {
+    color: var(--brown-30);
+  }
+
+  .text-brown-40 {
+    color: var(--brown-40);
+  }
+
+  .text-brown-50 {
+    color: var(--brown-50);
+  }
+
+  .text-white {
+    color: #fff;
+  }
+
+  /* 그림자 */
+
+  .shadow-1 {
+    box-shadow: var(--shadow-1pt);
+  }
+  .shadow-2 {
+    box-shadow: var(--shadow-2pt);
+  }
+  .shadow-3 {
+    box-shadow: var(--shadow-3pt);
+  }
+
+  /* actor 폰트 사용 */
+  .font-actor {
+    font-family: 'Actor', var(--base-font);
+    font-weight: 400;
+  }
+
+  .stretched-link::after {
+    @apply absolute inset-0;
+    content: '';
+    z-index: 1;
+  }
+}
+
+/* pagination style */
+.pagination {
+  @apply my-10 flex items-center justify-center text-xl;
+  font-family: 'Actor', var(--base-font);
+}
+.pagination a {
+  @apply block h-10 w-10 rounded-full p-2 text-center leading-6;
+  color: var(--gray-40);
+
+  &:hover {
+    @apply bg-neutral-100;
+    color: var(--gray-50);
+  }
+
+  .active & {
+    @apply bg-neutral-200;
+    color: var(--brown-40);
+  }
+  .disabled & {
+    opacity: 0.5;
+    cursor: default;
+    pointer-events: none;
+  }
+}
+
+/* 로딩 화면 */
+.loading {
+  @apply overflow-hidden;
 }
