@@ -6,10 +6,12 @@ import icon_person from '../../assets/images/icon-person.svg';
 import styles from './SubjectCreateForm.module.css';
 import Loading from '../Loading';
 
-const nameLengthError = '이름은 30자 이내로 적어주세요.';
+const NAME_LENGTH_ERROR = '이름은 30자 이내로 적어주세요.';
+const NAME_LENGTH_LIMIT = 30;
 
 function checkNameValid(name) {
-  return name.length > 0 && name.length <= 30;
+  if (name.length < 1 || name.length > NAME_LENGTH_LIMIT) return false;
+  return true;
 }
 
 function SubjectCreateForm() {
@@ -43,7 +45,9 @@ function SubjectCreateForm() {
     <form className={styles.subjectCreateForm} onSubmit={handleCreateSubject}>
       <Loading isVisible={loading} />
       <div className={styles.inputContainer}>
-        {name.length > 30 && <p className={styles.errorMessage}>{nameLengthError}</p>}
+        {name.length > NAME_LENGTH_LIMIT && (
+          <p className={styles.errorMessage}>{NAME_LENGTH_ERROR}</p>
+        )}
         <InputName name={name} onChange={handleChangeName} />
       </div>
       <button type="submit" disabled={!checkNameValid(name)}>
