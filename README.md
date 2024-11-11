@@ -100,6 +100,13 @@
 
 ### 패키지 📦
 
+- axios
+- dayjs
+- dotenv
+- react-helmet
+- react-js-pagination
+- react-router-dom
+
 ## 💻 개발 환경 세팅
 
 ### 1. 모듈 다운로드
